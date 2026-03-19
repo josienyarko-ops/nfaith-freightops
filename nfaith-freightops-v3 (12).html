@@ -1,0 +1,2283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>N-FAITH LTD — FreightOps</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f6fc;--surface:#fff;--s2:#e3eef9;--s3:#cce0f5;--border:#b3d1ec;
+  --accent:#1558a8;--accent2:#1d72d1;--aglow:rgba(21,88,168,.13);
+  --green:#0b7a52;--gbg:#d2f0e4;--red:#b52b1e;--rbg:#fce8e6;
+  --orange:#c96b0a;--obg:#fdebd2;--purple:#5433a8;--pbg:#ece8fc;
+  --teal:#0e7490;--tbg:#ccf2f8;--gold:#92400e;--goldbg:#fef3c7;
+  --text:#0a1f35;--text2:#235080;--muted:#6688aa;
+  --fh:'Barlow Condensed',sans-serif;--fb:'DM Sans',sans-serif;
+  --sh:0 2px 14px rgba(21,88,168,.09);--shl:0 8px 32px rgba(21,88,168,.15);
+  --r:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);min-height:100vh;font-size:14px;}
+
+/* LOGIN */
+#login-screen{position:fixed;inset:0;z-index:9999;display:flex;background:linear-gradient(145deg,#05152b 0%,#0d3566 50%,#1558a8 100%);}
+#login-screen::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none;}
+.ll{flex:1;display:flex;flex-direction:column;justify-content:center;padding:60px;position:relative;z-index:1;}
+.lbrand{font-family:var(--fh);font-size:52px;font-weight:900;color:#fff;letter-spacing:3px;line-height:1;margin-bottom:8px;}
+.lbrand span{color:#5aacde;}
+.ltag{color:rgba(255,255,255,.55);font-size:16px;margin-bottom:48px;}
+.lfeat{display:flex;align-items:center;gap:12px;margin-bottom:16px;color:rgba(255,255,255,.7);font-size:14px;}
+.lfeat-ico{width:36px;height:36px;background:rgba(255,255,255,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.lr{width:480px;background:#fff;display:flex;flex-direction:column;justify-content:center;padding:56px 48px;box-shadow:-20px 0 60px rgba(0,0,0,.2);overflow-y:auto;position:relative;z-index:1;}
+.ltitle{font-family:var(--fh);font-size:30px;font-weight:800;color:var(--accent);letter-spacing:1px;margin-bottom:4px;}
+.lsub{color:var(--muted);font-size:13px;margin-bottom:32px;}
+.lf{margin-bottom:18px;}
+.lf label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px;}
+.lf input{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:13px 16px;color:var(--text);font-family:var(--fb);font-size:14px;outline:none;transition:all .2s;}
+.lf input:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 4px var(--aglow);}
+.lbtn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:14px;font-family:var(--fh);font-size:17px;font-weight:700;letter-spacing:2px;cursor:pointer;text-transform:uppercase;transition:all .2s;}
+.lbtn:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(21,88,168,.35);}
+.lerr{background:var(--rbg);color:var(--red);padding:11px 15px;border-radius:9px;font-size:13px;margin-bottom:16px;display:none;border-left:3px solid var(--red);}
+.lhint{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:12px 15px;margin-top:20px;font-size:12px;color:var(--muted);}
+.lhint strong{color:var(--accent);}
+
+/* APP */
+#app{display:none;}
+header{background:var(--accent);height:58px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(21,88,168,.3);}
+.hlogo{font-family:var(--fh);font-size:21px;font-weight:900;color:#fff;letter-spacing:2px;display:flex;align-items:center;gap:10px;}
+.hlogo-sub{font-size:11px;font-weight:400;opacity:.6;font-family:var(--fb);letter-spacing:1px;}
+.hright{display:flex;align-items:center;gap:10px;}
+.hbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:5px 12px;font-size:12px;color:#fff;cursor:pointer;font-family:var(--fb);transition:all .2s;}
+.hbtn:hover{background:rgba(255,255,255,.25);}
+.uchip{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 14px 4px 4px;}
+.uav{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:13px;font-weight:800;color:#fff;}
+.uname{font-size:12px;color:#fff;font-weight:600;line-height:1.2;}
+.urole{font-size:10px;opacity:.7;color:#fff;text-transform:uppercase;letter-spacing:.5px;}
+.sdot{width:7px;height:7px;border-radius:50%;background:#6ee7b7;display:inline-block;}
+.sdot.syncing{background:#fcd34d;animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.abadge{background:var(--red);color:#fff;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:700;}
+
+nav{background:var(--surface);border-bottom:2px solid var(--border);padding:0 24px;display:flex;overflow-x:auto;box-shadow:var(--sh);}
+.tab{padding:12px 15px;font-family:var(--fh);font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer;border-bottom:3px solid transparent;color:var(--muted);transition:all .2s;text-transform:uppercase;white-space:nowrap;margin-bottom:-2px;}
+.tab:hover{color:var(--accent);}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);background:var(--s2);}
+
+main{padding:20px 24px;max-width:1500px;margin:0 auto;}
+.section{display:none;animation:fadeUp .3s ease both;}
+.section.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+/* STATS */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;box-shadow:var(--sh);}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--c,var(--accent));}
+.stat .lbl{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:5px;font-weight:600;}
+.stat .val{font-family:var(--fh);font-size:36px;font-weight:900;line-height:1;color:var(--text);}
+.stat .sub{font-size:11px;color:var(--muted);margin-top:3px;}
+
+.sechdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;flex-wrap:wrap;gap:8px;}
+.sectitle{font-family:var(--fh);font-size:20px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+
+/* BUTTONS */
+.btn{padding:7px 16px;border-radius:8px;font-family:var(--fh);font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer;border:none;text-transform:uppercase;transition:all .15s;display:inline-flex;align-items:center;gap:5px;}
+.bp{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(21,88,168,.25);}
+.bp:hover{background:var(--accent2);}
+.bg{background:transparent;color:var(--text2);border:1.5px solid var(--border);}
+.bg:hover{border-color:var(--accent);color:var(--accent);background:var(--s2);}
+.bsm{padding:4px 10px;font-size:11px;}
+.bd{background:var(--red);color:#fff;}
+.bd:hover{opacity:.85;}
+.be{background:var(--s2);color:var(--accent);border:1px solid var(--border);}
+.bwb{background:var(--pbg);color:var(--purple);border:1px solid #c5b8f0;}
+.bteal{background:var(--tbg);color:var(--teal);border:1px solid #a5d8e6;}
+.bgold{background:var(--goldbg);color:var(--gold);border:1.5px solid #f0d070;font-weight:700;}
+.bgold:hover{background:#fde68a;}
+
+/* TABLE */
+.tw{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;overflow-x:auto;box-shadow:var(--sh);}
+table{width:100%;border-collapse:collapse;min-width:600px;}
+thead th{background:var(--s2);padding:10px 13px;text-align:left;font-family:var(--fh);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700;border-bottom:1px solid var(--border);}
+tbody tr{border-top:1px solid var(--border);transition:background .12s;}
+tbody tr:hover{background:var(--s2);}
+tbody td{padding:10px 13px;font-size:13px;}
+
+/* BADGES */
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+.bg-g{background:var(--gbg);color:var(--green);}
+.bg-o{background:var(--obg);color:var(--orange);}
+.bg-r{background:var(--rbg);color:var(--red);}
+.bg-b{background:var(--s2);color:var(--accent);}
+.bg-p{background:var(--pbg);color:var(--purple);}
+.bg-t{background:var(--tbg);color:var(--teal);}
+.bg-gold{background:var(--goldbg);color:var(--gold);}
+
+.rp{display:inline-block;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.rp-admin{background:var(--goldbg);color:var(--gold);}
+.rp-manager{background:var(--gbg);color:var(--green);}
+.rp-driver{background:var(--s2);color:var(--accent);}
+.rp-office{background:var(--pbg);color:var(--purple);}
+
+/* MODAL */
+.ov{display:none;position:fixed;inset:0;background:rgba(10,31,53,.55);backdrop-filter:blur(5px);z-index:200;align-items:center;justify-content:center;}
+.ov.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:26px;width:100%;max-width:680px;max-height:92vh;overflow-y:auto;animation:fadeUp .25s ease;box-shadow:var(--shl);}
+.modal h2{font-family:var(--fh);font-size:22px;font-weight:800;letter-spacing:1px;color:var(--accent);margin-bottom:3px;text-transform:uppercase;}
+.msub{font-size:12px;color:var(--muted);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fg{display:flex;flex-direction:column;gap:4px;}
+.fg.full{grid-column:1/-1;}
+.fg.third{grid-column:span 1;}
+.fg label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;}
+.fg input,.fg select,.fg textarea{background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:9px 12px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none;transition:all .15s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--aglow);}
+.fsec{grid-column:1/-1;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);padding:6px 0 3px;border-bottom:1px solid var(--border);margin-top:6px;}
+.mac{display:flex;gap:9px;justify-content:flex-end;margin-top:16px;padding-top:13px;border-top:1px solid var(--border);}
+
+/* INLINE EDIT */
+.editable{cursor:pointer;border-bottom:1px dashed var(--border);padding:1px 3px;border-radius:3px;transition:all .15s;}
+.editable:hover{border-bottom-color:var(--accent);color:var(--accent);background:var(--s2);}
+.ie{background:#fff;border:1.5px solid var(--accent);border-radius:5px;padding:3px 7px;color:var(--text);font-family:var(--fb);font-size:12px;outline:none;box-shadow:0 0 0 3px var(--aglow);}
+
+/* TRIP TIMELINE */
+.timeline{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;box-shadow:var(--sh);margin-top:10px;}
+.timeline h4{font-family:var(--fh);font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.tl-stages{display:flex;flex-direction:column;gap:0;}
+.tl-stage{display:flex;gap:14px;position:relative;}
+.tl-stage:not(:last-child)::after{content:'';position:absolute;left:17px;top:36px;bottom:-2px;width:2px;background:var(--border);}
+.tl-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;border:2px solid var(--border);background:var(--bg);z-index:1;}
+.tl-dot.done{background:var(--gbg);border-color:var(--green);}
+.tl-dot.active{background:var(--s2);border-color:var(--accent);animation:ringpulse 2s infinite;}
+@keyframes ringpulse{0%,100%{box-shadow:0 0 0 0 var(--aglow);}50%{box-shadow:0 0 0 6px transparent;}}
+.tl-content{flex:1;padding-bottom:16px;}
+.tl-label{font-weight:600;font-size:13px;color:var(--text);}
+.tl-time{font-size:11px;color:var(--muted);margin-top:2px;}
+.tl-note{font-size:12px;color:var(--text2);margin-top:4px;background:var(--bg);padding:5px 9px;border-radius:6px;}
+.tl-btn{margin-top:6px;}
+
+/* WAYBILL */
+.wb{background:#fff;border:2px solid var(--border);border-radius:var(--r);padding:22px;max-width:720px;margin:0 auto;}
+.wb-hdr{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--accent);padding-bottom:12px;margin-bottom:14px;}
+.wb-co{font-family:var(--fh);font-size:24px;font-weight:900;color:var(--accent);letter-spacing:2px;}
+.wb-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px;}
+.wb-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px;}
+.wb-lbl{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:700;margin-bottom:3px;}
+.wb-val{font-size:14px;font-weight:600;}
+.wb-table{width:100%;border-collapse:collapse;margin-bottom:14px;}
+.wb-table th{background:var(--accent);color:#fff;padding:8px 11px;text-align:left;font-size:10px;letter-spacing:1px;text-transform:uppercase;}
+.wb-table td{padding:8px 11px;border-bottom:1px solid var(--border);font-size:12px;}
+.wb-sigs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:16px;padding-top:14px;border-top:2px dashed var(--border);}
+.wb-sig-line{border-bottom:1.5px solid var(--text);height:34px;margin-bottom:4px;}
+.wb-sig-lbl{font-size:9px;text-transform:uppercase;letter-spacing:1px;text-align:center;color:var(--muted);}
+.wb-collected{background:var(--gbg);border:2px solid var(--green);border-radius:10px;padding:14px;margin-bottom:14px;}
+.wb-collected-title{font-family:var(--fh);font-size:15px;font-weight:800;color:var(--green);margin-bottom:10px;letter-spacing:1px;}
+
+/* ALLOWANCE CARD */
+.allowance-card{background:var(--goldbg);border:1px solid #f0d070;border-radius:10px;padding:14px 16px;margin-top:10px;}
+.allowance-card h4{font-family:var(--fh);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.allow-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(146,64,14,.1);font-size:13px;}
+.allow-row:last-child{border:none;}
+.allow-val{font-weight:700;font-family:var(--fh);font-size:15px;color:var(--gold);}
+
+/* ALERTS */
+.aitem{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 15px;display:flex;align-items:flex-start;gap:12px;border-left:4px solid;box-shadow:var(--sh);margin-bottom:10px;}
+.ai-warn{border-left-color:var(--orange);}
+.ai-danger{border-left-color:var(--red);}
+.ai-info{border-left-color:var(--accent);}
+
+/* REPORT CARDS */
+.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.rcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--sh);}
+.rcard h3{font-family:var(--fh);font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.rrow{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.rrow:last-child{border-bottom:none;}
+.rv{font-weight:700;color:var(--accent);}
+
+/* USERS */
+.ugrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
+.ucard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;display:flex;align-items:center;gap:13px;box-shadow:var(--sh);}
+.uavbig{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:18px;font-weight:900;color:#fff;flex-shrink:0;}
+
+/* SEARCH */
+.sbar{display:flex;gap:8px;margin-bottom:14px;}
+.si{flex:1;background:var(--surface);border:1.5px solid var(--border);border-radius:9px;padding:9px 13px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none;box-shadow:var(--sh);}
+.si:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--aglow);}
+
+/* EMPTY */
+.empty{text-align:center;padding:40px;color:var(--muted);}
+.ei{font-size:40px;margin-bottom:10px;opacity:.45;}
+
+/* DRIVER BANNER */
+.dbanner{background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:var(--r);padding:18px 22px;margin-bottom:18px;color:#fff;display:flex;align-items:center;gap:14px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;padding:11px 18px;border-radius:10px;font-weight:600;font-size:13px;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;box-shadow:var(--shl);}
+.toast.show{transform:none;opacity:1;}
+.tok{background:var(--accent);color:#fff;}
+.terr{background:var(--red);color:#fff;}
+.twin{background:var(--green);color:#fff;}
+
+/* COLLECTION PROOF */
+.proof-img{max-width:100%;border-radius:8px;border:2px solid var(--border);margin-top:8px;}
+.code-badge{background:var(--goldbg);border:1px solid #f0d070;border-radius:6px;padding:3px 10px;font-family:monospace;font-size:12px;font-weight:700;color:var(--gold);}
+
+@media(max-width:768px){
+  .ll{display:none;}.lr{width:100%;padding:36px 20px;}
+  .fg2{grid-template-columns:1fr;}.rgrid{grid-template-columns:1fr;}
+  .sgrid{grid-template-columns:repeat(2,1fr);}
+  header{padding:0 12px;}main{padding:12px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="ll">
+    <div class="lbrand">N-FAITH<br><span>LTD</span></div>
+    <div class="ltag">Freight & Cargo Operations System</div>
+    <div class="lfeat"><div class="lfeat-ico">🚛</div><span>Real-time trip tracking with full timeline</span></div>
+    <div class="lfeat"><div class="lfeat-ico">⏱️</div><span>Timestamped stages from departure to return</span></div>
+    <div class="lfeat"><div class="lfeat-ico">👥</div><span>Admin, Manager, Driver & Office roles</span></div>
+    <div class="lfeat"><div class="lfeat-ico">💰</div><span>Driver allowances, police checkpoint & trip money</span></div>
+  </div>
+  <div class="lr">
+    <div class="ltitle">Welcome back</div>
+    <div class="lsub">Sign in to your N-FAITH LTD account</div>
+    <div id="lerr" class="lerr"></div>
+    <div class="lf">
+      <label>Email Address</label>
+      <input id="l-email" type="text" placeholder="admin@nfaith.com" style="font-size:15px;">
+    </div>
+    <div class="lf">
+      <label>Password</label>
+      <div style="position:relative;">
+        <input id="l-pass" type="password" placeholder="admin123" style="font-size:15px;padding-right:50px;">
+        <button type="button" onclick="togglePwd('l-pass','l-eye')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:var(--muted);padding:0;line-height:1;" id="l-eye">👁️</button>
+      </div>
+    </div>
+    <button class="lbtn" onclick="doLogin()">Sign In →</button>
+    <div style="margin-top:14px;background:var(--goldbg);border:1.5px solid #f0d070;border-radius:9px;padding:14px;font-size:13px;color:#92400e;line-height:1.6;">
+      <strong>Default Admin Login:</strong><br>
+      📧 Email: <strong>admin@nfaith.com</strong><br>
+      🔑 Password: <strong>admin123</strong><br>
+      <span style="font-size:11px;opacity:.8;">Change your password after first login via the 🔑 icon in the header.</span>
+    </div>
+    <button type="button" onclick="refreshAndLogin()" style="width:100%;background:transparent;border:1.5px solid var(--border);border-radius:10px;padding:10px;font-family:var(--fb);font-size:13px;color:var(--muted);cursor:pointer;margin-top:10px;">
+      🔄 Can't log in? Click here to refresh &amp; try again
+    </button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+<header>
+  <div class="hlogo">🚚 N-FAITH LTD <span class="hlogo-sub">FREIGHTOPS</span></div>
+  <div class="hright">
+    <span class="sdot" id="sdot"></span>
+    <span id="sstat" style="font-size:11px;color:rgba(255,255,255,.7);margin-right:4px;">Live</span>
+    <div id="hdate" style="font-size:11px;color:rgba(255,255,255,.65);"></div>
+    <button class="hbtn" onclick="syncNow()">🔄 Sync</button>
+    <div class="abadge" id="abadge">0</div>
+    <div class="uchip">
+      <div class="uav" id="uav"></div>
+      <div><div class="uname" id="uname">—</div><div class="urole" id="urole">—</div></div>
+    </div>
+    <button class="hbtn" onclick="openModal('chpwd')" title="Change Password">🔑</button>
+    <button class="hbtn" onclick="doLogout()" style="background:rgba(255,71,87,.7)">Sign Out</button>
+  </div>
+</header>
+
+<nav id="app-nav">
+  <div class="tab active" onclick="showTab('dashboard')" id="nt-dashboard">📊 Dashboard</div>
+  <div class="tab" onclick="showTab('trips')" id="nt-trips">🚛 Trips</div>
+  <div class="tab" onclick="showTab('waybills')" id="nt-waybills">📄 Waybills</div>
+  <div class="tab" onclick="showTab('drivers')" id="nt-drivers">👤 Drivers</div>
+  <div class="tab" onclick="showTab('cargo')" id="nt-cargo">📦 Cargo</div>
+  <div class="tab" onclick="showTab('fuel')" id="nt-fuel">⛽ Fuel</div>
+  <div class="tab" onclick="showTab('allowances')" id="nt-allowances">💰 Allowances</div>
+  <div class="tab" onclick="showTab('dispatch')" id="nt-dispatch">📋 Dispatch</div>
+  <div class="tab" onclick="showTab('alerts')" id="nt-alerts">🔔 Alerts</div>
+  <div class="tab" onclick="showTab('history')" id="nt-history">🕐 History</div>
+  <div class="tab" onclick="showTab('reports')" id="nt-reports">📈 Reports</div>
+  <div class="tab" onclick="showTab('users')" id="nt-users">👥 Users</div>
+</nav>
+
+<main>
+
+<!-- DASHBOARD -->
+<div class="section active" id="sec-dashboard">
+  <div id="driver-banner" style="display:none">
+    <div class="dbanner"><div style="font-size:32px">🚛</div>
+      <div><div style="font-family:var(--fh);font-size:20px;font-weight:800;letter-spacing:1px" id="dbanner-name">Welcome!</div>
+      <div style="font-size:13px;opacity:.8">View and update your assigned trips below. Click a timeline stage to log your progress.</div></div>
+    </div>
+  </div>
+  <div class="sgrid" id="sgrid">
+    <div class="stat" style="--c:#1d72d1"><div class="lbl">Active Trips</div><div class="val" id="s-active">0</div><div class="sub">On road now</div></div>
+    <div class="stat" style="--c:#0b7a52"><div class="lbl">Available</div><div class="val" id="s-avail">0</div><div class="sub">Trucks ready</div></div>
+    <div class="stat" style="--c:#5433a8"><div class="lbl">In Transit</div><div class="val" id="s-transit">0</div><div class="sub">Shipments</div></div>
+    <div class="stat" style="--c:#b52b1e"><div class="lbl">Alerts</div><div class="val" id="s-alerts">0</div><div class="sub">Need attention</div></div>
+    <div class="stat" style="--c:#c96b0a"><div class="lbl">Today</div><div class="val" id="s-today">0</div><div class="sub">Trips logged</div></div>
+    <div class="stat" style="--c:#0b7a52"><div class="lbl">Delivered</div><div class="val" id="s-done">0</div><div class="sub">Completed</div></div>
+    <div class="stat" style="--c:#5433a8"><div class="lbl">Round Trips</div><div class="val" id="s-round">0</div><div class="sub">With return</div></div>
+    <div class="stat" style="--c:#92400e"><div class="lbl">Allowances</div><div class="val" id="s-allw">GHS 0</div><div class="sub">Paid out today</div></div>
+  </div>
+  <div class="sechdr"><div class="sectitle" id="dash-rt">Recent Activity</div></div>
+  <div class="tw"><table>
+    <thead><tr><th>Waybill</th><th>Driver</th><th>Truck/Plate</th><th>Pickup From</th><th>Route</th><th>Cargo</th><th>Stage</th><th>Status</th><th>Date</th></tr></thead>
+    <tbody id="dash-tbody"></tbody>
+  </table></div>
+</div>
+
+<!-- TRIPS -->
+<div class="section" id="sec-trips">
+  <div class="sechdr">
+    <div class="sectitle" id="trips-title">Trip Log</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn bp" id="btn-add-trip" onclick="openModal('trip')">+ New Trip</button>
+    </div>
+  </div>
+  <div class="sbar"><input class="si" id="trip-search" placeholder="Search driver, truck, route, pickup company…" oninput="renderTrips(this.value)"></div>
+  <div class="tw"><table>
+    <thead><tr><th>Waybill</th><th>Trip #</th><th>Driver</th><th>Truck/Plate</th><th>Pickup Co.</th><th>Origin→Dest</th><th>Cargo</th><th>Type</th><th>Stage</th><th>🔄 Reverse</th><th>Status</th><th>Date</th><th>By</th><th>Actions</th></tr></thead>
+    <tbody id="trips-tbody"></tbody>
+  </table></div>
+</div>
+
+<!-- WAYBILLS -->
+<div class="section" id="sec-waybills">
+  <div class="sechdr"><div class="sectitle">Waybill Register</div></div>
+  <div class="tw"><table>
+    <thead><tr><th>Waybill No.</th><th>Driver</th><th>Truck/Plate</th><th>Pickup Co.</th><th>Route</th><th>Cargo</th><th>Client</th><th>Date</th><th>Collected</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody id="wb-tbody"></tbody>
+  </table></div>
+</div>
+
+<!-- DRIVERS -->
+<div class="section" id="sec-drivers">
+  <div class="sechdr">
+    <div class="sectitle">Drivers & Trucks</div>
+    <button class="btn bp" id="btn-add-drv" onclick="openModal('driver')">+ Add Driver</button>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Name</th><th>Truck</th><th>Plate</th><th>License</th><th>Expiry</th><th>Phone</th><th>Grantor</th><th>Grantor Phone</th><th>Total Trips</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody id="drv-tbody"></tbody>
+  </table></div>
+</div>
+
+<!-- CARGO -->
+<div class="section" id="sec-cargo">
+  <div class="sechdr">
+    <div class="sectitle">Cargo & Deliveries</div>
+    <button class="btn bp" id="btn-add-cargo" onclick="openModal('cargo')">+ New Shipment</button>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>ID</th><th>Description</th><th>Client</th><th>Pickup Co.</th><th>Weight (kg)</th><th>Waybill</th><th>Status</th><th>ETA</th><th>Actions</th></tr></thead>
+    <tbody id="cargo-tbody"></tbody>
+  </table></div>
+</div>
+
+<!-- FUEL -->
+<div class="section" id="sec-fuel">
+  <div class="sechdr">
+    <div class="sectitle">Fuel & Maintenance</div>
+    <button class="btn bp" id="btn-add-fuel" onclick="openModal('fuel')">+ Log Entry</button>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Truck</th><th>Driver</th><th>Type</th><th>Qty/L</th><th>Price/L (GHS)</th><th>Total (GHS)</th><th>Date</th><th>Next Service</th><th>Entered By</th><th>Notes</th><th>Actions</th></tr></thead>
+    <tbody id="fuel-tbody"></tbody>
+  </table></div>
+</div>
+
+<!-- ALLOWANCES -->
+<div class="section" id="sec-allowances">
+  <div class="sechdr">
+    <div class="sectitle">Driver Allowances</div>
+    <button class="btn bp" onclick="openModal('allowance')">+ Log Allowance</button>
+  </div>
+  <div class="tw" style="margin-bottom:20px;"><table>
+    <thead><tr><th>Date</th><th>Driver</th><th>Truck</th><th>Waybill</th><th>Trip Allowance (GHS)</th><th>Police Checkpoint (GHS)</th><th>Other (GHS)</th><th>Other Notes</th><th>Total (GHS)</th><th>Paid By</th><th>Actions</th></tr></thead>
+    <tbody id="allw-tbody"></tbody>
+  </table></div>
+</div>
+
+<!-- DISPATCH (Office Personnel) -->
+<div class="section" id="sec-dispatch">
+  <div class="sechdr">
+    <div class="sectitle">📋 Dispatch & Office Log</div>
+    <button class="btn bp" onclick="openModal('dispatch')">+ New Dispatch Order</button>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Ref No.</th><th>Date</th><th>Client</th><th>Client Contact</th><th>Linked Waybill</th><th>Invoice Ref</th><th>Priority</th><th>Fleet Manager</th><th>Sign-off</th><th>Notes</th><th>Actions</th></tr></thead>
+    <tbody id="dispatch-tbody"></tbody>
+  </table></div>
+</div>
+
+<!-- ALERTS -->
+<div class="section" id="sec-alerts">
+  <div class="sechdr">
+    <div class="sectitle">Alerts</div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn bp" onclick="openModal('alert')">+ Add Alert</button>
+      <button class="btn bg" onclick="clearAlerts()">Clear All</button>
+    </div>
+  </div>
+  <div id="alerts-list"></div>
+</div>
+
+<!-- HISTORY -->
+<div class="section" id="sec-history">
+  <div class="sechdr">
+    <div class="sectitle">History & Audit Log</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+      <select id="hfilt" onchange="renderHistory()" style="background:var(--surface);border:1.5px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none;">
+        <option value="all">All</option><option value="Trips">Trips</option><option value="Fuel">Fuel</option><option value="Drivers">Drivers</option><option value="Cargo">Cargo</option><option value="Allowance">Allowances</option>
+      </select>
+      <input id="hsearch" class="si" style="width:180px;" placeholder="Search…" oninput="renderHistory()">
+      <button class="btn bg bsm" onclick="dlCSV('audit')">⬇ Export</button>
+    </div>
+  </div>
+  <div id="hist-tl" style="margin-bottom:20px;"></div>
+  <div class="sechdr"><div class="sectitle" style="font-size:16px;">📋 All Trips</div></div>
+  <div class="tw" style="margin-bottom:16px;"><table>
+    <thead><tr><th>Waybill</th><th>Trip #</th><th>Driver</th><th>Truck/Plate</th><th>Route</th><th>Cargo</th><th>Type</th><th>🔄 Reverse</th><th>Stage</th><th>Status</th><th>Date</th><th>By</th></tr></thead>
+    <tbody id="hist-trips"></tbody>
+  </table></div>
+</div>
+
+<!-- REPORTS -->
+<div class="section" id="sec-reports">
+  <div class="sechdr">
+    <div class="sectitle">Operations Summary</div>
+    <button class="btn bp" onclick="exportCSV()">⬇ Export CSV</button>
+  </div>
+  <div class="rgrid" id="report-grid"></div>
+</div>
+
+<!-- USERS -->
+<div class="section" id="sec-users">
+  <div class="sechdr">
+    <div class="sectitle">User Management</div>
+    <button class="btn bp" onclick="openModal('user')">+ Add User</button>
+  </div>
+  <div id="codebox" style="background:var(--s2);border:1.5px dashed var(--border);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:14px;">
+    <span style="font-size:22px;">🔑</span>
+    <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:4px;">Staff Registration Code</div>
+    <div style="font-family:var(--fh);font-size:24px;font-weight:900;color:var(--accent);letter-spacing:4px;" id="codeval">—</div>
+    <div style="font-size:11px;color:var(--muted);">Share with new staff for account creation</div></div>
+    <button class="btn bg bsm" style="margin-left:auto;" onclick="regenCode()">🔄 Regenerate</button>
+  </div>
+  <div class="ugrid" id="users-grid"></div>
+</div>
+
+</main>
+</div><!-- /app -->
+
+<!-- ══ TRIP MODAL ══ -->
+<div class="ov" id="modal-trip">
+<div class="modal" style="max-width:720px;">
+  <h2 id="trip-m-title">Log New Trip</h2>
+  <div class="msub">Waybill auto-generated. Fill in all details for this trip.</div>
+  <input type="hidden" id="t-eid">
+  <div class="fg2">
+    <div class="fsec">🚛 Assignment & Route</div>
+    <div class="fg"><label>Driver *</label><select id="t-driver"></select></div>
+    <div class="fg"><label>Truck *</label><select id="t-truck"></select></div>
+    <div class="fg"><label>Pickup Company *</label><input id="t-pickup" placeholder="Company cargo picked from"></div>
+    <div class="fg"><label>Origin / Depot</label><input id="t-origin" placeholder="e.g. Tema Port"></div>
+    <div class="fg"><label>Destination *</label><input id="t-dest" placeholder="e.g. Kumasi"></div>
+    <div class="fg"><label>Distance (km)</label><input id="t-dist" type="number" placeholder="0"></div>
+    <div class="fsec">📦 Cargo & Client</div>
+    <div class="fg full"><label>Cargo Description *</label><input id="t-cargo" placeholder="e.g. 200 bags of cement"></div>
+    <div class="fg"><label>Client / Receiver</label><input id="t-client" placeholder="Who receives cargo"></div>
+    <div class="fg"><label>Weight (kg)</label><input id="t-weight" type="number" placeholder="0"></div>
+    <div class="fg"><label>Invoice Reference</label><input id="t-invoice" placeholder="e.g. INV-2024-001"></div>
+    <div class="fg"><label>Priority</label>
+      <select id="t-priority"><option>Normal</option><option>Urgent</option><option>High</option><option>Low</option></select>
+    </div>
+    <div class="fsec">🔄 Trip Type & Return</div>
+    <div class="fg"><label>Trip Type</label>
+      <select id="t-triptype" onchange="toggleTripType()">
+        <option value="one-way">One Way</option>
+        <option value="round">Round Trip</option>
+      </select>
+    </div>
+    <div class="fg"><label>Trip Number (for this driver)</label><input id="t-tripno" type="number" placeholder="e.g. 1"></div>
+    <div class="fg" id="t-returnloc-wrap" style="display:none;"><label>Return Location</label><input id="t-returnloc" placeholder="Where driver returns to"></div>
+    <div class="fsec">📋 Details & Status</div>
+    <div class="fg"><label>Status</label>
+      <select id="t-status"><option>Scheduled</option><option>Departed</option><option>At Factory</option><option>Loading</option><option>In Transit</option><option>Delivered</option><option>Returning</option><option>Returned</option><option>Delayed</option><option>Cancelled</option></select>
+    </div>
+    <div class="fg"><label>Date</label><input id="t-date" type="date"></div>
+    <div class="fg"><label>Fleet Manager / Dispatcher</label><input id="t-manager" placeholder="Name of manager on duty"></div>
+    <div class="fg full"><label>Dispatch Notes</label><textarea id="t-notes" rows="2" placeholder="Office instructions, special handling notes…"></textarea></div>
+    <div id="t-backdate-section" style="display:none;grid-column:1/-1;">
+      <div style="background:#fef3c7;border:1.5px solid #f0d070;border-radius:10px;padding:14px 16px;margin-top:4px;">
+        <div style="font-family:var(--fh);font-size:13px;font-weight:700;color:#92400e;letter-spacing:1px;margin-bottom:10px;">📅 BACKDATED ENTRY — Admin Only</div>
+        <div style="font-size:12px;color:#92400e;margin-bottom:10px;opacity:.8;">This entry will be marked as backdated. The audit log will record who entered it and when.</div>
+        <div class="fg2">
+          <div class="fg"><label>Actual Trip Date *</label><input id="t-backdate" type="date" style="background:#fff;border-color:#f0d070;"></div>
+          <div class="fg"><label>Entered By (Your Name) *</label><input id="t-enteredby-name" placeholder="Your full name" style="background:#fff;border-color:#f0d070;"></div>
+          <div class="fg full"><label>Reason for Backdating *</label><input id="t-backdate-reason" placeholder="e.g. Entering historical records from logbook, missed entry" style="background:#fff;border-color:#f0d070;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="fsec">🔄 Reverse Load (Return Cargo)</div>
+    <div class="fg"><label>Reverse Load?</label>
+      <select id="t-rl" onchange="toggleRL()"><option value="no">No — Empty Return</option><option value="yes">Yes — Has Return Cargo</option></select>
+    </div>
+    <div id="rl-fields" style="display:none;grid-column:1/-1;">
+      <div class="fg2" style="margin-top:8px;">
+        <div class="fg"><label>Return Pickup Co.</label><input id="t-rv-pickup" placeholder="Pickup company for return cargo"></div>
+        <div class="fg"><label>Return Origin</label><input id="t-rv-origin" placeholder="Where return cargo is picked"></div>
+        <div class="fg"><label>Return Destination</label><input id="t-rv-dest" placeholder="Where it goes"></div>
+        <div class="fg"><label>Return Cargo</label><input id="t-rv-cargo" placeholder="e.g. Empty containers"></div>
+        <div class="fg"><label>Return Client</label><input id="t-rv-client" placeholder="Receiver"></div>
+        <div class="fg"><label>Return Weight (kg)</label><input id="t-rv-weight" type="number" placeholder="0"></div>
+        <div class="fg"><label>Return Status</label>
+          <select id="t-rv-status"><option>Pending</option><option>Loading</option><option>In Transit</option><option>Delivered</option></select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mac">
+    <button class="btn bg" onclick="closeModal('trip')">Cancel</button>
+    <button class="btn bgold bsm" id="t-backdate-btn" style="display:none;" onclick="toggleBackdate('t')">📅 Backdate Entry</button>
+    <button class="btn bp" onclick="saveTrip()">Save Trip</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ TIMELINE UPDATE MODAL ══ -->
+<div class="ov" id="modal-timeline">
+<div class="modal" style="max-width:480px;">
+  <h2 id="tl-m-title">Log Stage</h2>
+  <div class="msub">Record what is happening right now — this will be timestamped automatically.</div>
+  <input type="hidden" id="tl-trip-id">
+  <input type="hidden" id="tl-stage-key">
+  <div class="fg2">
+    <div class="fg full"><label>Stage</label>
+      <select id="tl-stage">
+        <option value="departed">🚀 Departed — Driver left depot/office</option>
+        <option value="atFactory">🏭 Arrived at Factory/Pickup Point</option>
+        <option value="waitingLine">⏳ Waiting in Line at Factory</option>
+        <option value="loading">📦 Loading Cargo onto Truck</option>
+        <option value="inTransit">🛣️ In Transit — Left Pickup Point</option>
+        <option value="atCheckpoint">🚔 At Police Checkpoint</option>
+        <option value="delivered">✅ Delivered — Cargo Received</option>
+        <option value="rvLoading">🔄 Loading Reverse Cargo</option>
+        <option value="rvInTransit">🔄 Reverse Load In Transit</option>
+        <option value="returned">🏁 Returned to Base</option>
+        <option value="custom">📝 Custom Note</option>
+      </select>
+    </div>
+    <div class="fg full"><label>Notes / Details</label><textarea id="tl-note" rows="3" placeholder="What is happening? Any details, issues, delays…"></textarea></div>
+  </div>
+  <div class="mac">
+    <button class="btn bg" onclick="closeModal('timeline')">Cancel</button>
+    <button class="btn bp" onclick="saveTimeline()">📍 Log This Stage</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ COLLECTION PROOF MODAL ══ -->
+<div class="ov" id="modal-collection">
+<div class="modal" style="max-width:480px;">
+  <h2>Mark as Collected</h2>
+  <div class="msub">Record that the waybill was given to the driver and cargo collected.</div>
+  <input type="hidden" id="col-trip-id">
+  <div class="fg2">
+    <div class="fg full"><label>Waybill Code / Reference Number</label><input id="col-code" placeholder="Enter the code from the physical waybill"></div>
+    <div class="fg full"><label>Upload Photo of Waybill / Collection Proof (optional)</label>
+      <input id="col-photo" type="file" accept="image/*" style="background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:8px;">
+    </div>
+    <div class="fg full"><label>Collected By (Driver Name)</label><input id="col-driver" placeholder="Driver who collected"></div>
+    <div class="fg"><label>Collection Time</label><input id="col-time" type="datetime-local"></div>
+    <div class="fg full"><label>Notes</label><textarea id="col-notes" rows="2" placeholder="Any notes about collection…"></textarea></div>
+  </div>
+  <div class="mac">
+    <button class="btn bg" onclick="closeModal('collection')">Cancel</button>
+    <button class="btn bp" onclick="saveCollection()">✅ Confirm Collected</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ ALLOWANCE MODAL ══ -->
+<div class="ov" id="modal-allowance">
+<div class="modal" style="max-width:560px;">
+  <h2 id="allw-m-title">Log Driver Allowance</h2>
+  <div class="msub">Record money given to driver for this trip.</div>
+  <input type="hidden" id="aw-eid">
+  <div class="fg2">
+    <div class="fsec">💰 Allowance Details</div>
+    <div class="fg"><label>Driver *</label><select id="aw-driver"></select></div>
+    <div class="fg"><label>Linked Waybill</label><input id="aw-wb" placeholder="e.g. WB-001"></div>
+    <div class="fg"><label>Trip Allowance (GHS)</label><input id="aw-trip" type="number" placeholder="0.00" step="0.01"></div>
+    <div class="fg"><label>Police Checkpoint Money (GHS)</label><input id="aw-police" type="number" placeholder="0.00" step="0.01"></div>
+    <div class="fg"><label>Other Amount (GHS)</label><input id="aw-other" type="number" placeholder="0.00" step="0.01"></div>
+    <div class="fg"><label>Other Description</label><input id="aw-other-desc" placeholder="e.g. Fuel advance, Meals"></div>
+    <div class="fg"><label>Date</label><input id="aw-date" type="date"></div>
+    <div class="fg"><label>Paid By</label><input id="aw-paidby" placeholder="Name of person paying"></div>
+    <div class="fg full"><label>Notes</label><textarea id="aw-notes" rows="2" placeholder="Additional notes…"></textarea></div>
+    <div id="aw-backdate-section" style="display:none;grid-column:1/-1;">
+      <div style="background:#fef3c7;border:1.5px solid #f0d070;border-radius:10px;padding:14px 16px;margin-top:4px;">
+        <div style="font-family:var(--fh);font-size:13px;font-weight:700;color:#92400e;letter-spacing:1px;margin-bottom:10px;">📅 BACKDATED ENTRY — Admin Only</div>
+        <div class="fg2">
+          <div class="fg"><label>Actual Payment Date *</label><input id="aw-backdate" type="date" style="background:#fff;border-color:#f0d070;"></div>
+          <div class="fg"><label>Entered By (Your Name) *</label><input id="aw-enteredby-name" placeholder="Your full name" style="background:#fff;border-color:#f0d070;"></div>
+          <div class="fg full"><label>Reason for Backdating *</label><input id="aw-backdate-reason" placeholder="e.g. Entering past payment records" style="background:#fff;border-color:#f0d070;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mac">
+    <button class="btn bg" onclick="closeModal('allowance')">Cancel</button>
+    <button class="btn bgold bsm" id="aw-backdate-btn" style="display:none;" onclick="toggleBackdate('aw')">📅 Backdate Entry</button>
+    <button class="btn bp" onclick="saveAllowance()">Save Allowance</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ DISPATCH MODAL ══ -->
+<div class="ov" id="modal-dispatch">
+<div class="modal" style="max-width:600px;">
+  <h2 id="disp-m-title">New Dispatch Order</h2>
+  <div class="msub">Office record for dispatch planning and client management.</div>
+  <input type="hidden" id="dp-eid">
+  <div class="fg2">
+    <div class="fsec">📋 Client & Order Details</div>
+    <div class="fg"><label>Client / Company *</label><input id="dp-client" placeholder="Client name"></div>
+    <div class="fg"><label>Client Contact</label><input id="dp-contact" placeholder="Phone or email"></div>
+    <div class="fg"><label>Invoice Reference</label><input id="dp-invoice" placeholder="e.g. INV-2024-001"></div>
+    <div class="fg"><label>Priority</label>
+      <select id="dp-priority"><option>Normal</option><option>Urgent</option><option>High</option><option>Low</option></select>
+    </div>
+    <div class="fg"><label>Linked Waybill</label><input id="dp-wb" placeholder="e.g. WB-001"></div>
+    <div class="fg"><label>Date</label><input id="dp-date" type="date"></div>
+    <div class="fsec">👔 Office & Management</div>
+    <div class="fg"><label>Fleet Manager</label><input id="dp-manager" placeholder="Fleet manager name"></div>
+    <div class="fg"><label>Sign-off Status</label>
+      <select id="dp-signoff"><option>Pending</option><option>Approved</option><option>On Hold</option><option>Rejected</option></select>
+    </div>
+    <div class="fg full"><label>Dispatch Notes</label><textarea id="dp-notes" rows="3" placeholder="Instructions, requirements, special handling…"></textarea></div>
+  </div>
+  <div class="mac">
+    <button class="btn bg" onclick="closeModal('dispatch')">Cancel</button>
+    <button class="btn bp" onclick="saveDispatch()">Save Order</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ DRIVER MODAL ══ -->
+<div class="ov" id="modal-driver">
+<div class="modal">
+  <h2 id="drv-m-title">Add Driver</h2>
+  <div class="msub">Include license details and grantor (referral) information.</div>
+  <input type="hidden" id="d-eid">
+  <div class="fg2">
+    <div class="fsec">👤 Personal</div>
+    <div class="fg"><label>Full Name *</label><input id="d-name" placeholder="Driver full name"></div>
+    <div class="fg"><label>Phone *</label><input id="d-phone" placeholder="+233…"></div>
+    <div class="fg"><label>Truck No. *</label><input id="d-truck" placeholder="e.g. TR-001"></div>
+    <div class="fg"><label>🚛 Plate Number *</label><input id="d-plate" placeholder="e.g. GR-1234-22"></div>
+    <div class="fg"><label>Status</label>
+      <select id="d-status"><option>Available</option><option>On Trip</option><option>Off Duty</option><option>On Leave</option></select>
+    </div>
+    <div class="fsec">🪪 License</div>
+    <div class="fg"><label>License Number</label><input id="d-lic" placeholder="GH-DL-2021-4521"></div>
+    <div class="fg"><label>License Expiry</label><input id="d-lexp" type="date"></div>
+    <div class="fg full"><label>License Class</label><input id="d-lclass" placeholder="e.g. Class C — Heavy Goods Vehicle"></div>
+    <div class="fsec">🤝 Grantor (Who Referred This Driver)</div>
+    <div class="fg"><label>Grantor Name *</label><input id="d-gname" placeholder="Who brought this driver in"></div>
+    <div class="fg"><label>Grantor Phone *</label><input id="d-gphone" placeholder="+233…"></div>
+    <div class="fg full"><label>Relationship</label><input id="d-grel" placeholder="e.g. Former colleague, Family friend"></div>
+  </div>
+  <div class="mac">
+    <button class="btn bg" onclick="closeModal('driver')">Cancel</button>
+    <button class="btn bp" onclick="saveDriver()">Save Driver</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ CARGO MODAL ══ -->
+<div class="ov" id="modal-cargo">
+<div class="modal">
+  <h2 id="cargo-m-title">New Shipment</h2>
+  <div class="msub">Log a cargo shipment and link it to a waybill.</div>
+  <input type="hidden" id="c-eid">
+  <div class="fg2">
+    <div class="fg full"><label>Description *</label><input id="c-desc" placeholder="e.g. 500 bags of cement"></div>
+    <div class="fg"><label>Client</label><input id="c-client" placeholder="Client / receiver"></div>
+    <div class="fg"><label>Pickup Company</label><input id="c-pickup" placeholder="Pickup company"></div>
+    <div class="fg"><label>Weight (kg)</label><input id="c-weight" type="number" placeholder="0"></div>
+    <div class="fg"><label>Linked Waybill</label><input id="c-trip" placeholder="e.g. WB-001"></div>
+    <div class="fg"><label>ETA</label><input id="c-eta" type="date"></div>
+    <div class="fg"><label>Status</label>
+      <select id="c-status"><option>Pending</option><option>In Transit</option><option>Delivered</option><option>Delayed</option></select>
+    </div>
+    <div id="c-backdate-section" style="display:none;grid-column:1/-1;">
+      <div style="background:#fef3c7;border:1.5px solid #f0d070;border-radius:10px;padding:14px 16px;margin-top:4px;">
+        <div style="font-family:var(--fh);font-size:13px;font-weight:700;color:#92400e;letter-spacing:1px;margin-bottom:10px;">📅 BACKDATED ENTRY — Admin Only</div>
+        <div class="fg2">
+          <div class="fg"><label>Actual Date *</label><input id="c-backdate" type="date" style="background:#fff;border-color:#f0d070;"></div>
+          <div class="fg"><label>Entered By (Your Name) *</label><input id="c-enteredby-name" placeholder="Your full name" style="background:#fff;border-color:#f0d070;"></div>
+          <div class="fg full"><label>Reason for Backdating *</label><input id="c-backdate-reason" placeholder="e.g. Entering historical shipment record" style="background:#fff;border-color:#f0d070;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mac">
+    <button class="btn bg" onclick="closeModal('cargo')">Cancel</button>
+    <button class="btn bgold bsm" id="c-backdate-btn" style="display:none;" onclick="toggleBackdate('c')">📅 Backdate Entry</button>
+    <button class="btn bp" onclick="saveCargo()">Save</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ FUEL MODAL ══ -->
+<div class="ov" id="modal-fuel">
+<div class="modal">
+  <h2 id="fuel-m-title">Log Fuel / Maintenance</h2>
+  <div class="msub">Record fuel fills and maintenance per truck.</div>
+  <input type="hidden" id="f-eid">
+  <div class="fg2">
+    <div class="fg"><label>Truck *</label><select id="f-truck"></select></div>
+    <div class="fg"><label>Type</label>
+      <select id="f-type"><option>Fuel Refill</option><option>Oil Change</option><option>Tyre Change</option><option>Brake Service</option><option>Engine Repair</option><option>Battery</option><option>General Service</option></select>
+    </div>
+    <div class="fg"><label>Quantity / Litres</label><input id="f-qty" type="number" placeholder="0" oninput="calcFuel()"></div>
+    <div class="fg"><label>Price Per Litre (GHS)</label><input id="f-ppl" type="number" step="0.01" placeholder="0.00" oninput="calcFuel()"></div>
+    <div class="fg"><label>Total Cost (GHS) <span style="color:var(--accent);font-size:9px">AUTO</span></label><input id="f-cost" type="number" style="background:var(--s2)" placeholder="Auto-calculated"></div>
+    <div class="fg"><label>Date</label><input id="f-date" type="date"></div>
+    <div class="fg"><label>Next Service (km)</label><input id="f-next" type="number" placeholder="0"></div>
+    <div class="fg"><label>Entered By *</label><input id="f-by" placeholder="Your name"></div>
+    <div class="fg full"><label>Notes</label><textarea id="f-notes" rows="2" placeholder="Details…"></textarea></div>
+  </div>
+  <div class="mac">
+    <button class="btn bg" onclick="closeModal('fuel')">Cancel</button>
+    <button class="btn bp" onclick="saveFuel()">Save</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ ALERT MODAL ══ -->
+<div class="ov" id="modal-alert">
+<div class="modal">
+  <h2>Post Alert</h2><div class="msub">Visible to all team members.</div>
+  <div class="fg2">
+    <div class="fg"><label>Type</label>
+      <select id="a-type"><option value="warn">⚠️ Warning</option><option value="danger">🚨 Danger</option><option value="info">ℹ️ Info</option></select>
+    </div>
+    <div class="fg"><label>Icon</label>
+      <select id="a-icon"><option>⚠️</option><option>🚨</option><option>⛽</option><option>🔧</option><option>📦</option><option>🚛</option><option>✅</option><option>🛑</option><option>💰</option></select>
+    </div>
+    <div class="fg full"><label>Title *</label><input id="a-title" placeholder="Alert title"></div>
+    <div class="fg full"><label>Description</label><textarea id="a-desc" rows="2" placeholder="Details…"></textarea></div>
+  </div>
+  <div class="mac">
+    <button class="btn bg" onclick="closeModal('alert')">Cancel</button>
+    <button class="btn bp" onclick="saveAlert()">Post Alert</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ USER MODAL ══ -->
+<div class="ov" id="modal-user">
+<div class="modal">
+  <h2 id="user-m-title">Add User</h2><div class="msub">Admin assigns email & password. Driver accounts are linked to a driver record.</div>
+  <input type="hidden" id="u-eid">
+  <div class="fg2">
+    <div class="fg"><label>Full Name *</label><input id="u-name" placeholder="Full name"></div>
+    <div class="fg"><label>Role *</label>
+      <select id="u-role" onchange="toggleRoleFields()">
+        <option value="admin">Admin (Full Access)</option>
+        <option value="manager">Manager (Edit, No Delete)</option>
+        <option value="driver">Driver (Own Trips Only)</option>
+        <option value="office">Office Personnel (All View + Dispatch)</option>
+      </select>
+    </div>
+    <div class="fg"><label>Email *</label><input id="u-email" type="email" placeholder="user@nfaith.com" autocomplete="off"></div>
+    <div class="fg full">
+      <label>Password * <span style="font-size:10px;color:var(--muted);font-weight:400;text-transform:none">(leave blank when editing to keep current password)</span></label>
+      <div style="position:relative;">
+        <input id="u-pass" type="password" placeholder="Set a password (min 6 chars)" autocomplete="new-password" oninput="checkStrength('u-pass','u-strength')" style="padding-right:48px;">
+        <button type="button" onclick="togglePwd('u-pass','u-eye')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:var(--muted);padding:0;line-height:1;" id="u-eye">👁️</button>
+      </div>
+      <div id="u-strength" style="margin-top:8px;display:none;">
+        <div style="display:flex;gap:4px;margin-bottom:5px;">
+          <div id="u-s1" style="flex:1;height:4px;border-radius:4px;background:var(--border);transition:background .3s;"></div>
+          <div id="u-s2" style="flex:1;height:4px;border-radius:4px;background:var(--border);transition:background .3s;"></div>
+          <div id="u-s3" style="flex:1;height:4px;border-radius:4px;background:var(--border);transition:background .3s;"></div>
+          <div id="u-s4" style="flex:1;height:4px;border-radius:4px;background:var(--border);transition:background .3s;"></div>
+        </div>
+        <div id="u-s-label" style="font-size:11px;color:var(--muted);"></div>
+        <div id="u-s-tips" style="font-size:11px;color:var(--muted);margin-top:3px;"></div>
+      </div>
+    </div>
+    <div class="fg full" id="u-driver-wrap">
+      <label>Linked Driver (for Driver role)</label>
+      <select id="u-driver"><option value="">— Not linked —</option></select>
+      <span style="font-size:11px;color:var(--muted);margin-top:3px;display:block">Link this account so driver only sees their own trips.</span>
+    </div>
+  </div>
+  <div class="mac">
+    <button class="btn bg" onclick="closeModal('user')">Cancel</button>
+    <button class="btn bp" onclick="saveUser()">Save User</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ CHANGE PASSWORD ══ -->
+<div class="ov" id="modal-chpwd">
+<div class="modal" style="max-width:420px;">
+  <h2>Change Password</h2><div class="msub">Update your login password. Use a strong password with letters, numbers and symbols.</div>
+  <div class="fg2">
+    <div class="fg full">
+      <label>Current Password</label>
+      <div style="position:relative;">
+        <input id="cp-old" type="password" placeholder="Current password" autocomplete="current-password" style="padding-right:48px;">
+        <button type="button" onclick="togglePwd('cp-old','cp-eye1')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:var(--muted);padding:0;" id="cp-eye1">👁️</button>
+      </div>
+    </div>
+    <div class="fg full">
+      <label>New Password</label>
+      <div style="position:relative;">
+        <input id="cp-new" type="password" placeholder="New password (min 6 chars)" autocomplete="new-password" oninput="checkStrength('cp-new','cp-strength')" style="padding-right:48px;">
+        <button type="button" onclick="togglePwd('cp-new','cp-eye2')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:var(--muted);padding:0;" id="cp-eye2">👁️</button>
+      </div>
+      <div id="cp-strength" style="margin-top:8px;display:none;">
+        <div style="display:flex;gap:4px;margin-bottom:5px;">
+          <div id="cp-s1" style="flex:1;height:4px;border-radius:4px;background:var(--border);transition:background .3s;"></div>
+          <div id="cp-s2" style="flex:1;height:4px;border-radius:4px;background:var(--border);transition:background .3s;"></div>
+          <div id="cp-s3" style="flex:1;height:4px;border-radius:4px;background:var(--border);transition:background .3s;"></div>
+          <div id="cp-s4" style="flex:1;height:4px;border-radius:4px;background:var(--border);transition:background .3s;"></div>
+        </div>
+        <div id="cp-s-label" style="font-size:11px;color:var(--muted);"></div>
+        <div id="cp-s-tips" style="font-size:11px;color:var(--muted);margin-top:3px;"></div>
+      </div>
+    </div>
+    <div class="fg full">
+      <label>Confirm New Password</label>
+      <div style="position:relative;">
+        <input id="cp-conf" type="password" placeholder="Confirm new password" autocomplete="new-password" style="padding-right:48px;">
+        <button type="button" onclick="togglePwd('cp-conf','cp-eye3')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:var(--muted);padding:0;" id="cp-eye3">👁️</button>
+      </div>
+    </div>
+  </div>
+  <div class="mac">
+    <button class="btn bg" onclick="closeModal('chpwd')">Cancel</button>
+    <button class="btn bp" onclick="changePassword()">Update Password</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ TRIP DETAIL MODAL ══ -->
+<div class="ov" id="modal-trip-detail">
+<div class="modal" style="max-width:700px;">
+  <h2 id="td-title">Trip Details</h2>
+  <div class="msub">Full trip record including timeline, allowances and collection proof.</div>
+  <div id="td-content"></div>
+  <div class="mac">
+    <button class="btn bg" onclick="closeModal('trip-detail')">Close</button>
+    <button class="btn bp" onclick="openTimelineFromDetail()">📍 Log Stage</button>
+    <button class="btn bwb" onclick="viewWBFromDetail()">📄 View Waybill</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ WAYBILL VIEW ══ -->
+<div class="ov" id="modal-wb">
+<div class="modal" style="max-width:760px;">
+  <h2>Waybill Document</h2><div class="msub">Print or save as PDF (Ctrl+P / Cmd+P).</div>
+  <div id="wb-content"></div>
+  <div class="mac">
+    <button class="btn bg" onclick="closeModal('wb')">Close</button>
+    <button class="btn bp" onclick="printWB()">🖨 Print / PDF</button>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ════════════════════════════════════════════════════
+// CONSTANTS & STATE
+// ════════════════════════════════════════════════════
+const DB_KEY='nfaith-db-v5', USERS_KEY='nfaith-users-v5', SESS_KEY='nfaith-sess-v5';
+let db={trips:[],drivers:[],cargo:[],fuel:[],alerts:[],audit:[],allowances:[],dispatches:[],tripN:1,cargoN:1,dispN:1,regCode:'NFAITH2024'};
+let users={};
+let me=null;
+let syncTick=null, lastHash='';
+
+const LEVELS={admin:4,manager:3,office:2,driver:1};
+const can={
+  view:()=>true,
+  create:()=>me&&LEVELS[me.role]>=1,
+  edit:()=>me&&LEVELS[me.role]>=1,
+  delete:()=>me&&LEVELS[me.role]>=3,
+  manage:()=>me&&me.role==='admin',
+  isDriver:()=>me&&me.role==='driver',
+  isAdmin:()=>me&&me.role==='admin',
+  isMgr:()=>me&&me.role==='manager',
+  isOffice:()=>me&&me.role==='office',
+};
+function myTrips(){return can.isDriver()?db.trips.filter(t=>t.driver===me.driverName):db.trips;}
+
+// ════════════════════════════════════════════════════
+// STORAGE
+// ════════════════════════════════════════════════════
+async function loadAll(){
+  // Always try shared storage first for users so new accounts are always available
+  try{
+    const ur=await window.storage.get(USERS_KEY,true);
+    if(ur?.value){ users=JSON.parse(ur.value); localStorage.setItem(USERS_KEY,ur.value); }
+    else{ seedUsers(); await pushUsers(); }
+  } catch(e){
+    const ul=localStorage.getItem(USERS_KEY);
+    if(ul) users=JSON.parse(ul); else seedUsers();
+  }
+  try{
+    const dr=await window.storage.get(DB_KEY,true);
+    if(dr?.value){ db=JSON.parse(dr.value); lastHash=dr.value; }
+    else{ seedDB(); await pushDB(); }
+  } catch(e){
+    const dl=localStorage.getItem(DB_KEY);
+    if(dl){ db=JSON.parse(dl); lastHash=dl; } else seedDB();
+  }
+}
+async function pushDB(){setSyncing(true);const p=JSON.stringify(db);try{await window.storage.set(DB_KEY,p,true);localStorage.setItem(DB_KEY,p);lastHash=p;setSyncing(false,true);}catch(e){localStorage.setItem(DB_KEY,p);setSyncing(false,false);}}
+async function pushUsers(){const p=JSON.stringify(users);try{await window.storage.set(USERS_KEY,p,true);}catch(e){}localStorage.setItem(USERS_KEY,p);}
+async function syncNow(){setSyncing(true);try{const[dr,ur]=await Promise.all([window.storage.get(DB_KEY,true),window.storage.get(USERS_KEY,true)]);let ch=false;if(dr?.value&&dr.value!==lastHash){db=JSON.parse(dr.value);lastHash=dr.value;ch=true;}if(ur?.value)users=JSON.parse(ur.value);setSyncing(false,true);if(ch){render();toast('✅ Refreshed!','win');}else toast('Up to date!');}catch(e){setSyncing(false,false);toast('Sync failed','err');}}
+function startSync(){if(syncTick)clearInterval(syncTick);syncTick=setInterval(async()=>{try{const r=await window.storage.get(DB_KEY,true);if(r?.value&&r.value!==lastHash){db=JSON.parse(r.value);lastHash=r.value;render();toast('🔄 Updated by team!');}}catch(e){}},15000);}
+function setSyncing(on,ok=true){const d=document.getElementById('sdot'),s=document.getElementById('sstat');if(!d)return;if(on){d.classList.add('syncing');s.textContent='Syncing…';}else{d.classList.remove('syncing');s.textContent=ok?'Live ✓':'Local';d.style.background=ok?'#6ee7b7':'#fcd34d';}}
+
+// ════════════════════════════════════════════════════
+// SEED
+// ════════════════════════════════════════════════════
+function seedUsers(){users={'admin@nfaith.com':{name:'Administrator',password:'admin123',role:'admin',driverName:'',createdBy:'system'}};}
+function seedDB(){
+  const t=new Date().toISOString().split('T')[0];
+  db.regCode='NFAITH2024';
+  db.drivers=[
+    {id:'d1',name:'Prince Ayikwei',truck:'TR-001',plate:'GR-4521-18',phone:'+233 24 123 4567',status:'On Trip',trips:24,license:'GH-DL-2021-4521',licenseExpiry:'2026-12-31',licenseClass:'Class C — Heavy Goods',grantorName:'Kofi Mensah',grantorPhone:'+233 24 999 0011',grantorRel:'Former supervisor'},
+    {id:'d2',name:'Ali Shaibu',truck:'TR-002',plate:'AS-8834-19',phone:'+233 20 987 6543',status:'Available',trips:18,license:'GH-DL-2019-8834',licenseExpiry:'2025-08-15',licenseClass:'Class C — Heavy Goods',grantorName:'Ama Serwaa',grantorPhone:'+233 55 778 3321',grantorRel:'Family friend'},
+    {id:'d3',name:'Godfred Batsa',truck:'TR-003',plate:'GT-3312-20',phone:'+233 55 456 7890',status:'Available',trips:31,license:'GH-DL-2020-3312',licenseExpiry:'2027-03-10',licenseClass:'Class C — Heavy Goods',grantorName:'Samuel Tetteh',grantorPhone:'+233 26 441 5500',grantorRel:'Church member'},
+    {id:'d4',name:'Isaac Hayford',truck:'TR-004',plate:'ER-7741-22',phone:'+233 26 321 0987',status:'Off Duty',trips:12,license:'GH-DL-2022-7741',licenseExpiry:'2028-06-20',licenseClass:'Class B — Medium Goods',grantorName:'Akosua Darko',grantorPhone:'+233 20 112 3344',grantorRel:'Cousin'},
+  ];
+  db.trips=[
+    {id:'T-001',waybill:'WB-001',tripNo:1,tripType:'round',driver:'Prince Ayikwei',truck:'TR-001',pickupCompany:'Ghana Cement Ltd',origin:'Tema Port',dest:'Kumasi',cargo:'Cement Bags (200)',client:'BuildRight Ltd',weight:10000,dist:248,status:'In Transit',priority:'Normal',manager:'Admin',date:t,notes:'',returnLocation:'Tema Depot',reverseLoad:'no',enteredBy:'admin@nfaith.com',timeline:[{stage:'departed',label:'🚀 Departed',note:'Left depot on time',ts:t+' 06:00'},{stage:'atFactory',label:'🏭 At Factory',note:'Arrived at Ghana Cement',ts:t+' 07:45'},{stage:'loading',label:'📦 Loading',note:'Loading 200 bags',ts:t+' 08:30'},{stage:'inTransit',label:'🛣️ In Transit',note:'Heading to Kumasi',ts:t+' 10:00'}]},
+    {id:'T-002',waybill:'WB-002',tripNo:1,tripType:'round',driver:'Godfred Batsa',truck:'TR-003',pickupCompany:'IronWorks Co.',origin:'Tema Port',dest:'Takoradi',cargo:'Steel Rods',client:'MetalBuild Ghana',weight:7500,dist:210,status:'Delivered',priority:'High',manager:'Admin',date:t,notes:'',returnLocation:'Tema Depot',reverseLoad:'yes',rvPickup:'Takoradi Port',rvOrigin:'Takoradi',rvDest:'Accra',rvCargo:'Empty containers',rvClient:'Ghana Ports',rvWeight:1200,rvStatus:'In Transit',enteredBy:'admin@nfaith.com',timeline:[{stage:'departed',label:'🚀 Departed',note:'',ts:t+' 05:30'},{stage:'inTransit',label:'🛣️ In Transit',note:'',ts:t+' 06:00'},{stage:'delivered',label:'✅ Delivered',note:'All steel rods delivered',ts:t+' 09:30'},{stage:'rvLoading',label:'🔄 Reverse Loading',note:'Picking up empty containers',ts:t+' 10:15'},{stage:'rvInTransit',label:'🔄 Reverse In Transit',note:'',ts:t+' 11:00'}],collectionProof:{code:'WB-002-GC',driver:'Godfred Batsa',time:t+' 05:25',notes:'Collected at gate',photoData:null}},
+    {id:'T-003',waybill:'WB-003',tripNo:1,tripType:'one-way',driver:'Ali Shaibu',truck:'TR-002',pickupCompany:'FoodCo Ghana',origin:'Accra Depot',dest:'Tamale',cargo:'Food Items (assorted)',client:'Northern Dist. Ltd',weight:4200,dist:600,status:'Delayed',priority:'Urgent',manager:'Admin',date:t,notes:'Road closure on N10',returnLocation:'',reverseLoad:'no',enteredBy:'admin@nfaith.com',timeline:[{stage:'departed',label:'🚀 Departed',note:'',ts:t+' 07:00'},{stage:'atCheckpoint',label:'🚔 Checkpoint',note:'Police checkpoint on N10 — delayed',ts:t+' 10:30'}]},
+  ];
+  db.allowances=[
+    {id:'aw1',date:t,driver:'Prince Ayikwei',truck:'TR-001',waybill:'WB-001',tripAllowance:150,policeCheckpoint:80,other:0,otherDesc:'',total:230,paidBy:'Admin',notes:''},
+    {id:'aw2',date:t,driver:'Ali Shaibu',truck:'TR-002',waybill:'WB-003',tripAllowance:200,policeCheckpoint:120,other:50,otherDesc:'Meals',total:370,paidBy:'Admin',notes:'Urgent trip'},
+  ];
+  db.dispatches=[
+    {id:'DP-001',date:t,client:'BuildRight Ltd',contact:'+233 30 123 4567',waybill:'WB-001',invoice:'INV-2024-001',priority:'Normal',manager:'Admin',signoff:'Approved',notes:'Standard cement delivery'},
+    {id:'DP-002',date:t,client:'Northern Dist. Ltd',contact:'+233 37 987 6543',waybill:'WB-003',invoice:'INV-2024-002',priority:'Urgent',manager:'Admin',signoff:'Approved',notes:'Perishable food items - deliver ASAP'},
+  ];
+  db.cargo=[
+    {id:'C-001',desc:'Cement Bags (200)',client:'BuildRight Ltd',pickupCompany:'Ghana Cement Ltd',weight:10000,trip:'WB-001',eta:t,status:'In Transit'},
+    {id:'C-002',desc:'Steel Rods (50 bundles)',client:'MetalBuild Ghana',pickupCompany:'IronWorks Co.',weight:7500,trip:'WB-002',eta:t,status:'Delivered'},
+    {id:'C-003',desc:'Food Items (assorted)',client:'Northern Dist. Ltd',pickupCompany:'FoodCo Ghana',weight:4200,trip:'WB-003',eta:t,status:'Delayed'},
+  ];
+  db.fuel=[
+    {id:'f1',truck:'TR-001',driver:'Prince Ayikwei',type:'Fuel Refill',amount:120,pricePerLitre:8,cost:960,date:t,nextService:85000,enteredBy:'Admin',entryTime:t+' 06:30',notes:''},
+    {id:'f2',truck:'TR-002',driver:'Ali Shaibu',type:'Oil Change',amount:5,pricePerLitre:70,cost:350,date:t,nextService:92000,enteredBy:'Admin',entryTime:t+' 07:00',notes:''},
+    {id:'f3',truck:'TR-003',driver:'Godfred Batsa',type:'Fuel Refill',amount:100,pricePerLitre:8,cost:800,date:t,nextService:78000,enteredBy:'Admin',entryTime:t+' 07:45',notes:''},
+  ];
+  db.alerts=[
+    {type:'danger',icon:'⚠️',title:'WB-003 Delayed',desc:'Ali Shaibu — Road closure on N10. ETA +4h.',time:'Just now',by:'System'},
+    {type:'warn',icon:'⛽',title:'Fuel Low — TR-004',desc:'TR-004 critical. Schedule refill.',time:'1h ago',by:'System'},
+    {type:'info',icon:'🔧',title:'TR-002 Service Due',desc:'Approaching 95,000 km.',time:'3h ago',by:'System'},
+  ];
+  db.audit=[];db.tripN=4;db.cargoN=4;db.dispN=3;
+}
+
+// ════════════════════════════════════════════════════
+// AUTH
+// ════════════════════════════════════════════════════
+function doLogin(){
+  // Get values directly
+  const email = (document.getElementById('l-email').value || '').trim().toLowerCase();
+  const pass  = (document.getElementById('l-pass').value || '');
+  const errEl = document.getElementById('lerr');
+  errEl.style.display = 'none';
+
+  if(!email){ errEl.textContent = 'Please type your email address.'; errEl.style.display='block'; return; }
+  if(!pass){  errEl.textContent = 'Please type your password.';       errEl.style.display='block'; return; }
+
+  // Always make sure admin exists — hardcoded, never changes
+  users['admin@nfaith.com'] = users['admin@nfaith.com'] || {name:'Administrator',password:'admin123',role:'admin',driverName:'',createdBy:'system'};
+
+  // Special case: if somehow admin password was changed and they're locked out
+  if(email === 'admin@nfaith.com' && !users['admin@nfaith.com'].password){
+    users['admin@nfaith.com'].password = 'admin123';
+  }
+
+  const u = users[email];
+
+  if(!u){
+    errEl.textContent = '❌ Email not found: ' + email + '. Try admin@nfaith.com';
+    errEl.style.display='block';
+    return;
+  }
+  if(u.password !== pass){
+    errEl.textContent = '❌ Wrong password for ' + email + '. Passwords are case-sensitive.';
+    errEl.style.display='block';
+    return;
+  }
+
+  // Logged in!
+  me = {email:email, name:u.name, role:u.role, driverName:u.driverName||''};
+  try{ localStorage.setItem(SESS_KEY, JSON.stringify(me)); }catch(e){}
+
+  // Clear the form
+  document.getElementById('l-email').value = '';
+  document.getElementById('l-pass').value  = '';
+  errEl.style.display = 'none';
+
+  launchApp();
+}
+function showLErr(msg){const el=document.getElementById('lerr');el.textContent=msg;el.style.display='block';}
+
+async function refreshAndLogin(){
+  // Always keep admin in memory first
+  if(!users['admin@nfaith.com']){
+    users['admin@nfaith.com']={name:'Administrator',password:'admin123',role:'admin',driverName:'',createdBy:'system'};
+  }
+  const adminBackup = users['admin@nfaith.com'];
+  try{
+    const ur=await window.storage.get(USERS_KEY,true);
+    if(ur?.value){
+      users=JSON.parse(ur.value);
+      localStorage.setItem(USERS_KEY,ur.value);
+    }
+  }catch(e){
+    try{const ul=localStorage.getItem(USERS_KEY);if(ul)users=JSON.parse(ul);}catch(e2){}
+  }
+  // Always ensure admin is present after any storage load
+  if(!users['admin@nfaith.com']) users['admin@nfaith.com']=adminBackup;
+  doLogin();
+}
+function doLogout(){
+  if(syncTick)clearInterval(syncTick);
+  me=null;localStorage.removeItem(SESS_KEY);
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  // Clear & reset login fields completely
+  document.getElementById('l-email').value='';
+  document.getElementById('l-pass').value='';
+  document.getElementById('l-pass').type='password';
+  const eye=document.getElementById('l-eye');if(eye)eye.textContent='👁️';
+  document.getElementById('lerr').style.display='none';
+}
+function changePassword(){const old=document.getElementById('cp-old').value,nw=document.getElementById('cp-new').value,conf=document.getElementById('cp-conf').value;if(users[me.email].password!==old)return toast('Current password incorrect','err');if(!nw||nw.length<6)return toast('Minimum 6 characters','err');if(nw!==conf)return toast('Passwords do not match','err');users[me.email].password=nw;pushUsers();closeModal('chpwd');toast('✅ Password updated!','win');}
+
+function launchApp(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  const rclr={admin:'#92400e',manager:'#065f46',driver:'#1e40af',office:'#5433a8'};
+  document.getElementById('uav').style.background=rclr[me.role]||'#555';
+  document.getElementById('uav').textContent=me.name.charAt(0).toUpperCase();
+  document.getElementById('uname').textContent=me.name;
+  document.getElementById('urole').textContent=me.role;
+  document.getElementById('hdate').textContent=new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+  buildNav(); document.getElementById('f-by').value=me.name;
+  render(); startSync();
+}
+
+function buildNav(){
+  if(can.isDriver()){
+    ['nt-waybills','nt-drivers','nt-cargo','nt-fuel','nt-allowances','nt-dispatch','nt-history','nt-reports','nt-users'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+    document.getElementById('driver-banner').style.display='block';
+    document.getElementById('dbanner-name').textContent='Hello, '+me.name+'!';
+    ['btn-add-drv','btn-add-cargo','btn-add-fuel','btn-add-trip'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+    document.getElementById('sgrid').innerHTML=`
+      <div class="stat" style="--c:#1d72d1"><div class="lbl">My Active Trips</div><div class="val" id="s-active">0</div><div class="sub">In progress</div></div>
+      <div class="stat" style="--c:#0b7a52"><div class="lbl">My Delivered</div><div class="val" id="s-done">0</div><div class="sub">Completed</div></div>
+      <div class="stat" style="--c:#c96b0a"><div class="lbl">Today</div><div class="val" id="s-today">0</div><div class="sub">Trips today</div></div>
+      <div class="stat" style="--c:#b52b1e"><div class="lbl">Alerts</div><div class="val" id="s-alerts">0</div><div class="sub">Attention</div></div>`;
+  }
+  if(can.isMgr()){const el=document.getElementById('nt-users');if(el)el.style.display='none';}
+  if(can.isOffice()){const el=document.getElementById('nt-users');if(el)el.style.display='none';}
+  if(!can.manage()){document.getElementById('codebox').style.display='none';}
+}
+
+// ════════════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════════════
+function render(){
+  renderDash();renderTrips();renderWaybills();renderDrivers();
+  renderCargo();renderFuel();renderAllowances();renderDispatches();
+  renderAlerts();renderHistory();renderReports();renderUsers();
+  updateStats();populateSels();
+}
+
+function sb(s){
+  const m={'In Transit':'bg-b','Delivered':'bg-g','Delayed':'bg-r','Loading':'bg-o','Scheduled':'bg-t','Departed':'bg-b','At Factory':'bg-o','Returning':'bg-o','Returned':'bg-g','Cancelled':'bg-r','Available':'bg-g','On Trip':'bg-b','Off Duty':'bg-o','On Leave':'bg-p','Pending':'bg-o','Approved':'bg-g','On Hold':'bg-o','Rejected':'bg-r','Normal':'bg-t','Urgent':'bg-r','High':'bg-o','Low':'bg-p'};
+  return `<span class="badge ${m[s]||'bg-o'}">${s}</span>`;
+}
+function plateOf(truck){const d=db.drivers.find(x=>x.truck===truck);return d?.plate?`<div style="font-family:monospace;font-size:10px;color:var(--muted)">${d.plate}</div>`:''}
+function currentStage(t){if(!t.timeline||!t.timeline.length)return'—';const last=t.timeline[t.timeline.length-1];return`<span style="font-size:11px">${last.label}</span>`;}
+function now(){return new Date().toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+
+function renderDash(){
+  const trips=myTrips();const recent=[...trips].reverse().slice(0,6);
+  document.getElementById('dash-rt').textContent=can.isDriver()?'My Recent Trips':'Recent Activity';
+  document.getElementById('dash-tbody').innerHTML=recent.length?recent.map(t=>`<tr>
+    <td><strong style="color:var(--accent)">${t.waybill}</strong></td>
+    <td>${t.driver}</td><td>${t.truck}${plateOf(t.truck)}</td>
+    <td>${t.pickupCompany||'—'}</td>
+    <td style="font-size:12px">${t.origin}→${t.dest}</td>
+    <td style="font-size:12px">${t.cargo}</td>
+    <td>${currentStage(t)}</td>
+    <td>${sb(t.status)}</td><td>${t.date}</td>
+  </tr>`).join(''):`<tr><td colspan="9"><div class="empty"><div class="ei">🚛</div><p>No trips yet</p></div></td></tr>`;
+}
+
+function renderTrips(filter=''){
+  const trips=myTrips();
+  const list=filter?trips.filter(t=>(t.driver+t.truck+t.origin+t.dest+t.cargo+(t.pickupCompany||'')).toLowerCase().includes(filter.toLowerCase())):trips;
+  document.getElementById('trips-title').textContent=can.isDriver()?'My Trips':'Trip Log';
+  const ce=can.edit(),cd=can.delete();
+  document.getElementById('trips-tbody').innerHTML=list.length?[...list].reverse().map(t=>`<tr style="${t.backdated?'background:#fffbeb;':''}" title="${t.backdated?'📅 Backdated entry by '+t.backdatedBy+': '+t.backdatedReason:''}">
+    <td>
+      <strong style="color:var(--accent)">${t.waybill}</strong>
+      ${t.backdated?`<div><span style="background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:700;">📅 BACKDATED</span></div>`:''}
+    </td>
+    <td><span class="badge bg-t">#${t.tripNo||'—'}</span></td>
+    <td>${t.driver}</td>
+    <td>${t.truck}${plateOf(t.truck)}</td>
+    <td style="font-size:12px">${t.pickupCompany||'—'}</td>
+    <td style="font-size:12px">${t.origin}→${t.dest}</td>
+    <td style="font-size:12px">${t.cargo}</td>
+    <td><span class="badge ${t.tripType==='round'?'bg-p':'bg-t'}">${t.tripType==='round'?'🔄 Round':'→ One Way'}</span></td>
+    <td>${currentStage(t)}</td>
+    <td>${t.reverseLoad==='yes'?`<span class="badge bg-g">✅ Yes</span><div style="font-size:10px;color:var(--muted)">${t.rvDest?'→'+t.rvDest:''}</div>`:`<span class="badge" style="background:#eee;color:#999">Empty</span>`}</td>
+    <td ${ce?`onclick="cycleStatus('trips','${t.id}')" style="cursor:pointer" title="Click to change"`:''}>${sb(t.status)}</td>
+    <td style="font-size:12px">${t.date}</td>
+    <td>
+      <span style="font-size:11px;color:var(--muted)">${t.enteredByName||(t.enteredBy||'').split('@')[0]||'—'}</span>
+      ${t.backdated?`<div style="font-size:10px;color:#92400e;">entered ${t.backdatedAt||''}</div>`:`<div style="font-size:10px;color:var(--muted)">${t.systemEntryTime||''}</div>`}
+    </td>
+    <td style="display:flex;gap:3px;flex-wrap:wrap;">
+      <button class="btn bteal bsm" onclick="viewTripDetail('${t.id}')">📋</button>
+      <button class="btn bwb bsm" onclick="openTimelineModal('${t.id}')">⏱️</button>
+      ${ce?`<button class="btn be bsm" onclick="editTrip('${t.id}')">✏️</button>`:''}
+      <button class="btn bwb bsm" onclick="viewWB('${t.id}')">📄</button>
+      ${cd?`<button class="btn bd bsm" onclick="deleteTrip('${t.id}')">✕</button>`:''}
+    </td>
+  </tr>`).join(''):`<tr><td colspan="14"><div class="empty"><div class="ei">🚛</div><p>${can.isDriver()?'No trips assigned yet.':'No trips yet.'}</p></div></td></tr>`;
+}
+
+function renderWaybills(){
+  const trips=myTrips();
+  document.getElementById('wb-tbody').innerHTML=trips.length?[...trips].reverse().map(t=>`<tr>
+    <td><strong style="color:var(--accent)">${t.waybill}</strong></td>
+    <td>${t.driver}</td><td>${t.truck}${plateOf(t.truck)}</td>
+    <td>${t.pickupCompany||'—'}</td>
+    <td>${t.origin}→${t.dest}</td>
+    <td>${t.cargo}</td><td>${t.client||'—'}</td><td>${t.date}</td>
+    <td>${t.collectionProof?`<span class="badge bg-g">✅ Collected</span><div style="font-size:10px;color:var(--muted)">Code: ${t.collectionProof.code||'—'}</div>`:
+      `<button class="btn bteal bsm" onclick="openCollectionModal('${t.id}')">📷 Mark Collected</button>`}</td>
+    <td>${sb(t.status)}</td>
+    <td style="display:flex;gap:4px;">
+      <button class="btn bwb bsm" onclick="viewWB('${t.id}')">📄 View</button>
+      <button class="btn bp bsm" onclick="printWBDirect('${t.id}')">🖨</button>
+    </td>
+  </tr>`).join(''):`<tr><td colspan="11"><div class="empty"><div class="ei">📄</div><p>No waybills yet.</p></div></td></tr>`;
+}
+
+function renderDrivers(){
+  if(can.isDriver())return;
+  document.getElementById('drv-tbody').innerHTML=db.drivers.length?db.drivers.map(d=>{
+    const exp=d.licenseExpiry&&new Date(d.licenseExpiry)<new Date();
+    const tripCount=db.trips.filter(t=>t.driver===d.name).length;
+    return`<tr>
+      <td><strong>${d.name}</strong></td>
+      <td>${d.truck}</td>
+      <td><span style="font-family:monospace;font-size:11px;font-weight:700;color:var(--accent);background:var(--s2);padding:2px 7px;border-radius:4px">${d.plate||'—'}</span></td>
+      <td style="font-family:monospace;font-size:11px">${d.license||'—'}<br><span style="font-size:10px;color:var(--muted)">${d.licenseClass||''}</span></td>
+      <td><span style="color:${exp?'var(--red)':'var(--green)'};font-size:10px">${exp?'⚠️ EXP':'✓'} ${d.licenseExpiry||'—'}</span></td>
+      <td>${d.phone}</td>
+      <td><strong>${d.grantorName||'—'}</strong><br><span style="font-size:10px;color:var(--muted)">${d.grantorRel||''}</span></td>
+      <td>${d.grantorPhone||'—'}</td>
+      <td><span class="badge bg-b">${tripCount}</span></td>
+      <td onclick="cycleStatus('drivers','${d.id}')" style="cursor:pointer">${sb(d.status)}</td>
+      <td style="display:flex;gap:4px;">
+        ${can.edit()?`<button class="btn be bsm" onclick="editDriver('${d.id}')">✏️</button>`:''}
+        ${can.delete()?`<button class="btn bd bsm" onclick="deleteDriver('${d.id}')">✕</button>`:''}
+      </td>
+    </tr>`;
+  }).join(''):`<tr><td colspan="11"><div class="empty"><div class="ei">👤</div><p>No drivers yet.</p></div></td></tr>`;
+}
+
+function renderCargo(){
+  if(can.isDriver())return;
+  document.getElementById('cargo-tbody').innerHTML=db.cargo.length?[...db.cargo].reverse().map(c=>`<tr style="${c.backdated?'background:#fffbeb;':''}" title="${c.backdated?'📅 Backdated by '+c.backdatedBy+': '+c.backdatedReason:''}">
+    <td>
+      <strong>${c.id}</strong>
+      ${c.backdated?`<div><span style="background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:700;">📅 BACKDATED</span></div>`:''}
+    </td>
+    <td>${c.desc}</td><td>${c.client||'—'}</td><td>${c.pickupCompany||'—'}</td>
+    <td>${Number(c.weight||0).toLocaleString()}</td>
+    <td style="color:var(--accent);font-weight:600">${c.trip||'—'}</td>
+    <td onclick="cycleStatus('cargo','${c.id}')" style="cursor:pointer">${sb(c.status)}</td>
+    <td>
+      ${c.eta||'—'}
+      <div style="font-size:10px;color:var(--muted)">${c.enteredByName||'—'}</div>
+    </td>
+    <td style="display:flex;gap:4px;">
+      ${can.edit()?`<button class="btn be bsm" onclick="editCargo('${c.id}')">✏️</button>`:''}
+      ${can.delete()?`<button class="btn bd bsm" onclick="deleteCargo('${c.id}')">✕</button>`:''}
+    </td>
+  </tr>`).join(''):`<tr><td colspan="9"><div class="empty"><div class="ei">📦</div><p>No cargo yet.</p></div></td></tr>`;
+}
+
+function renderFuel(){
+  if(can.isDriver())return;
+  const total=db.fuel.reduce((s,f)=>s+Number(f.cost||0),0);
+  document.getElementById('fuel-tbody').innerHTML=db.fuel.length?[...db.fuel].reverse().map(f=>`<tr>
+    <td><strong>${f.truck}</strong></td><td>${f.driver}</td><td>${f.type}</td>
+    <td>${f.amount}</td>
+    <td>${f.pricePerLitre?'GHS '+Number(f.pricePerLitre).toFixed(2):'—'}</td>
+    <td style="color:var(--accent);font-weight:700">GHS ${Number(f.cost||0).toLocaleString()}</td>
+    <td>${f.date}</td>
+    <td>${f.nextService?Number(f.nextService).toLocaleString()+' km':'—'}</td>
+    <td><span style="background:var(--s2);color:var(--accent);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600">${f.enteredBy||'—'}</span></td>
+    <td style="font-size:11px;color:var(--muted)">${f.notes||'—'}</td>
+    <td style="display:flex;gap:4px;">
+      ${can.edit()?`<button class="btn be bsm" onclick="editFuel('${f.id}')">✏️</button>`:''}
+      ${can.delete()?`<button class="btn bd bsm" onclick="deleteFuel('${f.id}')">✕</button>`:''}
+    </td>
+  </tr>`).join('')+`<tr style="background:var(--s2)"><td colspan="5" style="text-align:right;font-family:var(--fh);font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase">Total</td><td style="color:var(--accent);font-weight:900;font-family:var(--fh);font-size:15px">GHS ${total.toLocaleString()}</td><td colspan="5"></td></tr>`
+    :`<tr><td colspan="11"><div class="empty"><div class="ei">⛽</div><p>No fuel entries yet.</p></div></td></tr>`;
+}
+
+function renderAllowances(){
+  if(can.isDriver())return;
+  const total=db.allowances.reduce((s,a)=>s+Number(a.total||0),0);
+  document.getElementById('allw-tbody').innerHTML=db.allowances.length?[...db.allowances].reverse().map(a=>`<tr style="${a.backdated?'background:#fffbeb;':''}" title="${a.backdated?'📅 Backdated by '+a.backdatedBy+': '+a.backdatedReason:''}">
+    <td>
+      ${a.date}
+      ${a.backdated?`<div><span style="background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:700;">📅 BACKDATED</span></div>`:''}
+    </td>
+    <td><strong>${a.driver}</strong></td><td>${a.truck}</td>
+    <td style="color:var(--accent);font-weight:600">${a.waybill||'—'}</td>
+    <td>GHS ${Number(a.tripAllowance||0).toLocaleString()}</td>
+    <td>GHS ${Number(a.policeCheckpoint||0).toLocaleString()}</td>
+    <td>GHS ${Number(a.other||0).toLocaleString()}</td>
+    <td style="font-size:12px;color:var(--muted)">${a.otherDesc||'—'}</td>
+    <td style="color:var(--gold);font-weight:700;font-family:var(--fh);font-size:15px">GHS ${Number(a.total||0).toLocaleString()}</td>
+    <td>
+      <span style="background:var(--goldbg);color:var(--gold);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600">${a.paidBy||'—'}</span>
+      <div style="font-size:10px;color:var(--muted);margin-top:2px">${a.enteredByName||'—'}</div>
+      ${a.backdated?`<div style="font-size:10px;color:#92400e;">entered ${a.backdatedAt||''}</div>`:`<div style="font-size:10px;color:var(--muted)">${a.systemEntryTime||''}</div>`}
+    </td>
+    <td style="display:flex;gap:4px;">
+      ${can.edit()?`<button class="btn be bsm" onclick="editAllowance('${a.id}')">✏️</button>`:''}
+      ${can.delete()?`<button class="btn bd bsm" onclick="deleteAllowance('${a.id}')">✕</button>`:''}
+    </td>
+  </tr>`).join('')+`<tr style="background:var(--goldbg)"><td colspan="8" style="text-align:right;font-family:var(--fh);font-size:11px;letter-spacing:1px;color:var(--gold);text-transform:uppercase">Total Paid Out</td><td style="color:var(--gold);font-weight:900;font-family:var(--fh);font-size:16px">GHS ${total.toLocaleString()}</td><td colspan="2"></td></tr>`
+    :`<tr><td colspan="11"><div class="empty"><div class="ei">💰</div><p>No allowances logged yet.</p></div></td></tr>`;
+}
+
+function renderDispatches(){
+  if(can.isDriver())return;
+  document.getElementById('dispatch-tbody').innerHTML=db.dispatches.length?[...db.dispatches].reverse().map(d=>`<tr>
+    <td><strong style="color:var(--accent)">${d.id}</strong></td>
+    <td>${d.date}</td><td><strong>${d.client}</strong></td>
+    <td style="font-size:12px">${d.contact||'—'}</td>
+    <td style="color:var(--accent);font-weight:600">${d.waybill||'—'}</td>
+    <td style="font-family:monospace;font-size:12px">${d.invoice||'—'}</td>
+    <td>${sb(d.priority)}</td>
+    <td>${d.manager||'—'}</td>
+    <td>${sb(d.signoff)}</td>
+    <td style="font-size:12px;color:var(--muted);max-width:160px">${d.notes||'—'}</td>
+    <td style="display:flex;gap:4px;">
+      ${can.edit()?`<button class="btn be bsm" onclick="editDispatch('${d.id}')">✏️</button>`:''}
+      ${can.delete()?`<button class="btn bd bsm" onclick="deleteDispatch('${d.id}')">✕</button>`:''}
+    </td>
+  </tr>`).join(''):`<tr><td colspan="11"><div class="empty"><div class="ei">📋</div><p>No dispatch orders yet.</p></div></td></tr>`;
+}
+
+function renderAlerts(){
+  document.getElementById('alerts-list').innerHTML=db.alerts.length?db.alerts.map((a,i)=>`
+    <div class="aitem ai-${a.type}">
+      <div style="font-size:20px">${a.icon}</div>
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:13px">${a.title}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">${a.desc}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px">By <strong>${a.by||'System'}</strong> · ${a.time}</div>
+      </div>
+      ${can.delete()?`<button class="btn bd bsm" onclick="dismissAlert(${i})">Dismiss</button>`:''}
+    </div>`).join(''):`<div class="empty"><div class="ei">✅</div><p>No active alerts.</p></div>`;
+}
+
+function renderHistory(){
+  if(can.isDriver())return;
+  const filt=document.getElementById('hfilt')?.value||'all';
+  const q=(document.getElementById('hsearch')?.value||'').toLowerCase();
+  const log=db.audit||[];
+  const items=log.filter(a=>(filt==='all'||a.section===filt)&&(!q||(a.details||'').toLowerCase().includes(q)||(a.by||'').toLowerCase().includes(q)));
+  const cM={Created:'var(--green)',Updated:'var(--orange)',Deleted:'var(--red)'};
+  const bM={Created:'var(--gbg)',Updated:'var(--obg)',Deleted:'var(--rbg)'};
+  const iM={Trips:'🚛',Fuel:'⛽',Drivers:'👤',Cargo:'📦',Allowance:'💰',Dispatch:'📋',Alerts:'🔔'};
+  const tl=document.getElementById('hist-tl');
+  if(!items.length){tl.innerHTML=`<div class="empty"><div class="ei">🕐</div><p>No activity yet.</p></div>`;}
+  else{
+    const bd={};items.forEach(a=>{const k=a.date||'?';if(!bd[k])bd[k]=[];bd[k].push(a);});
+    tl.innerHTML=Object.entries(bd).map(([date,es])=>`
+      <div style="margin-bottom:18px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="background:var(--accent);color:#fff;padding:3px 12px;border-radius:20px;font-family:var(--fh);font-size:12px;font-weight:700">${date}</div>
+          <div style="flex:1;height:1px;background:var(--border)"></div>
+          <div style="font-size:11px;color:var(--muted)">${es.length} entr${es.length===1?'y':'ies'}</div>
+        </div>
+        ${es.map(a=>`<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 14px;display:flex;align-items:flex-start;gap:11px;border-left:4px solid ${cM[a.action]||'var(--accent)'};box-shadow:var(--sh);margin-bottom:7px">
+          <div style="background:${bM[a.action]||'var(--s2)'};width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">${iM[a.section]||'📋'}</div>
+          <div style="flex:1">
+            <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:2px">
+              <span style="font-weight:700;font-size:13px">${a.section}</span>
+              <span style="background:${bM[a.action]||'var(--s2)'};color:${cM[a.action]||'var(--accent)'};padding:1px 8px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase">${a.action}</span>
+              <span style="background:var(--s2);color:var(--accent);padding:1px 8px;border-radius:20px;font-size:10px">${a.recordId||''}</span>
+            </div>
+            <div style="font-size:12px;color:var(--text2)">${a.details||''}</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">👤 <strong>${a.by||'—'}</strong> · 🕐 ${a.time||''}</div>
+          </div>
+        </div>`).join('')}
+      </div>`).join('');
+  }
+  // All trips table
+  const trips=db.trips.filter(t=>!q||(t.driver+t.cargo+(t.pickupCompany||'')).toLowerCase().includes(q));
+  document.getElementById('hist-trips').innerHTML=trips.length?[...trips].reverse().map((t,i)=>`<tr style="background:${i%2===0?'#fff':'var(--s2)'}">
+    <td><strong style="color:var(--accent)">${t.waybill}</strong></td>
+    <td><span class="badge bg-t">#${t.tripNo||'—'}</span></td>
+    <td>${t.driver}</td><td>${t.truck}${plateOf(t.truck)}</td>
+    <td style="font-size:12px">${t.origin}→${t.dest}</td><td>${t.cargo}</td>
+    <td><span class="badge ${t.tripType==='round'?'bg-p':'bg-t'}">${t.tripType==='round'?'Round':'One Way'}</span></td>
+    <td>${t.reverseLoad==='yes'?`<span class="badge bg-g">✅ Yes</span>`:`<span style="font-size:11px;color:var(--muted)">Empty</span>`}</td>
+    <td>${currentStage(t)}</td><td>${sb(t.status)}</td><td>${t.date}</td>
+    <td style="font-size:11px;color:var(--muted)">${(t.enteredBy||'').split('@')[0]}</td>
+  </tr>`).join(''):`<tr><td colspan="12"><div class="empty"><div class="ei">🚛</div><p>No trips.</p></div></td></tr>`;
+}
+
+function renderReports(){
+  if(can.isDriver())return;
+  const today=new Date().toISOString().split('T')[0];
+  const td=db.trips.reduce((s,t)=>s+Number(t.dist||0),0);
+  const fc=db.fuel.reduce((s,f)=>s+Number(f.cost||0),0);
+  const totalAllw=db.allowances.reduce((s,a)=>s+Number(a.total||0),0);
+  const todayAllw=db.allowances.filter(a=>a.date===today).reduce((s,a)=>s+Number(a.total||0),0);
+  document.getElementById('report-grid').innerHTML=`
+    <div class="rcard"><h3>📊 Trips</h3>
+      <div class="rrow"><span>Total</span><span class="rv">${db.trips.length}</span></div>
+      <div class="rrow"><span>Today</span><span class="rv">${db.trips.filter(t=>t.date===today).length}</span></div>
+      <div class="rrow"><span>Delivered</span><span class="rv" style="color:var(--green)">${db.trips.filter(t=>t.status==='Delivered').length}</span></div>
+      <div class="rrow"><span>Delayed</span><span class="rv" style="color:var(--red)">${db.trips.filter(t=>t.status==='Delayed').length}</span></div>
+      <div class="rrow"><span>Round Trips</span><span class="rv" style="color:var(--purple)">${db.trips.filter(t=>t.tripType==='round').length}</span></div>
+      <div class="rrow"><span>Reverse Loads</span><span class="rv" style="color:var(--teal)">${db.trips.filter(t=>t.reverseLoad==='yes').length}</span></div>
+      <div class="rrow"><span>Total Distance</span><span class="rv">${td.toLocaleString()} km</span></div>
+    </div>
+    <div class="rcard"><h3>👤 Drivers</h3>
+      <div class="rrow"><span>Total Drivers</span><span class="rv">${db.drivers.length}</span></div>
+      <div class="rrow"><span>Available</span><span class="rv" style="color:var(--green)">${db.drivers.filter(d=>d.status==='Available').length}</span></div>
+      <div class="rrow"><span>On Trip</span><span class="rv" style="color:var(--accent)">${db.drivers.filter(d=>d.status==='On Trip').length}</span></div>
+      <div class="rrow"><span>Off Duty/Leave</span><span class="rv" style="color:var(--muted)">${db.drivers.filter(d=>['Off Duty','On Leave'].includes(d.status)).length}</span></div>
+      <div class="rrow"><span>Expired Licenses</span><span class="rv" style="color:var(--red)">${db.drivers.filter(d=>d.licenseExpiry&&new Date(d.licenseExpiry)<new Date()).length}</span></div>
+    </div>
+    <div class="rcard"><h3>💰 Allowances</h3>
+      <div class="rrow"><span>Total Entries</span><span class="rv">${db.allowances.length}</span></div>
+      <div class="rrow"><span>Total Paid Out</span><span class="rv" style="color:var(--gold)">GHS ${totalAllw.toLocaleString()}</span></div>
+      <div class="rrow"><span>Paid Today</span><span class="rv">GHS ${todayAllw.toLocaleString()}</span></div>
+      <div class="rrow"><span>Trip Allowances</span><span class="rv">GHS ${db.allowances.reduce((s,a)=>s+Number(a.tripAllowance||0),0).toLocaleString()}</span></div>
+      <div class="rrow"><span>Police Checkpoint</span><span class="rv">GHS ${db.allowances.reduce((s,a)=>s+Number(a.policeCheckpoint||0),0).toLocaleString()}</span></div>
+    </div>
+    <div class="rcard"><h3>⛽ Fuel & System</h3>
+      <div class="rrow"><span>Fuel Entries</span><span class="rv">${db.fuel.length}</span></div>
+      <div class="rrow"><span>Total Fuel Cost</span><span class="rv">GHS ${fc.toLocaleString()}</span></div>
+      <div class="rrow"><span>Dispatch Orders</span><span class="rv">${db.dispatches.length}</span></div>
+      <div class="rrow"><span>Active Alerts</span><span class="rv" style="color:var(--red)">${db.alerts.length}</span></div>
+      <div class="rrow"><span>Users</span><span class="rv">${Object.keys(users).length}</span></div>
+    </div>`;
+}
+
+function renderUsers(){
+  const grid=document.getElementById('users-grid');
+  if(!can.manage()){grid.innerHTML=`<div style="background:var(--rbg);border:1px solid var(--red);border-radius:10px;padding:16px;text-align:center;color:var(--red)">🔒 Admin access required.</div>`;return;}
+  document.getElementById('codeval').textContent=db.regCode||'—';
+  const rc={admin:'#92400e',manager:'#065f46',driver:'#1e40af',office:'#5433a8'};
+  grid.innerHTML=Object.entries(users).map(([email,u])=>`
+    <div class="ucard">
+      <div class="uavbig" style="background:${rc[u.role]||'#555'}">${(u.name||email).charAt(0).toUpperCase()}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:700;font-size:14px">${u.name}</div>
+        <div style="font-size:11px;color:var(--muted)">${email}</div>
+        ${u.driverName?`<div style="font-size:11px;color:var(--muted)">🚛 ${u.driverName}</div>`:''}
+        <div style="margin-top:5px"><span class="rp rp-${u.role}">${u.role}</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end">
+        <button class="btn be bsm" onclick="editUser('${email}')">✏️</button>
+        ${email!=='admin@nfaith.com'?`<button class="btn bd bsm" onclick="deleteUser('${email}')">✕</button>`:'<span style="font-size:10px;color:var(--muted)">Protected</span>'}
+      </div>
+    </div>`).join('');
+}
+
+function updateStats(){
+  const trips=myTrips();const today=new Date().toISOString().split('T')[0];
+  const ss=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  ss('s-active',trips.filter(t=>['In Transit','Departed','At Factory','Loading'].includes(t.status)).length);
+  ss('s-avail',db.drivers.filter(d=>d.status==='Available').length);
+  ss('s-transit',db.cargo.filter(c=>c.status==='In Transit').length);
+  ss('s-alerts',db.alerts.length);
+  ss('s-today',trips.filter(t=>t.date===today).length);
+  ss('s-done',trips.filter(t=>t.status==='Delivered').length);
+  ss('s-round',trips.filter(t=>t.tripType==='round').length);
+  const todayAllw=db.allowances.filter(a=>a.date===today).reduce((s,a)=>s+Number(a.total||0),0);
+  ss('s-allw','GHS '+todayAllw.toLocaleString());
+  document.getElementById('abadge').textContent=db.alerts.length;
+}
+
+function populateSels(){
+  const dOpts=db.drivers.map(d=>`<option>${d.name}</option>`).join('');
+  const tOpts=db.drivers.map(d=>`<option value="${d.truck}">${d.truck}${d.plate?' ('+d.plate+')':''}</option>`).join('');
+  const dFull=`<option value="">— Not linked —</option>`+db.drivers.map(d=>`<option value="${d.name}">${d.name} (${d.truck})</option>`).join('');
+  document.getElementById('t-driver').innerHTML=dOpts||'<option>No drivers</option>';
+  document.getElementById('t-truck').innerHTML=tOpts||'<option>No trucks</option>';
+  document.getElementById('f-truck').innerHTML=tOpts||'<option>No trucks</option>';
+  document.getElementById('aw-driver').innerHTML=dOpts||'<option>No drivers</option>';
+  document.getElementById('u-driver').innerHTML=dFull;
+}
+
+// ════════════════════════════════════════════════════
+// TABS
+// ════════════════════════════════════════════════════
+function showTab(tab){
+  const tabs=['dashboard','trips','waybills','drivers','cargo','fuel','allowances','dispatch','alerts','history','reports','users'];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',tabs[i]===tab));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+tab).classList.add('active');
+  render();
+}
+
+// ════════════════════════════════════════════════════
+// TRIP DETAIL VIEW
+// ════════════════════════════════════════════════════
+let currentDetailTripId=null;
+function viewTripDetail(id){
+  const t=db.trips.find(x=>x.id===id);if(!t)return;
+  currentDetailTripId=id;
+  const driver=db.drivers.find(d=>d.name===t.driver)||{};
+  const allw=db.allowances.filter(a=>a.waybill===t.waybill);
+  const totalAllw=allw.reduce((s,a)=>s+Number(a.total||0),0);
+  const tlStages=t.timeline||[];
+  const stageIcons={departed:'🚀',atFactory:'🏭',waitingLine:'⏳',loading:'📦',inTransit:'🛣️',atCheckpoint:'🚔',delivered:'✅',rvLoading:'🔄',rvInTransit:'🔄',returned:'🏁',custom:'📝'};
+  document.getElementById('td-title').textContent='Trip '+t.waybill;
+  document.getElementById('td-content').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+      <div style="background:var(--s2);border-radius:10px;padding:14px">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:8px">Trip Info</div>
+        <div style="font-size:13px;margin-bottom:4px"><strong>${t.driver}</strong> — ${t.truck} <span style="font-family:monospace;color:var(--accent)">${driver.plate||''}</span></div>
+        <div style="font-size:13px;margin-bottom:4px">📍 ${t.origin} → ${t.dest}</div>
+        <div style="font-size:13px;margin-bottom:4px">🏭 Pickup: <strong>${t.pickupCompany}</strong></div>
+        <div style="font-size:13px;margin-bottom:4px">📦 ${t.cargo} (${Number(t.weight||0).toLocaleString()} kg)</div>
+        <div style="font-size:13px;margin-bottom:4px">👤 Client: ${t.client||'—'}</div>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">${sb(t.status)} ${sb(t.priority||'Normal')} <span class="badge ${t.tripType==='round'?'bg-p':'bg-t'}">${t.tripType==='round'?'🔄 Round Trip':'One Way'}</span>${t.reverseLoad==='yes'?`<span class="badge bg-g">🔄 Has Reverse Load</span>`:''}</div>
+      </div>
+      <div style="background:var(--s2);border-radius:10px;padding:14px">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:8px">Office Details</div>
+        <div style="font-size:13px;margin-bottom:4px">📋 Waybill: <strong>${t.waybill}</strong> | Trip #${t.tripNo||'—'}</div>
+        <div style="font-size:13px;margin-bottom:4px">📅 Date: ${t.date}</div>
+        <div style="font-size:13px;margin-bottom:4px">🧑‍💼 Manager: ${t.manager||'—'}</div>
+        <div style="font-size:13px;margin-bottom:4px">🧾 Invoice: ${t.invoice||'—'}</div>
+        ${t.returnLocation?`<div style="font-size:13px;margin-bottom:4px">🏁 Return to: ${t.returnLocation}</div>`:''}
+        ${totalAllw>0?`<div style="font-size:13px;margin-top:6px">💰 Allowances: <strong style="color:var(--gold)">GHS ${totalAllw.toLocaleString()}</strong></div>`:''}
+        ${t.notes?`<div style="font-size:12px;color:var(--muted);margin-top:6px;background:#fff;padding:6px 10px;border-radius:6px">${t.notes}</div>`:''}
+      </div>
+    </div>
+    ${t.collectionProof?`<div style="background:var(--gbg);border:1px solid var(--green);border-radius:10px;padding:12px 14px;margin-bottom:14px">
+      <div style="font-family:var(--fh);font-size:13px;font-weight:700;color:var(--green);margin-bottom:6px">✅ WAYBILL COLLECTED</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:12px">
+        <span>Code: <span class="code-badge">${t.collectionProof.code||'—'}</span></span>
+        <span>Driver: <strong>${t.collectionProof.driver||'—'}</strong></span>
+        <span>Time: ${t.collectionProof.time||'—'}</span>
+        ${t.collectionProof.notes?`<span>Notes: ${t.collectionProof.notes}</span>`:''}
+      </div>
+      ${t.collectionProof.photoData?`<img src="${t.collectionProof.photoData}" class="proof-img" style="max-height:200px;margin-top:8px">`:''}
+    </div>`:''}
+    ${tlStages.length?`<div class="timeline">
+      <h4>⏱️ Trip Timeline</h4>
+      <div class="tl-stages">
+        ${tlStages.map((s,i)=>`<div class="tl-stage">
+          <div class="tl-dot done">${stageIcons[s.stage]||'📍'}</div>
+          <div class="tl-content">
+            <div class="tl-label">${s.label}</div>
+            <div class="tl-time">🕐 ${s.ts}</div>
+            ${s.note?`<div class="tl-note">${s.note}</div>`:''}
+          </div>
+        </div>`).join('')}
+        <div class="tl-stage">
+          <div class="tl-dot active">📍</div>
+          <div class="tl-content"><div class="tl-label" style="color:var(--accent)">Current position</div><div class="tl-time">Now</div></div>
+        </div>
+      </div>
+    </div>`:'<div class="empty"><div class="ei">⏱️</div><p>No timeline stages logged yet. Click "Log Stage" to start tracking.</p></div>'}
+    ${t.reverseLoad==='yes'?`<div style="background:var(--gbg);border:1px solid var(--green);border-radius:10px;padding:14px;margin-top:14px">
+      <div style="font-family:var(--fh);font-size:14px;font-weight:800;color:var(--green);margin-bottom:10px">🔄 REVERSE LOAD DETAILS</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;font-size:13px">
+        <div><div style="font-size:10px;text-transform:uppercase;color:var(--muted);margin-bottom:2px">Pickup From</div><strong>${t.rvPickup||'—'}</strong><div style="font-size:11px;color:var(--muted)">${t.rvOrigin||''}</div></div>
+        <div><div style="font-size:10px;text-transform:uppercase;color:var(--muted);margin-bottom:2px">Destination</div><strong>${t.rvDest||'—'}</strong><div style="font-size:11px;color:var(--muted)">${t.rvClient||''}</div></div>
+        <div><div style="font-size:10px;text-transform:uppercase;color:var(--muted);margin-bottom:2px">Cargo</div><strong>${t.rvCargo||'—'}</strong><div style="font-size:11px;color:var(--muted)">${t.rvWeight?Number(t.rvWeight).toLocaleString()+' kg':''} ${sb(t.rvStatus||'Pending')}</div></div>
+      </div>
+    </div>`:''}
+    ${allw.length?`<div class="allowance-card" style="margin-top:14px">
+      <h4>💰 Allowances for this trip</h4>
+      ${allw.map(a=>`<div class="allow-row"><span>Trip Allowance</span><span class="allow-val">GHS ${Number(a.tripAllowance||0).toLocaleString()}</span></div>
+      <div class="allow-row"><span>Police Checkpoint</span><span class="allow-val">GHS ${Number(a.policeCheckpoint||0).toLocaleString()}</span></div>
+      ${a.other>0?`<div class="allow-row"><span>${a.otherDesc||'Other'}</span><span class="allow-val">GHS ${Number(a.other||0).toLocaleString()}</span></div>`:''}
+      <div class="allow-row"><span><strong>Total</strong></span><span class="allow-val" style="font-size:18px">GHS ${Number(a.total||0).toLocaleString()}</span></div>`).join('')}
+    </div>`:''}
+  `;
+  document.getElementById('modal-trip-detail').classList.add('open');
+}
+function openTimelineFromDetail(){closeModal('trip-detail');if(currentDetailTripId)openTimelineModal(currentDetailTripId);}
+function viewWBFromDetail(){closeModal('trip-detail');if(currentDetailTripId)viewWB(currentDetailTripId);}
+
+// ════════════════════════════════════════════════════
+// TIMELINE LOGGING
+// ════════════════════════════════════════════════════
+function openTimelineModal(tripId){
+  document.getElementById('tl-trip-id').value=tripId;
+  const t=db.trips.find(x=>x.id===tripId);
+  if(t)document.getElementById('tl-m-title').textContent='Log Stage — '+t.waybill;
+  document.getElementById('tl-note').value='';
+  document.getElementById('modal-timeline').classList.add('open');
+}
+function saveTimeline(){
+  const tripId=document.getElementById('tl-trip-id').value;
+  const stageVal=document.getElementById('tl-stage').value;
+  const note=document.getElementById('tl-note').value.trim();
+  const t=db.trips.find(x=>x.id===tripId);if(!t)return;
+  if(!t.timeline)t.timeline=[];
+  const stageLabels={departed:'🚀 Departed',atFactory:'🏭 At Factory',waitingLine:'⏳ Waiting in Line',loading:'📦 Loading',inTransit:'🛣️ In Transit',atCheckpoint:'🚔 At Checkpoint',delivered:'✅ Delivered',rvLoading:'🔄 Reverse Loading',rvInTransit:'🔄 Reverse In Transit',returned:'🏁 Returned to Base',custom:'📝 Note'};
+  t.timeline.push({stage:stageVal,label:stageLabels[stageVal]||stageVal,note,ts:now(),by:me?.name||'—'});
+  // Auto-update trip status
+  const statusMap={departed:'Departed',atFactory:'At Factory',loading:'Loading',inTransit:'In Transit',delivered:'Delivered',returned:'Returned'};
+  if(statusMap[stageVal])t.status=statusMap[stageVal];
+  if(stageVal==='delivered'){
+    db.alerts.unshift({type:'info',icon:'✅',title:`${t.waybill} Delivered`,desc:`${t.driver} arrived at ${t.dest}`,time:'Just now',by:me?.name||'System'});
+    addAudit('Trips',t.waybill,'Updated',`Delivered: ${t.driver} → ${t.dest}`,me?.email);
+  } else {
+    addAudit('Trips',t.waybill,'Updated',`Stage: ${stageLabels[stageVal]||stageVal}${note?' — '+note:''}`,me?.email);
+  }
+  pushDB().then(()=>render());
+  closeModal('timeline');
+  toast('📍 Stage logged: '+(stageLabels[stageVal]||stageVal),'win');
+}
+
+// ════════════════════════════════════════════════════
+// COLLECTION PROOF
+// ════════════════════════════════════════════════════
+function openCollectionModal(tripId){
+  const t=db.trips.find(x=>x.id===tripId);if(!t)return;
+  document.getElementById('col-trip-id').value=tripId;
+  document.getElementById('col-driver').value=t.driver||'';
+  document.getElementById('col-code').value='';
+  document.getElementById('col-notes').value='';
+  const now2=new Date();const pad=n=>String(n).padStart(2,'0');
+  document.getElementById('col-time').value=`${now2.getFullYear()}-${pad(now2.getMonth()+1)}-${pad(now2.getDate())}T${pad(now2.getHours())}:${pad(now2.getMinutes())}`;
+  document.getElementById('modal-collection').classList.add('open');
+}
+function saveCollection(){
+  const tripId=document.getElementById('col-trip-id').value;
+  const code=document.getElementById('col-code').value.trim();
+  const driver=document.getElementById('col-driver').value.trim();
+  const time=document.getElementById('col-time').value;
+  const notes=document.getElementById('col-notes').value;
+  const photoInput=document.getElementById('col-photo');
+  const t=db.trips.find(x=>x.id===tripId);if(!t)return;
+  const proof={code,driver,time,notes,photoData:null};
+  if(photoInput.files&&photoInput.files[0]){
+    const reader=new FileReader();
+    reader.onload=e=>{proof.photoData=e.target.result;t.collectionProof=proof;addAudit('Trips',t.waybill,'Updated',`Waybill collected by ${driver} — Code: ${code}`,me?.email);pushDB().then(()=>render());closeModal('collection');toast('✅ Waybill marked as collected!','win');};
+    reader.readAsDataURL(photoInput.files[0]);return;
+  }
+  t.collectionProof=proof;
+  addAudit('Trips',t.waybill,'Updated',`Waybill collected by ${driver} — Code: ${code}`,me?.email);
+  pushDB().then(()=>render());closeModal('collection');toast('✅ Waybill marked as collected!','win');
+}
+
+// ════════════════════════════════════════════════════
+// MODALS
+// ════════════════════════════════════════════════════
+function openModal(type){
+  populateSels();
+  const today=new Date().toISOString().split('T')[0];
+  if(type==='trip'){
+    document.getElementById('t-eid').value='';
+    document.getElementById('trip-m-title').textContent='Log New Trip';
+    ['t-pickup','t-origin','t-dest','t-cargo','t-client','t-notes','t-manager','t-invoice','t-returnloc','t-rv-pickup','t-rv-origin','t-rv-dest','t-rv-cargo','t-rv-client'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+    ['t-dist','t-weight','t-rv-weight','t-tripno'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+    document.getElementById('t-date').value=today;
+    document.getElementById('t-rl').value='no';toggleRL();
+    document.getElementById('t-triptype').value='one-way';toggleTripType();
+    document.getElementById('t-status').value='Scheduled';
+    document.getElementById('t-priority').value='Normal';
+    if(can.isDriver()&&me.driverName)document.getElementById('t-driver').value=me.driverName;
+    const driverTrips=db.trips.filter(t=>t.driver===(can.isDriver()?me.driverName:document.getElementById('t-driver').value)).length;
+    document.getElementById('t-tripno').value=driverTrips+1;
+    // Backdate — admin only
+    const tbBtn=document.getElementById('t-backdate-btn');
+    const tbSec=document.getElementById('t-backdate-section');
+    if(tbBtn) tbBtn.style.display=can.isAdmin()?'':'none';
+    if(tbSec) tbSec.style.display='none';
+    if(tbBtn) tbBtn.textContent='📅 Backdate Entry';
+    ['t-backdate','t-enteredby-name','t-backdate-reason'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  }
+  if(type==='fuel'){document.getElementById('f-eid').value='';document.getElementById('f-date').value=today;document.getElementById('f-by').value=me?.name||'';}
+  if(type==='cargo'){document.getElementById('c-eid').value='';document.getElementById('c-eta').value=today;document.getElementById('cargo-m-title').textContent='New Shipment';const cBtn=document.getElementById('c-backdate-btn'),cSec=document.getElementById('c-backdate-section');if(cBtn){cBtn.style.display=can.isAdmin()?'':'none';cBtn.textContent='📅 Backdate Entry';}if(cSec)cSec.style.display='none';['c-backdate','c-enteredby-name','c-backdate-reason'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});}
+  if(type==='driver'){document.getElementById('d-eid').value='';document.getElementById('drv-m-title').textContent='Add Driver';['d-name','d-phone','d-truck','d-plate','d-lic','d-lexp','d-lclass','d-gname','d-gphone','d-grel'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});}
+  if(type==='allowance'){document.getElementById('aw-eid').value='';document.getElementById('allw-m-title').textContent='Log Driver Allowance';const awBtn=document.getElementById('aw-backdate-btn'),awSec=document.getElementById('aw-backdate-section');if(awBtn){awBtn.style.display=can.isAdmin()?'':'none';awBtn.textContent='📅 Backdate Entry';}if(awSec)awSec.style.display='none';['aw-backdate','aw-enteredby-name','aw-backdate-reason'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});['aw-wb','aw-notes','aw-other-desc'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});['aw-trip','aw-police','aw-other'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='0';});document.getElementById('aw-date').value=today;document.getElementById('aw-paidby').value=me?.name||'';}
+  if(type==='dispatch'){document.getElementById('dp-eid').value='';document.getElementById('disp-m-title').textContent='New Dispatch Order';['dp-client','dp-contact','dp-invoice','dp-wb','dp-notes','dp-manager'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});document.getElementById('dp-date').value=today;document.getElementById('dp-priority').value='Normal';document.getElementById('dp-signoff').value='Pending';}
+  if(type==='user'){document.getElementById('u-eid').value='';document.getElementById('user-m-title').textContent='Add User';['u-name','u-email','u-pass'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});document.getElementById('u-role').value='driver';document.getElementById('u-driver').value='';}
+  document.getElementById('modal-'+type).classList.add('open');
+}
+function closeModal(t){const el=document.getElementById('modal-'+t);if(el)el.classList.remove('open');}
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+function toggleRL(){const v=document.getElementById('t-rl')?.value;const f=document.getElementById('rl-fields');if(f)f.style.display=v==='yes'?'block':'none';}
+function toggleTripType(){const v=document.getElementById('t-triptype')?.value;const w=document.getElementById('t-returnloc-wrap');if(w)w.style.display=v==='round'?'flex':'none';}
+function toggleRoleFields(){const r=document.getElementById('u-role')?.value;const w=document.getElementById('u-driver-wrap');if(w)w.style.display=r==='driver'?'block':'none';}
+function calcFuel(){const q=parseFloat(document.getElementById('f-qty').value)||0;const p=parseFloat(document.getElementById('f-ppl').value)||0;if(q>0&&p>0)document.getElementById('f-cost').value=(q*p).toFixed(2);}
+
+function toggleBackdate(prefix) {
+  const sec = document.getElementById(prefix+'-backdate-section');
+  const btn = document.getElementById(prefix+'-backdate-btn');
+  if (!sec) return;
+  const isOpen = sec.style.display !== 'none';
+  sec.style.display = isOpen ? 'none' : 'block';
+  if (btn) btn.textContent = isOpen ? '📅 Backdate Entry' : '✕ Cancel Backdate';
+  // Pre-fill today's date in the backdate field if opening
+  if (!isOpen) {
+    const dateEl = document.getElementById(prefix+'-backdate');
+    if (dateEl && !dateEl.value) dateEl.value = new Date().toISOString().split('T')[0];
+    const nameEl = document.getElementById(prefix+'-enteredby-name');
+    if (nameEl && !nameEl.value) nameEl.value = me?.name || '';
+  }
+}
+
+// ════════════════════════════════════════════════════
+// INLINE EDIT
+// ════════════════════════════════════════════════════
+function inlineEdit(el,col,id,field){
+  if(!can.edit())return toast('No permission','err');
+  const item=db[col].find(x=>x.id===id);if(!item)return;
+  const val=(item[field]||'').toString();
+  const inp=document.createElement('input');inp.className='ie';inp.value=val.replace(/ km$/,'');
+  inp.style.width=Math.max(80,el.offsetWidth+20)+'px';
+  el.replaceWith(inp);inp.focus();inp.select();
+  const commit=()=>{const old=item[field];item[field]=inp.value;if(old!==inp.value){addAudit(col.charAt(0).toUpperCase()+col.slice(1),item.id||id,'Updated',`${field}: "${old}"→"${inp.value}"`,me?.email);pushDB();}render();};
+  inp.addEventListener('blur',commit);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();commit();}if(e.key==='Escape')render();});
+}
+
+function cycleStatus(col,id){
+  if(!can.edit())return toast('No permission','err');
+  const item=db[col].find(x=>x.id===id);if(!item)return;
+  if(can.isDriver()&&col==='trips'&&item.driver!==me.driverName)return toast('You can only update your own trips','err');
+  const cycles={trips:['Scheduled','Departed','At Factory','Loading','In Transit','Delivered','Returning','Returned','Delayed','Cancelled'],drivers:['Available','On Trip','Off Duty','On Leave'],cargo:['Pending','In Transit','Delivered','Delayed']};
+  const c=cycles[col];item.status=c[(c.indexOf(item.status)+1)%c.length];
+  if(col==='trips'&&item.status==='Delivered'){
+    db.alerts.unshift({type:'info',icon:'✅',title:`${item.waybill} Delivered`,desc:`${item.driver} → ${item.dest}`,time:'Just now',by:me?.name||'System'});
+    addAudit('Trips',item.waybill,'Updated',`Delivered: ${item.driver} → ${item.dest}`,me?.email);
+  }else addAudit(col.charAt(0).toUpperCase()+col.slice(1),item.id||id,'Updated',`Status → ${item.status}`,me?.email);
+  pushDB().then(()=>render());
+}
+
+function addAudit(section,recordId,action,details,by){
+  if(!db.audit)db.audit=[];
+  const n=new Date();
+  db.audit.unshift({section,recordId,action,details,by:by||me?.name||'System',date:n.toLocaleDateString('en-GB'),time:n.toLocaleTimeString('en-GB')});
+  if(db.audit.length>500)db.audit=db.audit.slice(0,500);
+}
+
+// ════════════════════════════════════════════════════
+// EDIT OPEN
+// ════════════════════════════════════════════════════
+function editTrip(id){
+  const t=db.trips.find(x=>x.id===id);if(!t)return;
+  if(can.isDriver()&&t.driver!==me.driverName)return toast('You can only edit your own trips','err');
+  populateSels();
+  document.getElementById('t-eid').value=id;
+  document.getElementById('trip-m-title').textContent='Edit Trip '+t.waybill;
+  ['driver','truck','origin','dest','cargo','client','notes'].forEach(f=>{const el=document.getElementById('t-'+f);if(el)el.value=t[f]||'';});
+  document.getElementById('t-pickup').value=t.pickupCompany||'';
+  document.getElementById('t-weight').value=t.weight||0;
+  document.getElementById('t-dist').value=t.dist||0;
+  document.getElementById('t-status').value=t.status;
+  document.getElementById('t-date').value=t.date;
+  document.getElementById('t-manager').value=t.manager||'';
+  document.getElementById('t-invoice').value=t.invoice||'';
+  document.getElementById('t-tripno').value=t.tripNo||'';
+  document.getElementById('t-triptype').value=t.tripType||'one-way';
+  document.getElementById('t-returnloc').value=t.returnLocation||'';
+  document.getElementById('t-priority').value=t.priority||'Normal';
+  document.getElementById('t-rl').value=t.reverseLoad||'no';
+  ['rv-pickup','rv-origin','rv-dest','rv-cargo','rv-client'].forEach(f=>{const el=document.getElementById('t-'+f);const key='rv'+f.charAt(2).toUpperCase()+f.slice(3).replace('-','');if(el)el.value=t[key.replace('rv','rv').replace(/([A-Z])/,m=>m)]||t['rv'+f.replace('rv-','').charAt(0).toUpperCase()+f.replace('rv-','').slice(1)]||'';});
+  document.getElementById('t-rv-pickup').value=t.rvPickup||'';
+  document.getElementById('t-rv-origin').value=t.rvOrigin||'';
+  document.getElementById('t-rv-dest').value=t.rvDest||'';
+  document.getElementById('t-rv-cargo').value=t.rvCargo||'';
+  document.getElementById('t-rv-client').value=t.rvClient||'';
+  document.getElementById('t-rv-weight').value=t.rvWeight||0;
+  document.getElementById('t-rv-status').value=t.rvStatus||'Pending';
+  toggleRL();toggleTripType();
+  document.getElementById('modal-trip').classList.add('open');
+}
+function editDriver(id){
+  const d=db.drivers.find(x=>x.id===id);if(!d)return;
+  document.getElementById('d-eid').value=id;document.getElementById('drv-m-title').textContent='Edit Driver';
+  document.getElementById('d-name').value=d.name;document.getElementById('d-phone').value=d.phone;
+  document.getElementById('d-truck').value=d.truck;document.getElementById('d-plate').value=d.plate||'';
+  document.getElementById('d-lic').value=d.license||'';document.getElementById('d-lexp').value=d.licenseExpiry||'';
+  document.getElementById('d-lclass').value=d.licenseClass||'';document.getElementById('d-status').value=d.status;
+  document.getElementById('d-gname').value=d.grantorName||'';document.getElementById('d-gphone').value=d.grantorPhone||'';
+  document.getElementById('d-grel').value=d.grantorRel||'';
+  document.getElementById('modal-driver').classList.add('open');
+}
+function editCargo(id){
+  const c=db.cargo.find(x=>x.id===id);if(!c)return;
+  document.getElementById('c-eid').value=id;document.getElementById('cargo-m-title').textContent='Edit Shipment '+id;
+  document.getElementById('c-desc').value=c.desc;document.getElementById('c-client').value=c.client||'';
+  document.getElementById('c-pickup').value=c.pickupCompany||'';document.getElementById('c-weight').value=c.weight||0;
+  document.getElementById('c-trip').value=c.trip||'';document.getElementById('c-eta').value=c.eta||'';
+  document.getElementById('c-status').value=c.status;
+  document.getElementById('modal-cargo').classList.add('open');
+}
+function editFuel(id){
+  const f=db.fuel.find(x=>x.id===id);if(!f)return;populateSels();
+  document.getElementById('f-eid').value=id;
+  document.getElementById('f-truck').value=f.truck;document.getElementById('f-type').value=f.type;
+  document.getElementById('f-qty').value=f.amount;document.getElementById('f-ppl').value=f.pricePerLitre||'';
+  document.getElementById('f-cost').value=f.cost;document.getElementById('f-date').value=f.date;
+  document.getElementById('f-next').value=f.nextService||0;document.getElementById('f-by').value=f.enteredBy||me?.name||'';
+  document.getElementById('f-notes').value=f.notes||'';
+  document.getElementById('modal-fuel').classList.add('open');
+}
+function editAllowance(id){
+  const a=db.allowances.find(x=>x.id===id);if(!a)return;populateSels();
+  document.getElementById('aw-eid').value=id;document.getElementById('allw-m-title').textContent='Edit Allowance';
+  document.getElementById('aw-driver').value=a.driver;document.getElementById('aw-wb').value=a.waybill||'';
+  document.getElementById('aw-trip').value=a.tripAllowance||0;document.getElementById('aw-police').value=a.policeCheckpoint||0;
+  document.getElementById('aw-other').value=a.other||0;document.getElementById('aw-other-desc').value=a.otherDesc||'';
+  document.getElementById('aw-date').value=a.date;document.getElementById('aw-paidby').value=a.paidBy||'';
+  document.getElementById('aw-notes').value=a.notes||'';
+  document.getElementById('modal-allowance').classList.add('open');
+}
+function editDispatch(id){
+  const d=db.dispatches.find(x=>x.id===id);if(!d)return;
+  document.getElementById('dp-eid').value=id;document.getElementById('disp-m-title').textContent='Edit Dispatch Order';
+  document.getElementById('dp-client').value=d.client;document.getElementById('dp-contact').value=d.contact||'';
+  document.getElementById('dp-invoice').value=d.invoice||'';document.getElementById('dp-wb').value=d.waybill||'';
+  document.getElementById('dp-date').value=d.date;document.getElementById('dp-priority').value=d.priority;
+  document.getElementById('dp-manager').value=d.manager||'';document.getElementById('dp-signoff').value=d.signoff;
+  document.getElementById('dp-notes').value=d.notes||'';
+  document.getElementById('modal-dispatch').classList.add('open');
+}
+function editUser(email){
+  if(!can.manage())return;const u=users[email];if(!u)return;
+  document.getElementById('u-eid').value=email;document.getElementById('user-m-title').textContent='Edit User';
+  document.getElementById('u-name').value=u.name;document.getElementById('u-email').value=email;
+  document.getElementById('u-pass').value='';document.getElementById('u-role').value=u.role;
+  populateSels();document.getElementById('u-driver').value=u.driverName||'';
+  document.getElementById('modal-user').classList.add('open');
+}
+
+// ════════════════════════════════════════════════════
+// SAVE
+// ════════════════════════════════════════════════════
+function saveTrip(){
+  const pickup=document.getElementById('t-pickup').value.trim();
+  const dest=document.getElementById('t-dest').value.trim();
+  const cargo=document.getElementById('t-cargo').value.trim();
+  if(!pickup||!dest||!cargo)return toast('Pickup company, destination & cargo required','err');
+  const eid=document.getElementById('t-eid').value;
+
+  // Check backdating
+  const bdSec=document.getElementById('t-backdate-section');
+  const isBackdating=bdSec&&bdSec.style.display!=='none';
+  let bdDate='',bdBy='',bdReason='';
+  if(isBackdating){
+    bdDate=document.getElementById('t-backdate').value;
+    bdBy=document.getElementById('t-enteredby-name').value.trim();
+    bdReason=document.getElementById('t-backdate-reason').value.trim();
+    if(!bdDate)return toast('Please enter the actual trip date for backdating','err');
+    if(!bdBy)return toast('Please enter your name for the backdated entry','err');
+    if(!bdReason)return toast('Please give a reason for backdating','err');
+  }
+
+  const tripDate=isBackdating?bdDate:document.getElementById('t-date').value;
+  const enteredByName=isBackdating?bdBy:(me?.name||me?.email||'—');
+
+  const data={
+    driver:document.getElementById('t-driver').value,truck:document.getElementById('t-truck').value,
+    pickupCompany:pickup,origin:document.getElementById('t-origin').value,dest,cargo,
+    client:document.getElementById('t-client').value,weight:document.getElementById('t-weight').value||0,
+    dist:document.getElementById('t-dist').value||0,status:document.getElementById('t-status').value,
+    date:tripDate,notes:document.getElementById('t-notes').value,
+    manager:document.getElementById('t-manager').value,invoice:document.getElementById('t-invoice').value,
+    tripNo:parseInt(document.getElementById('t-tripno').value)||1,
+    tripType:document.getElementById('t-triptype').value,
+    returnLocation:document.getElementById('t-returnloc').value,
+    priority:document.getElementById('t-priority').value,
+    enteredBy:me?.email||'—',
+    enteredByName,
+    backdated:isBackdating,
+    backdatedBy:isBackdating?bdBy:'',
+    backdatedAt:isBackdating?new Date().toLocaleString('en-GB'):'',
+    backdatedReason:isBackdating?bdReason:'',
+    systemEntryTime:new Date().toLocaleString('en-GB'),
+    reverseLoad:document.getElementById('t-rl').value,
+    rvPickup:document.getElementById('t-rv-pickup').value,rvOrigin:document.getElementById('t-rv-origin').value,
+    rvDest:document.getElementById('t-rv-dest').value,rvCargo:document.getElementById('t-rv-cargo').value,
+    rvClient:document.getElementById('t-rv-client').value,rvWeight:document.getElementById('t-rv-weight').value||0,
+    rvStatus:document.getElementById('t-rv-status').value,
+  };
+  if(eid){
+    const idx=db.trips.findIndex(t=>t.id===eid);const wb=db.trips[idx].waybill;
+    db.trips[idx]={...db.trips[idx],...data};
+    addAudit('Trips',wb,'Updated',`${data.driver}/${data.truck}→${data.dest} [${data.status}] by ${enteredByName}`,me?.email);
+    toast('Trip updated!');
+  }else{
+    const id='T-'+String(db.tripN).padStart(3,'0');const waybill='WB-'+String(db.tripN).padStart(3,'0');
+    db.tripN++;db.trips.push({id,waybill,timeline:[],...data});
+    const auditNote=isBackdating
+      ? `BACKDATED ENTRY by ${bdBy} — Trip date: ${bdDate} | Reason: ${bdReason} | ${data.driver}/${data.truck}→${data.dest}`
+      : `${data.driver}/${data.truck} — ${data.pickupCompany}→${data.dest} | ${data.cargo} by ${enteredByName}`;
+    addAudit('Trips',waybill,isBackdating?'Backdated':'Created',auditNote,me?.email);
+    const dr=db.drivers.find(d=>d.name===data.driver);
+    if(dr&&['In Transit','Departed'].includes(data.status)){dr.status='On Trip';dr.trips=(dr.trips||0)+1;}
+    toast(isBackdating?`📅 Backdated trip ${waybill} entered!`:'Trip '+waybill+' logged!','win');
+  }
+  pushDB().then(()=>render());closeModal('trip');
+}
+
+function saveDriver(){
+  const name=document.getElementById('d-name').value.trim();const truck=document.getElementById('d-truck').value.trim();
+  if(!name||!truck)return toast('Name and truck required','err');
+  const eid=document.getElementById('d-eid').value;
+  const data={name,truck,plate:document.getElementById('d-plate').value.trim(),phone:document.getElementById('d-phone').value,status:document.getElementById('d-status').value,
+    license:document.getElementById('d-lic').value,licenseExpiry:document.getElementById('d-lexp').value,licenseClass:document.getElementById('d-lclass').value,
+    grantorName:document.getElementById('d-gname').value,grantorPhone:document.getElementById('d-gphone').value,grantorRel:document.getElementById('d-grel').value};
+  if(eid){const idx=db.drivers.findIndex(d=>d.id===eid);db.drivers[idx]={...db.drivers[idx],...data};addAudit('Drivers',truck,'Updated',`${name} updated`,me?.email);toast('Driver updated!');}
+  else{db.drivers.push({id:'d'+Date.now(),trips:0,...data});addAudit('Drivers',truck,'Created',`${name}/${truck} plate:${data.plate}`,me?.email);toast('Driver added!','win');}
+  pushDB().then(()=>render());closeModal('driver');
+}
+
+function saveCargo(){
+  const desc=document.getElementById('c-desc').value.trim();if(!desc)return toast('Description required','err');
+  const eid=document.getElementById('c-eid').value;
+  const bdSec=document.getElementById('c-backdate-section');
+  const isBackdating=bdSec&&bdSec.style.display!=='none';
+  let bdDate='',bdBy='',bdReason='';
+  if(isBackdating){
+    bdDate=document.getElementById('c-backdate').value;
+    bdBy=document.getElementById('c-enteredby-name').value.trim();
+    bdReason=document.getElementById('c-backdate-reason').value.trim();
+    if(!bdDate||!bdBy||!bdReason)return toast('Please fill in all backdating fields','err');
+  }
+  const enteredByName=isBackdating?bdBy:(me?.name||'—');
+  const data={desc,client:document.getElementById('c-client').value,pickupCompany:document.getElementById('c-pickup').value,
+    weight:document.getElementById('c-weight').value||0,trip:document.getElementById('c-trip').value,
+    eta:isBackdating?bdDate:document.getElementById('c-eta').value,
+    status:document.getElementById('c-status').value,
+    enteredByName,
+    backdated:isBackdating,backdatedBy:isBackdating?bdBy:'',
+    backdatedAt:isBackdating?new Date().toLocaleString('en-GB'):'',
+    backdatedReason:isBackdating?bdReason:'',
+    systemEntryTime:new Date().toLocaleString('en-GB'),
+  };
+  if(eid){
+    const idx=db.cargo.findIndex(c=>c.id===eid);db.cargo[idx]={...db.cargo[idx],...data};
+    addAudit('Cargo',db.cargo[idx].id,'Updated',`${desc} by ${enteredByName}`,me?.email);toast('Updated!');
+  }else{
+    const id='C-'+String(db.cargoN++).padStart(3,'0');db.cargo.push({id,...data});
+    const note=isBackdating?`BACKDATED by ${bdBy} — date: ${bdDate} | ${bdReason} | ${desc}`:`${desc} by ${enteredByName}`;
+    addAudit('Cargo',id,isBackdating?'Backdated':'Created',note,me?.email);
+    toast(isBackdating?'📅 Backdated shipment entered!':'Shipment added!','win');
+  }
+  pushDB().then(()=>render());closeModal('cargo');
+}
+
+function saveFuel(){
+  const truck=document.getElementById('f-truck').value,by=document.getElementById('f-by').value.trim();
+  if(!truck)return toast('Select a truck','err');if(!by)return toast('Enter your name','err');
+  const eid=document.getElementById('f-eid').value;
+  const driver=db.drivers.find(d=>d.truck===truck);
+  const qty=parseFloat(document.getElementById('f-qty').value)||0;
+  const ppl=parseFloat(document.getElementById('f-ppl').value)||0;
+  const cost=ppl>0?(qty*ppl):(parseFloat(document.getElementById('f-cost').value)||0);
+  const n=new Date();
+  const data={truck,driver:driver?.name||'Unknown',type:document.getElementById('f-type').value,
+    amount:qty,pricePerLitre:ppl||null,cost,date:document.getElementById('f-date').value,
+    nextService:document.getElementById('f-next').value||0,enteredBy:by,entryTime:n.toLocaleString('en-GB'),notes:document.getElementById('f-notes').value};
+  if(eid){const idx=db.fuel.findIndex(f=>f.id===eid);db.fuel[idx]={...db.fuel[idx],...data};addAudit('Fuel',truck,'Updated',`${data.type} ${qty}L@GHS${ppl}`,me?.email);toast('Updated!');}
+  else{db.fuel.push({id:'f'+Date.now(),...data});addAudit('Fuel',truck,'Created',`${data.type} ${qty}L@GHS${ppl}/L=GHS${cost.toFixed(2)} by ${by}`,me?.email);toast('Fuel logged!','win');}
+  pushDB().then(()=>render());closeModal('fuel');
+}
+
+function saveAllowance(){
+  const driver=document.getElementById('aw-driver').value;if(!driver)return toast('Select a driver','err');
+  const eid=document.getElementById('aw-eid').value;
+  const trip=parseFloat(document.getElementById('aw-trip').value)||0;
+  const police=parseFloat(document.getElementById('aw-police').value)||0;
+  const other=parseFloat(document.getElementById('aw-other').value)||0;
+  const driverObj=db.drivers.find(d=>d.name===driver);
+
+  // Backdating
+  const bdSec=document.getElementById('aw-backdate-section');
+  const isBackdating=bdSec&&bdSec.style.display!=='none';
+  let bdDate='',bdBy='',bdReason='';
+  if(isBackdating){
+    bdDate=document.getElementById('aw-backdate').value;
+    bdBy=document.getElementById('aw-enteredby-name').value.trim();
+    bdReason=document.getElementById('aw-backdate-reason').value.trim();
+    if(!bdDate||!bdBy||!bdReason)return toast('Please fill in all backdating fields','err');
+  }
+  const payDate=isBackdating?bdDate:document.getElementById('aw-date').value;
+  const enteredByName=isBackdating?bdBy:(me?.name||'—');
+
+  const data={driver,truck:driverObj?.truck||'—',waybill:document.getElementById('aw-wb').value,
+    tripAllowance:trip,policeCheckpoint:police,other,otherDesc:document.getElementById('aw-other-desc').value,
+    total:trip+police+other,date:payDate,
+    paidBy:document.getElementById('aw-paidby').value,notes:document.getElementById('aw-notes').value,
+    enteredByName,
+    backdated:isBackdating,backdatedBy:isBackdating?bdBy:'',
+    backdatedAt:isBackdating?new Date().toLocaleString('en-GB'):'',
+    backdatedReason:isBackdating?bdReason:'',
+    systemEntryTime:new Date().toLocaleString('en-GB'),
+  };
+  if(eid){
+    const idx=db.allowances.findIndex(a=>a.id===eid);
+    db.allowances[idx]={...db.allowances[idx],...data};
+    addAudit('Allowance',data.waybill||driver,'Updated',`GHS ${data.total} for ${driver} by ${enteredByName}`,me?.email);
+    toast('Updated!');
+  }else{
+    db.allowances.push({id:'aw'+Date.now(),...data});
+    const note=isBackdating
+      ?`BACKDATED by ${bdBy} — date: ${bdDate} | ${bdReason} | GHS ${data.total} for ${driver}`
+      :`GHS ${data.total} — Trip:${trip} Police:${police} Other:${other} for ${driver} by ${enteredByName}`;
+    addAudit('Allowance',data.waybill||driver,isBackdating?'Backdated':'Created',note,me?.email);
+    toast(isBackdating?'📅 Backdated allowance entered!':'Allowance logged!','win');
+  }
+  pushDB().then(()=>render());closeModal('allowance');
+}
+
+function saveDispatch(){
+  const client=document.getElementById('dp-client').value.trim();if(!client)return toast('Client name required','err');
+  const eid=document.getElementById('dp-eid').value;
+  const data={client,contact:document.getElementById('dp-contact').value,invoice:document.getElementById('dp-invoice').value,
+    waybill:document.getElementById('dp-wb').value,date:document.getElementById('dp-date').value,
+    priority:document.getElementById('dp-priority').value,manager:document.getElementById('dp-manager').value,
+    signoff:document.getElementById('dp-signoff').value,notes:document.getElementById('dp-notes').value};
+  if(eid){const idx=db.dispatches.findIndex(d=>d.id===eid);db.dispatches[idx]={...db.dispatches[idx],...data};addAudit('Dispatch',eid,'Updated',`${client}`,me?.email);toast('Updated!');}
+  else{const id='DP-'+String(db.dispN++).padStart(3,'0');db.dispatches.push({id,...data});addAudit('Dispatch',id,'Created',`${client} — ${data.priority} — ${data.signoff}`,me?.email);toast('Dispatch order created!','win');}
+  pushDB().then(()=>render());closeModal('dispatch');
+}
+
+function saveAlert(){
+  const title=document.getElementById('a-title').value.trim();if(!title)return toast('Title required','err');
+  db.alerts.unshift({type:document.getElementById('a-type').value,icon:document.getElementById('a-icon').value,title,desc:document.getElementById('a-desc').value,time:'Just now',by:me?.name||'System'});
+  addAudit('Alerts','—','Created',`Alert: ${title}`,me?.email);
+  pushDB().then(()=>render());closeModal('alert');toast('Alert posted!','win');
+}
+
+function saveUser(){
+  if(!can.manage())return;
+  const name=document.getElementById('u-name').value.trim();
+  const email=document.getElementById('u-email').value.trim().toLowerCase();
+  const pass=document.getElementById('u-pass').value;
+  const role=document.getElementById('u-role').value;
+  const driverName=document.getElementById('u-driver').value;
+  const eid=document.getElementById('u-eid').value;
+  if(!name||!email)return toast('Name and email required','err');
+  if(!email.includes('@'))return toast('Please enter a valid email address','err');
+  if(eid){
+    // Editing existing user
+    const target=eid;
+    users[target].name=name;
+    users[target].role=role;
+    users[target].driverName=driverName||'';
+    if(pass&&pass.length>=6) users[target].password=pass;
+    else if(pass&&pass.length>0&&pass.length<6) return toast('Password must be at least 6 characters','err');
+    // Handle email change
+    if(target!==email&&!users[email]){
+      users[email]={...users[target]};
+      delete users[target];
+    }
+    pushUsers().then(()=>{renderUsers();toast('✅ User updated! They can now sign in with: '+email);});
+  } else {
+    if(!pass||pass.length<6)return toast('Password must be at least 6 characters','err');
+    if(users[email])return toast('This email is already registered','err');
+    users[email]={name,password:pass,role,driverName:driverName||'',createdBy:me?.email,createdAt:new Date().toISOString()};
+    pushUsers().then(()=>{
+      renderUsers();
+      toast('✅ Account created! '+name+' can now log in with: '+email,'win');
+    });
+  }
+  closeModal('user');
+}
+
+// ════════════════════════════════════════════════════
+// DELETE
+// ════════════════════════════════════════════════════
+function deleteTrip(id){if(!can.delete())return toast('No permission','err');if(confirm('Delete this trip?')){const t=db.trips.find(x=>x.id===id);addAudit('Trips',t?.waybill||id,'Deleted',`${t?.driver||''}→${t?.dest||''}`,me?.email);db.trips=db.trips.filter(t=>t.id!==id);pushDB().then(()=>render());}}
+function deleteDriver(id){if(!can.delete())return toast('No permission','err');if(confirm('Delete driver?')){const d=db.drivers.find(x=>x.id===id);addAudit('Drivers',d?.truck||id,'Deleted',d?.name||'',me?.email);db.drivers=db.drivers.filter(d=>d.id!==id);pushDB().then(()=>render());}}
+function deleteCargo(id){if(!can.delete())return toast('No permission','err');if(confirm('Delete shipment?')){addAudit('Cargo',id,'Deleted','',me?.email);db.cargo=db.cargo.filter(c=>c.id!==id);pushDB().then(()=>render());}}
+function deleteFuel(id){if(!can.delete())return toast('No permission','err');if(confirm('Delete entry?')){const f=db.fuel.find(x=>x.id===id);addAudit('Fuel',f?.truck||id,'Deleted',f?.type||'',me?.email);db.fuel=db.fuel.filter(f=>f.id!==id);pushDB().then(()=>render());}}
+function deleteAllowance(id){if(!can.delete())return toast('No permission','err');if(confirm('Delete allowance?')){db.allowances=db.allowances.filter(a=>a.id!==id);pushDB().then(()=>render());}}
+function deleteDispatch(id){if(!can.delete())return toast('No permission','err');if(confirm('Delete dispatch order?')){db.dispatches=db.dispatches.filter(d=>d.id!==id);pushDB().then(()=>render());}}
+function dismissAlert(i){db.alerts.splice(i,1);pushDB().then(()=>render());}
+function clearAlerts(){if(!can.delete())return toast('No permission','err');if(confirm('Clear all?')){db.alerts=[];pushDB().then(()=>render());}}
+function deleteUser(email){if(!can.manage())return;if(email==='admin@nfaith.com')return toast('Cannot delete main admin','err');if(confirm('Delete user '+email+'?')){delete users[email];pushUsers();renderUsers();}}
+function regenCode(){if(!can.manage())return;db.regCode='NF'+Math.random().toString(36).substr(2,6).toUpperCase();pushDB().then(()=>render());toast('New code generated!','win');}
+
+// ════════════════════════════════════════════════════
+// WAYBILL
+// ════════════════════════════════════════════════════
+function buildWB(t,d){
+  const tlStages=t.timeline||[];
+  const stageIcons={departed:'🚀',atFactory:'🏭',waitingLine:'⏳',loading:'📦',inTransit:'🛣️',atCheckpoint:'🚔',delivered:'✅',rvLoading:'🔄',rvInTransit:'🔄',returned:'🏁',custom:'📝'};
+  return`<div class="wb" id="wb-print-area">
+    <div class="wb-hdr">
+      <div><div class="wb-co">N-FAITH LTD</div><div style="font-size:10px;color:#888;letter-spacing:1px">FREIGHT & CARGO OPERATIONS</div></div>
+      <div style="text-align:right">
+        <div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:1px">Waybill No.</div>
+        <div style="font-family:var(--fh);font-size:22px;font-weight:900">${t.waybill}</div>
+        <div style="font-size:11px;color:#888">${t.date}</div>
+        <div style="margin-top:5px;display:flex;gap:5px;justify-content:flex-end;flex-wrap:wrap">${sb(t.status)}${sb(t.tripType==='round'?'Round Trip':'One Way')}</div>
+      </div>
+    </div>
+    ${t.collectionProof?`<div class="wb-collected">
+      <div class="wb-collected-title">✅ CARGO COLLECTED — WAYBILL ISSUED</div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:12px">
+        <span>Waybill Code: <span class="code-badge">${t.collectionProof.code||'—'}</span></span>
+        <span>Collected by: <strong>${t.collectionProof.driver||'—'}</strong></span>
+        <span>At: ${t.collectionProof.time||'—'}</span>
+      </div>
+    </div>`:''}
+    <div class="wb-grid">
+      <div class="wb-box"><div class="wb-lbl">🏭 Pickup From</div><div class="wb-val">${t.pickupCompany||'—'}</div><div style="font-size:11px;color:#888">${t.origin||''}</div></div>
+      <div class="wb-box"><div class="wb-lbl">📍 Destination / Receiver</div><div class="wb-val">${t.dest}</div><div style="font-size:11px;color:#888">${t.client||''}</div></div>
+      <div class="wb-box"><div class="wb-lbl">🚛 Driver</div><div class="wb-val">${t.driver}</div><div style="font-size:11px;color:#888">License: ${d?.license||'—'}</div></div>
+      <div class="wb-box"><div class="wb-lbl">🚚 Truck & Plate</div><div class="wb-val">${t.truck}</div><div style="font-size:11px;color:#888">Plate: <strong>${d?.plate||'—'}</strong> | ${t.dist||0} km | Trip #${t.tripNo||'—'}</div></div>
+    </div>
+    <table class="wb-table">
+      <thead><tr><th>#</th><th>Description of Goods</th><th>Weight (kg)</th><th>Condition</th></tr></thead>
+      <tbody><tr><td>1</td><td>${t.cargo}</td><td>${Number(t.weight||0).toLocaleString()}</td><td>Good</td></tr></tbody>
+    </table>
+    ${t.reverseLoad==='yes'?`<div style="background:#d2f0e4;border:2px solid #0b7a52;border-radius:10px;padding:12px;margin-bottom:12px">
+      <div style="font-family:var(--fh);font-size:14px;font-weight:800;color:#0b7a52;margin-bottom:8px">🔄 REVERSE LOAD — RETURN TRIP CARGO</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;font-size:12px">
+        <div><div style="font-size:9px;text-transform:uppercase;color:#888;margin-bottom:2px">Return Pickup</div><strong>${t.rvPickup||'—'}</strong><div style="color:#888">${t.rvOrigin||''}</div></div>
+        <div><div style="font-size:9px;text-transform:uppercase;color:#888;margin-bottom:2px">Return Dest.</div><strong>${t.rvDest||'—'}</strong><div style="color:#888">${t.rvClient||''}</div></div>
+        <div><div style="font-size:9px;text-transform:uppercase;color:#888;margin-bottom:2px">Return Cargo</div><strong>${t.rvCargo||'—'}</strong><div style="color:#888">${t.rvWeight?Number(t.rvWeight).toLocaleString()+' kg':''}</div></div>
+      </div></div>`:`<div style="background:#f5f5f5;border:1px dashed #ccc;border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:12px;color:#999;text-align:center">↩ No Reverse Load — Empty Return</div>`}
+    ${tlStages.length?`<div style="background:#f8fbff;border:1px solid #b3d1ec;border-radius:8px;padding:12px;margin-bottom:12px">
+      <div style="font-family:var(--fh);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1558a8;margin-bottom:8px">⏱️ Trip Timeline</div>
+      ${tlStages.map(s=>`<div style="font-size:11px;margin-bottom:4px;display:flex;gap:8px"><span style="font-weight:600">${s.label}</span><span style="color:#888">${s.ts}</span>${s.note?`<span style="color:#555">— ${s.note}</span>`:''}</div>`).join('')}
+    </div>`:''}
+    ${t.notes?`<div style="background:#fef9ec;border:1px solid #f0c040;border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:12px"><strong>Notes:</strong> ${t.notes}</div>`:''}
+    <div class="wb-sigs">
+      <div><div class="wb-sig-line"></div><div class="wb-sig-lbl">Loaded By</div></div>
+      <div><div class="wb-sig-line"></div><div class="wb-sig-lbl">Driver Signature</div></div>
+      <div><div class="wb-sig-line"></div><div class="wb-sig-lbl">Received By</div></div>
+    </div>
+    <div style="text-align:center;font-size:10px;color:#aaa;margin-top:12px;border-top:1px dashed #ddd;padding-top:10px">N-FAITH LTD FreightOps · ${new Date().toLocaleString()}</div>
+  </div>`;
+}
+function viewWB(id){const t=db.trips.find(x=>x.id===id);if(!t)return;const d=db.drivers.find(x=>x.name===t.driver)||{};document.getElementById('wb-content').innerHTML=buildWB(t,d);document.getElementById('modal-wb').classList.add('open');}
+function printWB(){const c=document.getElementById('wb-print-area')?.outerHTML;if(!c)return;const w=window.open('','_blank');w.document.write(`<html><head><title>Waybill</title><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',sans-serif;padding:18px;background:#fff}.wb{max-width:720px;margin:0 auto;border:2px solid #b3d1ec;border-radius:12px;padding:20px}.wb-hdr{display:flex;justify-content:space-between;border-bottom:2px solid #1558a8;padding-bottom:12px;margin-bottom:14px}.wb-co{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#1558a8;letter-spacing:2px}.wb-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.wb-box{background:#f0f6fc;border:1px solid #b3d1ec;border-radius:8px;padding:10px}.wb-lbl{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:2px}.wb-val{font-size:13px;font-weight:600}.wb-table{width:100%;border-collapse:collapse;margin-bottom:12px}.wb-table th{background:#1558a8;color:#fff;padding:8px 10px;text-align:left;font-size:10px;letter-spacing:1px;text-transform:uppercase}.wb-table td{padding:8px 10px;border-bottom:1px solid #eee;font-size:12px}.wb-sigs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:14px;padding-top:12px;border-top:2px dashed #ccc}.wb-sig-line{border-bottom:1.5px solid #333;height:32px;margin-bottom:4px}.wb-sig-lbl{font-size:9px;text-transform:uppercase;text-align:center;color:#888}.wb-collected{background:#d2f0e4;border:2px solid #0b7a52;border-radius:8px;padding:12px;margin-bottom:12px}.wb-collected-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:#0b7a52;margin-bottom:6px}.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}.bg-g{background:#d2f0e4;color:#0b7a52}.bg-b{background:#e3eef9;color:#1558a8}.bg-r{background:#fce8e6;color:#b52b1e}.bg-o{background:#fdebd2;color:#c96b0a}.bg-t{background:#ccf2f8;color:#0e7490}.bg-p{background:#ece8fc;color:#5433a8}.code-badge{background:#fef3c7;border:1px solid #f0d070;border-radius:4px;padding:2px 8px;font-family:monospace;font-size:11px;font-weight:700;color:#92400e}</style></head><body>${c}<script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close();}
+function printWBDirect(id){const t=db.trips.find(x=>x.id===id);if(!t)return;const d=db.drivers.find(x=>x.name===t.driver)||{};document.getElementById('wb-content').innerHTML=buildWB(t,d);printWB();}
+
+// ════════════════════════════════════════════════════
+// EXPORT
+// ════════════════════════════════════════════════════
+function exportCSV(){
+  const m=document.createElement('div');m.style.cssText='position:fixed;inset:0;background:rgba(10,31,53,.55);backdrop-filter:blur(5px);z-index:300;display:flex;align-items:center;justify-content:center';
+  m.innerHTML=`<div style="background:#fff;border-radius:14px;padding:24px;width:380px;box-shadow:var(--shl)">
+    <h3 style="font-family:var(--fh);font-size:19px;color:var(--accent);margin-bottom:4px;letter-spacing:1px">DOWNLOAD REPORT</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">All files open in Excel.</p>
+    <div style="display:flex;flex-direction:column;gap:7px">
+      <button onclick="dlCSV('trips')" style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:9px 13px;text-align:left;cursor:pointer;font-size:13px;color:var(--text)">🚛 <strong>Trips</strong> — All trips, timeline & reverse loads</button>
+      <button onclick="dlCSV('allowances')" style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:9px 13px;text-align:left;cursor:pointer;font-size:13px;color:var(--text)">💰 <strong>Allowances</strong> — Trip & checkpoint money</button>
+      <button onclick="dlCSV('fuel')" style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:9px 13px;text-align:left;cursor:pointer;font-size:13px;color:var(--text)">⛽ <strong>Fuel & Maintenance</strong></button>
+      <button onclick="dlCSV('drivers')" style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:9px 13px;text-align:left;cursor:pointer;font-size:13px;color:var(--text)">👤 <strong>Drivers</strong> — License, plate, grantor</button>
+      <button onclick="dlCSV('dispatches')" style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:9px 13px;text-align:left;cursor:pointer;font-size:13px;color:var(--text)">📋 <strong>Dispatch Orders</strong></button>
+      <button onclick="dlCSV('audit')" style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:9px 13px;text-align:left;cursor:pointer;font-size:13px;color:var(--text)">📋 <strong>Audit Log</strong> — Every change & who made it</button>
+      <button onclick="dlCSV('all')" style="background:var(--accent);border:none;border-radius:8px;padding:9px 13px;text-align:left;cursor:pointer;font-size:13px;color:#fff;font-weight:600">⬇ <strong>Download ALL</strong></button>
+    </div>
+    <button onclick="this.closest('div[style]').remove()" style="margin-top:12px;width:100%;background:transparent;border:1.5px solid var(--border);border-radius:8px;padding:8px;cursor:pointer;font-size:13px;color:var(--muted)">Cancel</button>
+  </div>`;
+  document.body.appendChild(m);m.addEventListener('click',e=>{if(e.target===m)m.remove();});
+}
+function toCSV(h,rows){return[h,...rows].map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');}
+function dlFile(n,c){const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(c);a.download=n;a.click();}
+function dlCSV(type){
+  const d=new Date().toISOString().split('T')[0];
+  const pOf=truck=>db.drivers.find(d=>d.truck===truck)?.plate||'';
+  const lastStage=t=>t.timeline?.length?(t.timeline[t.timeline.length-1].label+' @ '+t.timeline[t.timeline.length-1].ts):'—';
+  if(type==='trips'||type==='all') dlFile(`nfaith-trips-${d}.csv`,toCSV(['Waybill','Trip No','Trip Type','Driver','Truck','Plate','Pickup Co','Origin','Destination','Cargo','Client','Weight kg','Distance km','Priority','Status','Last Stage','Collected','Collection Code','Return Location','Reverse Load','Return Pickup','Return Dest','Return Cargo','Return Weight','Trip Date','Entered By','System Entry Time','Backdated','Backdated By','Backdated At','Backdate Reason','Notes'],db.trips.map(t=>[t.waybill,t.tripNo||'',t.tripType,t.driver,t.truck,pOf(t.truck),t.pickupCompany||'',t.origin,t.dest,t.cargo,t.client||'',t.weight||0,t.dist,t.priority||'',t.status,lastStage(t),t.collectionProof?'Yes':'No',t.collectionProof?.code||'',t.returnLocation||'',t.reverseLoad==='yes'?'Yes':'No',t.rvPickup||'',t.rvDest||'',t.rvCargo||'',t.rvWeight||0,t.date,t.enteredByName||(t.enteredBy||'').split('@')[0],t.systemEntryTime||'',t.backdated?'Yes':'No',t.backdatedBy||'',t.backdatedAt||'',t.backdatedReason||'',t.notes||''])));
+  if(type==='allowances'||type==='all') dlFile(`nfaith-allowances-${d}.csv`,toCSV(['Date','Driver','Truck','Waybill','Trip Allowance GHS','Police Checkpoint GHS','Other GHS','Other Description','Total GHS','Paid By','Entered By','System Entry Time','Backdated','Backdated By','Backdated At','Backdate Reason','Notes'],db.allowances.map(a=>[a.date,a.driver,a.truck,a.waybill||'',a.tripAllowance||0,a.policeCheckpoint||0,a.other||0,a.otherDesc||'',a.total||0,a.paidBy||'',a.enteredByName||'',a.systemEntryTime||'',a.backdated?'Yes':'No',a.backdatedBy||'',a.backdatedAt||'',a.backdatedReason||'',a.notes||''])));
+  if(type==='fuel'||type==='all') dlFile(`nfaith-fuel-${d}.csv`,toCSV(['Truck','Driver','Type','Qty Litres','Price Per Litre GHS','Total GHS','Date','Next Service(km)','Entered By','Entry Time','Notes'],db.fuel.map(f=>[f.truck,f.driver,f.type,f.amount,f.pricePerLitre||'',f.cost,f.date,f.nextService||'',f.enteredBy||'',f.entryTime||'',f.notes||''])));
+  if(type==='drivers'||type==='all') dlFile(`nfaith-drivers-${d}.csv`,toCSV(['Name','Truck','Plate','Phone','Status','License','Class','Expiry','Grantor Name','Grantor Phone','Relationship','Total Trips'],db.drivers.map(d=>[d.name,d.truck,d.plate||'',d.phone,d.status,d.license||'',d.licenseClass||'',d.licenseExpiry||'',d.grantorName||'',d.grantorPhone||'',d.grantorRel||'',db.trips.filter(t=>t.driver===d.name).length])));
+  if(type==='dispatches'||type==='all') dlFile(`nfaith-dispatch-${d}.csv`,toCSV(['Ref No','Date','Client','Contact','Waybill','Invoice','Priority','Manager','Sign-off','Notes'],db.dispatches.map(d=>[d.id,d.date,d.client,d.contact||'',d.waybill||'',d.invoice||'',d.priority,d.manager||'',d.signoff,d.notes||''])));
+  if(type==='audit'||type==='all'){if(!db.audit?.length)return toast('No audit entries yet','err');dlFile(`nfaith-audit-${d}.csv`,toCSV(['Section','Record ID','Action','Details','By','Date','Time'],db.audit.map(a=>[a.section,a.recordId,a.action,a.details,a.by||'',a.date,a.time])));}
+  document.querySelector('div[style*="backdrop-filter"]')?.remove();
+  toast('✅ Downloaded! Open in Excel.','win');
+}
+
+// ════════════════════════════════════════════════════
+// PASSWORD HELPERS
+// ════════════════════════════════════════════════════
+function togglePwd(inputId, btnId) {
+  const inp = document.getElementById(inputId);
+  const btn = document.getElementById(btnId);
+  if (!inp) return;
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    if (btn) btn.textContent = '🙈';
+  } else {
+    inp.type = 'password';
+    if (btn) btn.textContent = '👁️';
+  }
+}
+
+function checkStrength(inputId, containerId) {
+  const val = document.getElementById(inputId)?.value || '';
+  const wrap = document.getElementById(containerId);
+  if (!wrap) return;
+  if (!val) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+
+  // Score criteria
+  const hasLen   = val.length >= 8;
+  const hasUpper = /[A-Z]/.test(val);
+  const hasNum   = /[0-9]/.test(val);
+  const hasSym   = /[^A-Za-z0-9]/.test(val);
+  const hasMin   = val.length >= 6;
+  let score = 0;
+  if (hasMin)   score++;
+  if (hasLen)   score++;
+  if (hasNum)   score++;
+  if (hasSym)   score++;
+
+  // Determine prefix (u- or cp-)
+  const pre = containerId.split('-')[0] + '-';
+
+  const colors   = ['','#b52b1e','#c96b0a','#1558a8','#0b7a52'];
+  const labels   = ['','Too weak','Could be stronger','Good password','Strong password ✅'];
+  const barClrs  = [
+    'var(--border)',
+    score >= 1 ? colors[score] : 'var(--border)',
+    score >= 2 ? colors[score] : 'var(--border)',
+    score >= 3 ? colors[score] : 'var(--border)',
+    score >= 4 ? colors[score] : 'var(--border)',
+  ];
+
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById(pre + 's' + i);
+    if (el) el.style.background = i <= score ? colors[score] : 'var(--border)';
+  }
+
+  const lbl = document.getElementById(pre + 's-label');
+  if (lbl) { lbl.textContent = labels[score] || ''; lbl.style.color = colors[score] || 'var(--muted)'; }
+
+  // Tips
+  const missing = [];
+  if (!hasMin)   missing.push('at least 6 characters');
+  if (!hasLen)   missing.push('8+ characters recommended');
+  if (!hasUpper) missing.push('an uppercase letter (A-Z)');
+  if (!hasNum)   missing.push('a number (0-9)');
+  if (!hasSym)   missing.push('a symbol (!@#$%^&*)');
+  const tips = document.getElementById(pre + 's-tips');
+  if (tips) tips.textContent = missing.length && score < 4 ? '💡 Add: ' + missing.slice(0,2).join(', ') : '';
+}
+
+function toast(msg,type='ok'){const el=document.getElementById('toast');el.textContent=msg;el.className=`toast t${type} show`;setTimeout(()=>el.classList.remove('show'),3200);}
+
+// ════════════════════════════════════════════════════
+// INIT — runs when page loads
+// ════════════════════════════════════════════════════
+
+// STEP 1: Always seed admin into memory immediately — before anything else
+// This means admin@nfaith.com / admin123 ALWAYS works no matter what
+seedUsers();
+seedDB();
+
+// STEP 2: Try to load saved data from storage (non-blocking)
+// If storage fails or is empty, the seeded data above is used
+(async () => {
+  try {
+    const ur = await window.storage.get(USERS_KEY, true);
+    if (ur && ur.value) {
+      const loaded = JSON.parse(ur.value);
+      // Merge — always keep admin account, add any extra accounts
+      const admin = users['admin@nfaith.com'];
+      users = loaded;
+      // Never let storage remove the admin account
+      if (!users['admin@nfaith.com']) users['admin@nfaith.com'] = admin;
+    }
+  } catch(e) {
+    try {
+      const ul = localStorage.getItem(USERS_KEY);
+      if (ul) {
+        const loaded = JSON.parse(ul);
+        const admin = users['admin@nfaith.com'];
+        users = loaded;
+        if (!users['admin@nfaith.com']) users['admin@nfaith.com'] = admin;
+      }
+    } catch(e2) { /* keep seeded users */ }
+  }
+
+  try {
+    const dr = await window.storage.get(DB_KEY, true);
+    if (dr && dr.value) { db = JSON.parse(dr.value); lastHash = dr.value; }
+    else {
+      const dl = localStorage.getItem(DB_KEY);
+      if (dl) { db = JSON.parse(dl); lastHash = dl; }
+    }
+  } catch(e) {
+    try {
+      const dl = localStorage.getItem(DB_KEY);
+      if (dl) { db = JSON.parse(dl); lastHash = dl; }
+    } catch(e2) { /* keep seeded db */ }
+  }
+
+  // STEP 3: Check for a saved login session
+  try {
+    const saved = localStorage.getItem(SESS_KEY);
+    if (saved) {
+      const s = JSON.parse(saved);
+      if (s && s.email && users[s.email]) {
+        me = s;
+        launchApp();
+        return;
+      }
+      localStorage.removeItem(SESS_KEY);
+    }
+  } catch(e) {
+    localStorage.removeItem(SESS_KEY);
+  }
+})();
+
+// Keyboard shortcuts for login
+document.getElementById('l-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('l-email').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('l-pass').focus(); });
+
+</script>
+</body>
+</html>
