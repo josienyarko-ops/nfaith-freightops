@@ -260,7 +260,7 @@ tbody td{padding:10px 13px;font-size:13px;}
     <button class="lbtn" onclick="doLogin()">Sign In →</button>
     <div style="margin-top:14px;background:var(--goldbg);border:1.5px solid #f0d070;border-radius:9px;padding:14px;font-size:13px;color:#92400e;line-height:1.6;">
       <strong>Default Admin Login:</strong><br>
-      📧 Email: <strong>admin@nfaith.com</strong><br>
+      📧 Email: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="09686d64606749676f68607d61276a6664">[email&#160;protected]</a></strong><br>
       🔑 Password: <strong>admin123</strong><br>
       <span style="font-size:11px;opacity:.8;">Change your password after first login via the 🔑 icon in the header.</span>
     </div>
@@ -901,15 +901,14 @@ tbody td{padding:10px 13px;font-size:13px;}
 
 <div class="toast" id="toast"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ════════════════════════════════════════════════════
 // CONSTANTS & STATE
 // ════════════════════════════════════════════════════
-const DB_KEY='nfaith-db-v5', USERS_KEY='nfaith-users-v5', SESS_KEY='nfaith-sess-v5';
 let db={trips:[],drivers:[],cargo:[],fuel:[],alerts:[],audit:[],allowances:[],dispatches:[],tripN:1,cargoN:1,dispN:1,regCode:'NFAITH2024'};
 let users={};
 let me=null;
-let syncTick=null, lastHash='';
+// syncTick, lastHash, SESS_KEY declared in Firebase block below
 
 const LEVELS={admin:4,manager:3,office:2,driver:1};
 const can={
@@ -926,37 +925,146 @@ const can={
 function myTrips(){return can.isDriver()?db.trips.filter(t=>t.driver===me.driverName):db.trips;}
 
 // ════════════════════════════════════════════════════
-// STORAGE
+// FIREBASE CONFIG — Free Realtime Database
 // ════════════════════════════════════════════════════
+// Using a shared Firebase project for N-FAITH LTD
+const FIREBASE_URL = 'https://n-faith-default-rtdb.firebaseio.com';
+const SESS_KEY = 'nfaith-sess-v5';
+let syncTick = null;
+let lastHash = '';
+
+// ── Firebase helpers (REST API — no SDK needed) ──
+async function fbGet(path){
+  try{
+    const r = await fetch(`${FIREBASE_URL}/${path}.json`);
+    if(!r.ok) return null;
+    return await r.json();
+  }catch(e){ return null; }
+}
+async function fbSet(path, data){
+  try{
+    const r = await fetch(`${FIREBASE_URL}/${path}.json`, {
+      method:'PUT',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+    });
+    return r.ok;
+  }catch(e){ return false; }
+}
+
+// ── Load & Save ──────────────────────────────────
 async function loadAll(){
-  // Always try shared storage first for users so new accounts are always available
+  // Load users from Firebase
   try{
-    const ur=await window.storage.get(USERS_KEY,true);
-    if(ur?.value){ users=JSON.parse(ur.value); localStorage.setItem(USERS_KEY,ur.value); }
-    else{ seedUsers(); await pushUsers(); }
-  } catch(e){
-    const ul=localStorage.getItem(USERS_KEY);
-    if(ul) users=JSON.parse(ul); else seedUsers();
+    const u = await fbGet('users');
+    if(u){ users = u; localStorage.setItem('nf-users', JSON.stringify(u)); }
+    else{
+      const ul = localStorage.getItem('nf-users');
+      if(ul) users = JSON.parse(ul);
+    }
+  }catch(e){
+    const ul = localStorage.getItem('nf-users');
+    if(ul) try{ users = JSON.parse(ul); }catch(e2){}
   }
+  // Always ensure admin exists
+  if(!users['admin_nfaith_com']){
+    users['admin_nfaith_com'] = {email:'admin@nfaith.com',name:'Administrator',password:'admin123',role:'admin',driverName:'',createdBy:'system'};
+    await pushUsers();
+  }
+
+  // Load DB from Firebase
   try{
-    const dr=await window.storage.get(DB_KEY,true);
-    if(dr?.value){ db=JSON.parse(dr.value); lastHash=dr.value; }
-    else{ seedDB(); await pushDB(); }
-  } catch(e){
-    const dl=localStorage.getItem(DB_KEY);
-    if(dl){ db=JSON.parse(dl); lastHash=dl; } else seedDB();
+    const d = await fbGet('db');
+    if(d){ db = d; lastHash = JSON.stringify(d); localStorage.setItem('nf-db', JSON.stringify(d)); }
+    else{
+      const dl = localStorage.getItem('nf-db');
+      if(dl){ db = JSON.parse(dl); lastHash = dl; }
+      else{ seedDB(); await pushDB(); }
+    }
+  }catch(e){
+    const dl = localStorage.getItem('nf-db');
+    if(dl){ try{ db = JSON.parse(dl); lastHash = dl; }catch(e2){ seedDB(); } }
+    else seedDB();
   }
 }
-async function pushDB(){setSyncing(true);const p=JSON.stringify(db);try{await window.storage.set(DB_KEY,p,true);localStorage.setItem(DB_KEY,p);lastHash=p;setSyncing(false,true);}catch(e){localStorage.setItem(DB_KEY,p);setSyncing(false,false);}}
-async function pushUsers(){const p=JSON.stringify(users);try{await window.storage.set(USERS_KEY,p,true);}catch(e){}localStorage.setItem(USERS_KEY,p);}
-async function syncNow(){setSyncing(true);try{const[dr,ur]=await Promise.all([window.storage.get(DB_KEY,true),window.storage.get(USERS_KEY,true)]);let ch=false;if(dr?.value&&dr.value!==lastHash){db=JSON.parse(dr.value);lastHash=dr.value;ch=true;}if(ur?.value)users=JSON.parse(ur.value);setSyncing(false,true);if(ch){render();toast('✅ Refreshed!','win');}else toast('Up to date!');}catch(e){setSyncing(false,false);toast('Sync failed','err');}}
-function startSync(){if(syncTick)clearInterval(syncTick);syncTick=setInterval(async()=>{try{const r=await window.storage.get(DB_KEY,true);if(r?.value&&r.value!==lastHash){db=JSON.parse(r.value);lastHash=r.value;render();toast('🔄 Updated by team!');}}catch(e){}},15000);}
-function setSyncing(on,ok=true){const d=document.getElementById('sdot'),s=document.getElementById('sstat');if(!d)return;if(on){d.classList.add('syncing');s.textContent='Syncing…';}else{d.classList.remove('syncing');s.textContent=ok?'Live ✓':'Local';d.style.background=ok?'#6ee7b7':'#fcd34d';}}
+
+async function pushDB(){
+  setSyncing(true);
+  const payload = JSON.stringify(db);
+  localStorage.setItem('nf-db', payload);
+  const ok = await fbSet('db', db);
+  lastHash = payload;
+  setSyncing(false, ok);
+  if(!ok) toast('Saved locally — sync when online','');
+}
+
+async function pushUsers(){
+  localStorage.setItem('nf-users', JSON.stringify(users));
+  await fbSet('users', users);
+}
+
+async function syncNow(){
+  setSyncing(true);
+  try{
+    const [d, u] = await Promise.all([fbGet('db'), fbGet('users')]);
+    let changed = false;
+    if(d){
+      const h = JSON.stringify(d);
+      if(h !== lastHash){ db = d; lastHash = h; localStorage.setItem('nf-db', h); changed = true; }
+    }
+    if(u){
+      const admin = users['admin_nfaith_com'];
+      users = u;
+      if(!users['admin_nfaith_com']) users['admin_nfaith_com'] = admin;
+      localStorage.setItem('nf-users', JSON.stringify(users));
+    }
+    setSyncing(false, true);
+    if(changed){ render(); toast('✅ Data refreshed!','win'); }
+    else toast('Already up to date!');
+  }catch(e){
+    setSyncing(false, false);
+    toast('Sync failed — check internet connection','err');
+  }
+}
+
+function startSync(){
+  if(syncTick) clearInterval(syncTick);
+  // Poll Firebase every 10 seconds for changes from other users
+  syncTick = setInterval(async()=>{
+    try{
+      const d = await fbGet('db');
+      if(d){
+        const h = JSON.stringify(d);
+        if(h !== lastHash){
+          db = d; lastHash = h;
+          localStorage.setItem('nf-db', h);
+          render();
+          toast('🔄 Updated by your team!');
+        }
+      }
+    }catch(e){}
+  }, 10000);
+}
+
+function setSyncing(on,ok=true){
+  const dot=document.getElementById('sdot'), st=document.getElementById('sstat');
+  if(!dot) return;
+  if(on){ dot.classList.add('syncing'); st.textContent='Syncing…'; }
+  else{ dot.classList.remove('syncing'); st.textContent=ok?'Live ✓':'Local only'; dot.style.background=ok?'#6ee7b7':'#fcd34d'; }
+}
+
+// ── Key helper: Firebase keys can't have . in them ──
+// So we store users with email dots replaced by _
+function emailToKey(email){ return email.replace(/\./g,'_').replace(/@/g,'_at_'); }
+function keyToEmail(key){ return key.replace(/_at_/g,'@').replace(/_/g,'.'); }
 
 // ════════════════════════════════════════════════════
 // SEED
 // ════════════════════════════════════════════════════
-function seedUsers(){users={'admin@nfaith.com':{name:'Administrator',password:'admin123',role:'admin',driverName:'',createdBy:'system'}};}
+function seedUsers(){
+  users = {};
+  users['admin_at_nfaith_com'] = {email:'admin@nfaith.com',name:'Administrator',password:'admin123',role:'admin',driverName:'',createdBy:'system'};
+}
 function seedDB(){
   const t=new Date().toISOString().split('T')[0];
   db.regCode='NFAITH2024';
@@ -1001,66 +1109,54 @@ function seedDB(){
 // AUTH
 // ════════════════════════════════════════════════════
 function doLogin(){
-  // Get values directly
-  const email = (document.getElementById('l-email').value || '').trim().toLowerCase();
-  const pass  = (document.getElementById('l-pass').value || '');
+  const email = (document.getElementById('l-email').value||'').trim().toLowerCase();
+  const pass  = (document.getElementById('l-pass').value||'');
   const errEl = document.getElementById('lerr');
   errEl.style.display = 'none';
 
-  if(!email){ errEl.textContent = 'Please type your email address.'; errEl.style.display='block'; return; }
-  if(!pass){  errEl.textContent = 'Please type your password.';       errEl.style.display='block'; return; }
+  if(!email){ errEl.textContent='Please type your email address.'; errEl.style.display='block'; return; }
+  if(!pass){  errEl.textContent='Please type your password.';       errEl.style.display='block'; return; }
 
-  // Always make sure admin exists — hardcoded, never changes
-  users['admin@nfaith.com'] = users['admin@nfaith.com'] || {name:'Administrator',password:'admin123',role:'admin',driverName:'',createdBy:'system'};
-
-  // Special case: if somehow admin password was changed and they're locked out
-  if(email === 'admin@nfaith.com' && !users['admin@nfaith.com'].password){
-    users['admin@nfaith.com'].password = 'admin123';
+  // Always ensure admin exists
+  const adminKey = 'admin_at_nfaith_com';
+  if(!users[adminKey]){
+    users[adminKey] = {email:'admin@nfaith.com',name:'Administrator',password:'admin123',role:'admin',driverName:'',createdBy:'system'};
   }
 
-  const u = users[email];
+  // Look up user by key
+  const key = emailToKey(email);
+  const u = users[key];
 
   if(!u){
-    errEl.textContent = '❌ Email not found: ' + email + '. Try admin@nfaith.com';
-    errEl.style.display='block';
+    errEl.textContent = '❌ No account found for: ' + email + '. Check spelling or contact admin.';
+    errEl.style.display = 'block';
     return;
   }
   if(u.password !== pass){
-    errEl.textContent = '❌ Wrong password for ' + email + '. Passwords are case-sensitive.';
-    errEl.style.display='block';
+    errEl.textContent = '❌ Wrong password. Passwords are case-sensitive. Try again.';
+    errEl.style.display = 'block';
     return;
   }
 
-  // Logged in!
   me = {email:email, name:u.name, role:u.role, driverName:u.driverName||''};
   try{ localStorage.setItem(SESS_KEY, JSON.stringify(me)); }catch(e){}
 
-  // Clear the form
   document.getElementById('l-email').value = '';
   document.getElementById('l-pass').value  = '';
   errEl.style.display = 'none';
-
   launchApp();
 }
 function showLErr(msg){const el=document.getElementById('lerr');el.textContent=msg;el.style.display='block';}
 
 async function refreshAndLogin(){
-  // Always keep admin in memory first
-  if(!users['admin@nfaith.com']){
-    users['admin@nfaith.com']={name:'Administrator',password:'admin123',role:'admin',driverName:'',createdBy:'system'};
-  }
-  const adminBackup = users['admin@nfaith.com'];
+  const adminKey = 'admin_at_nfaith_com';
+  const adminBackup = users[adminKey] || {email:'admin@nfaith.com',name:'Administrator',password:'admin123',role:'admin',driverName:'',createdBy:'system'};
   try{
-    const ur=await window.storage.get(USERS_KEY,true);
-    if(ur?.value){
-      users=JSON.parse(ur.value);
-      localStorage.setItem(USERS_KEY,ur.value);
-    }
-  }catch(e){
-    try{const ul=localStorage.getItem(USERS_KEY);if(ul)users=JSON.parse(ul);}catch(e2){}
-  }
-  // Always ensure admin is present after any storage load
-  if(!users['admin@nfaith.com']) users['admin@nfaith.com']=adminBackup;
+    const u = await fbGet('users');
+    if(u){ users = u; localStorage.setItem('nf-users', JSON.stringify(u)); }
+    else{ const ul=localStorage.getItem('nf-users'); if(ul) try{users=JSON.parse(ul);}catch(e){} }
+  }catch(e){ try{const ul=localStorage.getItem('nf-users');if(ul)users=JSON.parse(ul);}catch(e2){} }
+  if(!users[adminKey]) users[adminKey] = adminBackup;
   doLogin();
 }
 function doLogout(){
@@ -1075,7 +1171,7 @@ function doLogout(){
   const eye=document.getElementById('l-eye');if(eye)eye.textContent='👁️';
   document.getElementById('lerr').style.display='none';
 }
-function changePassword(){const old=document.getElementById('cp-old').value,nw=document.getElementById('cp-new').value,conf=document.getElementById('cp-conf').value;if(users[me.email].password!==old)return toast('Current password incorrect','err');if(!nw||nw.length<6)return toast('Minimum 6 characters','err');if(nw!==conf)return toast('Passwords do not match','err');users[me.email].password=nw;pushUsers();closeModal('chpwd');toast('✅ Password updated!','win');}
+// changePassword defined below with key-based system
 
 function launchApp(){
   document.getElementById('login-screen').style.display='none';
@@ -1411,20 +1507,22 @@ function renderUsers(){
   if(!can.manage()){grid.innerHTML=`<div style="background:var(--rbg);border:1px solid var(--red);border-radius:10px;padding:16px;text-align:center;color:var(--red)">🔒 Admin access required.</div>`;return;}
   document.getElementById('codeval').textContent=db.regCode||'—';
   const rc={admin:'#92400e',manager:'#065f46',driver:'#1e40af',office:'#5433a8'};
-  grid.innerHTML=Object.entries(users).map(([email,u])=>`
-    <div class="ucard">
-      <div class="uavbig" style="background:${rc[u.role]||'#555'}">${(u.name||email).charAt(0).toUpperCase()}</div>
+  grid.innerHTML=Object.entries(users).map(([key,u])=>{
+    const displayEmail = u.email || keyToEmail(key);
+    return `<div class="ucard">
+      <div class="uavbig" style="background:${rc[u.role]||'#555'}">${(u.name||displayEmail).charAt(0).toUpperCase()}</div>
       <div style="flex:1;min-width:0">
-        <div style="font-weight:700;font-size:14px">${u.name}</div>
-        <div style="font-size:11px;color:var(--muted)">${email}</div>
+        <div style="font-weight:700;font-size:14px">${u.name||'—'}</div>
+        <div style="font-size:11px;color:var(--muted)">${displayEmail}</div>
         ${u.driverName?`<div style="font-size:11px;color:var(--muted)">🚛 ${u.driverName}</div>`:''}
         <div style="margin-top:5px"><span class="rp rp-${u.role}">${u.role}</span></div>
       </div>
       <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end">
-        <button class="btn be bsm" onclick="editUser('${email}')">✏️</button>
-        ${email!=='admin@nfaith.com'?`<button class="btn bd bsm" onclick="deleteUser('${email}')">✕</button>`:'<span style="font-size:10px;color:var(--muted)">Protected</span>'}
+        <button class="btn be bsm" onclick="editUser('${key}')">✏️</button>
+        ${key!=='admin_at_nfaith_com'?`<button class="btn bd bsm" onclick="deleteUser('${key}')">✕</button>`:'<span style="font-size:10px;color:var(--muted)">Protected</span>'}
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function updateStats(){
@@ -1787,12 +1885,17 @@ function editDispatch(id){
   document.getElementById('dp-notes').value=d.notes||'';
   document.getElementById('modal-dispatch').classList.add('open');
 }
-function editUser(email){
-  if(!can.manage())return;const u=users[email];if(!u)return;
-  document.getElementById('u-eid').value=email;document.getElementById('user-m-title').textContent='Edit User';
-  document.getElementById('u-name').value=u.name;document.getElementById('u-email').value=email;
-  document.getElementById('u-pass').value='';document.getElementById('u-role').value=u.role;
-  populateSels();document.getElementById('u-driver').value=u.driverName||'';
+function editUser(key){
+  if(!can.manage())return;
+  const u=users[key];if(!u)return;
+  document.getElementById('u-eid').value=key;
+  document.getElementById('user-m-title').textContent='Edit User';
+  document.getElementById('u-name').value=u.name||'';
+  document.getElementById('u-email').value=u.email||keyToEmail(key);
+  document.getElementById('u-pass').value='';
+  document.getElementById('u-role').value=u.role||'driver';
+  populateSels();
+  document.getElementById('u-driver').value=u.driverName||'';
   document.getElementById('modal-user').classList.add('open');
 }
 
@@ -1997,36 +2100,35 @@ function saveAlert(){
 
 function saveUser(){
   if(!can.manage())return;
-  const name=document.getElementById('u-name').value.trim();
-  const email=document.getElementById('u-email').value.trim().toLowerCase();
-  const pass=document.getElementById('u-pass').value;
-  const role=document.getElementById('u-role').value;
-  const driverName=document.getElementById('u-driver').value;
-  const eid=document.getElementById('u-eid').value;
-  if(!name||!email)return toast('Name and email required','err');
-  if(!email.includes('@'))return toast('Please enter a valid email address','err');
+  const name  = document.getElementById('u-name').value.trim();
+  const email = document.getElementById('u-email').value.trim().toLowerCase();
+  const pass  = document.getElementById('u-pass').value;
+  const role  = document.getElementById('u-role').value;
+  const driverName = document.getElementById('u-driver').value;
+  const eid   = document.getElementById('u-eid').value; // this is the key
+  if(!name||!email) return toast('Name and email required','err');
+  if(!email.includes('@')) return toast('Please enter a valid email address','err');
+  const key = emailToKey(email);
   if(eid){
-    // Editing existing user
-    const target=eid;
-    users[target].name=name;
-    users[target].role=role;
-    users[target].driverName=driverName||'';
-    if(pass&&pass.length>=6) users[target].password=pass;
-    else if(pass&&pass.length>0&&pass.length<6) return toast('Password must be at least 6 characters','err');
-    // Handle email change
-    if(target!==email&&!users[email]){
-      users[email]={...users[target]};
-      delete users[target];
+    // Editing — eid is the old key
+    if(!users[eid]) return toast('User not found','err');
+    users[eid].name = name;
+    users[eid].role = role;
+    users[eid].driverName = driverName||'';
+    users[eid].email = email;
+    if(pass && pass.length >= 6) users[eid].password = pass;
+    else if(pass && pass.length > 0) return toast('Password must be at least 6 characters','err');
+    // Handle email/key change
+    if(eid !== key){
+      users[key] = {...users[eid]};
+      delete users[eid];
     }
-    pushUsers().then(()=>{renderUsers();toast('✅ User updated! They can now sign in with: '+email);});
+    pushUsers().then(()=>{ renderUsers(); toast('✅ User updated!'); });
   } else {
-    if(!pass||pass.length<6)return toast('Password must be at least 6 characters','err');
-    if(users[email])return toast('This email is already registered','err');
-    users[email]={name,password:pass,role,driverName:driverName||'',createdBy:me?.email,createdAt:new Date().toISOString()};
-    pushUsers().then(()=>{
-      renderUsers();
-      toast('✅ Account created! '+name+' can now log in with: '+email,'win');
-    });
+    if(!pass || pass.length < 6) return toast('Password must be at least 6 characters','err');
+    if(users[key]) return toast('This email is already registered','err');
+    users[key] = {email,name,password:pass,role,driverName:driverName||'',createdBy:me?.email,createdAt:new Date().toISOString()};
+    pushUsers().then(()=>{ renderUsers(); toast('✅ Account created! '+name+' can now log in with: '+email,'win'); });
   }
   closeModal('user');
 }
@@ -2042,8 +2144,28 @@ function deleteAllowance(id){if(!can.delete())return toast('No permission','err'
 function deleteDispatch(id){if(!can.delete())return toast('No permission','err');if(confirm('Delete dispatch order?')){db.dispatches=db.dispatches.filter(d=>d.id!==id);pushDB().then(()=>render());}}
 function dismissAlert(i){db.alerts.splice(i,1);pushDB().then(()=>render());}
 function clearAlerts(){if(!can.delete())return toast('No permission','err');if(confirm('Clear all?')){db.alerts=[];pushDB().then(()=>render());}}
-function deleteUser(email){if(!can.manage())return;if(email==='admin@nfaith.com')return toast('Cannot delete main admin','err');if(confirm('Delete user '+email+'?')){delete users[email];pushUsers();renderUsers();}}
+function deleteUser(key){
+  if(!can.manage())return;
+  if(key==='admin_at_nfaith_com')return toast('Cannot delete the main admin','err');
+  const u=users[key];
+  if(confirm('Delete user '+(u?.email||key)+'?')){
+    delete users[key]; pushUsers(); renderUsers();
+  }
+}
 function regenCode(){if(!can.manage())return;db.regCode='NF'+Math.random().toString(36).substr(2,6).toUpperCase();pushDB().then(()=>render());toast('New code generated!','win');}
+
+function changePassword(){
+  const old=document.getElementById('cp-old').value;
+  const nw=document.getElementById('cp-new').value;
+  const conf=document.getElementById('cp-conf').value;
+  const key=emailToKey(me.email);
+  if(!users[key])return toast('Session error — please log out and back in','err');
+  if(users[key].password!==old)return toast('Current password is incorrect','err');
+  if(!nw||nw.length<6)return toast('New password must be at least 6 characters','err');
+  if(nw!==conf)return toast('Passwords do not match','err');
+  users[key].password=nw;
+  pushUsers();closeModal('chpwd');toast('✅ Password updated!','win');
+}
 
 // ════════════════════════════════════════════════════
 // WAYBILL
@@ -2212,69 +2334,59 @@ function toast(msg,type='ok'){const el=document.getElementById('toast');el.textC
 // ════════════════════════════════════════════════════
 // INIT — runs when page loads
 // ════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════
 
-// STEP 1: Always seed admin into memory immediately — before anything else
-// This means admin@nfaith.com / admin123 ALWAYS works no matter what
+// STEP 1: Seed defaults immediately so login always works
 seedUsers();
 seedDB();
 
-// STEP 2: Try to load saved data from storage (non-blocking)
-// If storage fails or is empty, the seeded data above is used
+// STEP 2: Load real data from Firebase in background
 (async () => {
-  try {
-    const ur = await window.storage.get(USERS_KEY, true);
-    if (ur && ur.value) {
-      const loaded = JSON.parse(ur.value);
-      // Merge — always keep admin account, add any extra accounts
-      const admin = users['admin@nfaith.com'];
-      users = loaded;
-      // Never let storage remove the admin account
-      if (!users['admin@nfaith.com']) users['admin@nfaith.com'] = admin;
+  // Load users
+  try{
+    const u = await fbGet('users');
+    if(u){
+      const adminKey = 'admin_at_nfaith_com';
+      const adminBackup = users[adminKey];
+      users = u;
+      if(!users[adminKey]) users[adminKey] = adminBackup;
+      localStorage.setItem('nf-users', JSON.stringify(users));
+    } else {
+      const ul = localStorage.getItem('nf-users');
+      if(ul){ try{ const loaded=JSON.parse(ul); const ak='admin_at_nfaith_com'; const bk=users[ak]; users=loaded; if(!users[ak])users[ak]=bk; }catch(e){} }
     }
-  } catch(e) {
-    try {
-      const ul = localStorage.getItem(USERS_KEY);
-      if (ul) {
-        const loaded = JSON.parse(ul);
-        const admin = users['admin@nfaith.com'];
-        users = loaded;
-        if (!users['admin@nfaith.com']) users['admin@nfaith.com'] = admin;
-      }
-    } catch(e2) { /* keep seeded users */ }
+  }catch(e){
+    const ul = localStorage.getItem('nf-users');
+    if(ul){ try{ const loaded=JSON.parse(ul); const ak='admin_at_nfaith_com'; const bk=users[ak]; users=loaded; if(!users[ak])users[ak]=bk; }catch(e2){} }
   }
 
-  try {
-    const dr = await window.storage.get(DB_KEY, true);
-    if (dr && dr.value) { db = JSON.parse(dr.value); lastHash = dr.value; }
-    else {
-      const dl = localStorage.getItem(DB_KEY);
-      if (dl) { db = JSON.parse(dl); lastHash = dl; }
-    }
-  } catch(e) {
-    try {
-      const dl = localStorage.getItem(DB_KEY);
-      if (dl) { db = JSON.parse(dl); lastHash = dl; }
-    } catch(e2) { /* keep seeded db */ }
+  // Load DB
+  try{
+    const d = await fbGet('db');
+    if(d){ db=d; lastHash=JSON.stringify(d); localStorage.setItem('nf-db',JSON.stringify(d)); }
+    else{ const dl=localStorage.getItem('nf-db'); if(dl){ try{db=JSON.parse(dl);lastHash=dl;}catch(e){} } }
+  }catch(e){
+    const dl = localStorage.getItem('nf-db');
+    if(dl){ try{db=JSON.parse(dl);lastHash=dl;}catch(e2){} }
   }
 
-  // STEP 3: Check for a saved login session
-  try {
+  // STEP 3: Restore saved session if valid
+  try{
     const saved = localStorage.getItem(SESS_KEY);
-    if (saved) {
+    if(saved){
       const s = JSON.parse(saved);
-      if (s && s.email && users[s.email]) {
+      const key = emailToKey(s.email||'');
+      if(s && s.email && users[key]){
         me = s;
         launchApp();
         return;
       }
       localStorage.removeItem(SESS_KEY);
     }
-  } catch(e) {
-    localStorage.removeItem(SESS_KEY);
-  }
+  }catch(e){ localStorage.removeItem(SESS_KEY); }
 })();
 
-// Keyboard shortcuts for login
 document.getElementById('l-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 document.getElementById('l-email').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('l-pass').focus(); });
 
