@@ -244,6 +244,82 @@ tbody td{padding:10px 13px;font-size:13px;}
 .gps-share-btn:hover{background:var(--s2);}
 .gps-share-btn.gps-on{background:#6ee7b7;color:#065f46;}
 
+/* TRUCK ASSIGNMENT CARDS */
+.ta-fleet-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:20px;box-shadow:var(--sh);}
+.ta-fstat{padding:14px 16px;border-right:1px solid var(--border);}
+.ta-fstat:last-child{border-right:none;}
+.ta-fstat .lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:6px;}
+.ta-fstat .val{font-family:var(--fh);font-size:22px;font-weight:900;color:var(--text);}
+.ta-fstat .trend{font-size:11px;color:var(--red);margin-top:2px;}
+.ta-fstat .trend.up{color:var(--green);}
+.ta-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;margin-bottom:14px;box-shadow:var(--sh);}
+.ta-card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.ta-truck-ico{width:40px;height:40px;background:var(--s2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.ta-truck-name{font-family:var(--fh);font-size:20px;font-weight:900;letter-spacing:1px;color:var(--text);}
+.ta-truck-sub{font-size:12px;color:var(--muted);margin-top:1px;}
+.ta-card-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.ta-stat .lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:3px;}
+.ta-stat .val{font-family:var(--fh);font-size:18px;font-weight:800;color:var(--text);}
+.ta-stat .val.red{color:var(--red);}
+.ta-stat .val.green{color:var(--green);}
+.ta-calendar{padding-top:12px;}
+.ta-cal-label{font-size:11px;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-weight:600;}
+.ta-cal-days{display:flex;gap:3px;flex-wrap:wrap;}
+.ta-day{width:24px;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;}
+.ta-day.trip{background:var(--gbg);color:var(--green);}
+.ta-day.no-trip{background:var(--rbg);color:var(--red);opacity:.7;}
+.ta-day.future{background:var(--s2);color:var(--muted);}
+.ta-day.today{outline:2px solid var(--accent);outline-offset:1px;font-weight:800;}
+.ta-legend{display:flex;gap:14px;margin-top:8px;font-size:11px;color:var(--muted);align-items:center;}
+.ta-legend-dot{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:3px;vertical-align:middle;}
+
+/* TRUCK PERFORMANCE CARDS */
+.tp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px;box-shadow:var(--sh);}
+.tp-card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.tp-truck-info{display:flex;align-items:center;gap:12px;}
+.tp-change{font-size:13px;font-weight:700;color:var(--red);}
+.tp-change.up{color:var(--green);}
+.tp-periods{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.tp-period{background:var(--bg);border-radius:10px;padding:14px 16px;}
+.tp-period-tag{display:inline-flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:1px;color:var(--accent);margin-bottom:12px;}
+.tp-period-tag.month-tag{background:var(--s3);color:var(--text2);}
+.tp-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.tp-metric .lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:3px;}
+.tp-metric .val{font-family:var(--fh);font-size:17px;font-weight:900;color:var(--text);}
+.tp-metric .val.red{color:var(--red);}
+.tp-metric .val.green{color:var(--green);}
+
+/* DRIVER SUBMISSIONS */
+.ds-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.ds-stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;box-shadow:var(--sh);}
+.ds-stat-card .lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:6px;}
+.ds-stat-card .val{font-family:var(--fh);font-size:30px;font-weight:900;color:var(--text);display:flex;align-items:center;gap:8px;}
+.ds-stat-card .sub{font-size:11px;color:var(--muted);margin-top:3px;}
+.ds-tabs{display:flex;gap:0;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;box-shadow:var(--sh);width:fit-content;}
+.ds-tab{padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);border-right:1px solid var(--border);transition:all .15s;display:flex;align-items:center;gap:7px;}
+.ds-tab:last-child{border-right:none;}
+.ds-tab:hover{color:var(--accent);background:var(--s2);}
+.ds-tab.active{color:var(--accent);background:var(--s2);font-weight:700;}
+.ds-tab .ds-cnt{background:var(--accent);color:#fff;border-radius:20px;padding:1px 7px;font-size:10px;font-weight:700;min-width:18px;text-align:center;}
+.ds-tab .ds-cnt.red{background:var(--red);}
+.ds-filters{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+.ds-select{background:var(--surface);border:1.5px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-family:var(--fb);font-size:12px;outline:none;cursor:pointer;}
+.ds-inc-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:10px;display:flex;align-items:center;gap:14px;box-shadow:var(--sh);}
+.ds-inc-body{flex:1;min-width:0;}
+.ds-inc-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.ds-inc-meta{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.ds-inc-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.sev-pill{padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;}
+.sev-critical{background:#fce8e6;color:#b52b1e;}
+.sev-high{background:#fdebd2;color:#c96b0a;}
+.sev-medium{background:#fef3c7;color:#92400e;}
+.sev-low{background:var(--s2);color:var(--accent);}
+.ds-open-badge{background:var(--obg);color:var(--orange);border:1px solid #f0c080;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700;}
+.ds-resolved-badge{background:var(--gbg);color:var(--green);border:1px solid #a0d8b8;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700;}
+.ds-resolve-btn{background:var(--gbg);color:var(--green);border:1.5px solid var(--green);border-radius:7px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s;}
+.ds-resolve-btn:hover{background:var(--green);color:#fff;}
+
+
 /* COLLECTION PROOF */
 .proof-img{max-width:100%;border-radius:8px;border:2px solid var(--border);margin-top:8px;}
 .code-badge{background:var(--goldbg);border:1px solid #f0d070;border-radius:6px;padding:3px 10px;font-family:monospace;font-size:12px;font-weight:700;color:var(--gold);}
@@ -789,20 +865,33 @@ tbody td{padding:10px 13px;font-size:13px;}
 
 <!-- TRUCK ASSIGNMENTS -->
 <div class="section" id="sec-truck-assignments">
-  <div class="sechdr"><div class="sectitle">🔧 Truck Assignments</div></div>
-  <div class="tw"><table>
-    <thead><tr><th>Truck No.</th><th>Plate</th><th>Assigned Driver</th><th>Driver Phone</th><th>Driver Status</th><th>Current Trip</th><th>Last Trip</th><th>Total Trips</th><th>Actions</th></tr></thead>
-    <tbody id="truckassign-tbody"></tbody>
-  </table></div>
+  <div class="sechdr">
+    <div>
+      <div class="sectitle">🔧 Truck Assignments</div>
+      <div style="font-size:12px;color:var(--muted)" id="ta-period-label">—</div>
+    </div>
+    <button class="btn bp" onclick="dlCSV('trips')">⬇ Export CSV</button>
+  </div>
+  <!-- Fleet summary bar -->
+  <div class="ta-fleet-stats" id="ta-fleet-stats"></div>
+  <!-- Per-truck cards -->
+  <div id="ta-cards"></div>
 </div>
 
 <!-- TRUCK PERFORMANCE -->
 <div class="section" id="sec-truck-performance">
-  <div class="sechdr"><div class="sectitle">📈 Truck Performance</div></div>
-  <div class="tw"><table>
-    <thead><tr><th>Truck</th><th>Plate</th><th>Driver</th><th>Total Trips</th><th>Delivered</th><th>Delayed</th><th>Total Distance (km)</th><th>Fuel Cost (GHS)</th><th>Litres Used</th><th>On-Time Rate</th><th>Status</th></tr></thead>
-    <tbody id="truckperf-tbody"></tbody>
-  </table></div>
+  <div class="sechdr">
+    <div>
+      <div class="sectitle">📈 Truck Performance</div>
+      <div style="font-size:12px;color:var(--muted)">Weekly &amp; monthly performance side-by-side</div>
+    </div>
+    <div class="month-nav" style="background:var(--s2);border-color:var(--border);">
+      <button onclick="changeMonth(-1)" style="color:var(--text2)">‹</button>
+      <span id="tp-month-label" style="color:var(--text2);font-size:12px;font-weight:700;min-width:80px;text-align:center;">—</span>
+      <button onclick="changeMonth(1)" style="color:var(--text2)">›</button>
+    </div>
+  </div>
+  <div id="tp-cards"></div>
 </div>
 
 <!-- COMPANY PERFORMANCE -->
@@ -820,14 +909,52 @@ tbody td{padding:10px 13px;font-size:13px;}
 <!-- DRIVER SUBMISSIONS -->
 <div class="section" id="sec-driver-submissions">
   <div class="sechdr">
-    <div class="sectitle">📝 Driver Submissions</div>
-    <button class="btn bp" onclick="openModal('submission')">+ New Submission</button>
+    <div>
+      <div class="sectitle">📝 Driver Submissions</div>
+      <div style="font-size:12px;color:var(--muted)">Review fuel pickups, incident reports, and reverse loads submitted by drivers</div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn bg" onclick="renderDriverSubmissions()">🔄 Refresh</button>
+      <button class="btn bp" onclick="openModal('submission')">+ New Submission</button>
+    </div>
   </div>
-  <div class="tw"><table>
-    <thead><tr><th>Date</th><th>Driver</th><th>Truck/Plate</th><th>Waybill</th><th>Type</th><th>Description</th><th>Status</th><th>Reviewed By</th><th>Actions</th></tr></thead>
-    <tbody id="submissions-tbody"></tbody>
-  </table></div>
+  <!-- Summary stats -->
+  <div class="ds-stat-grid">
+    <div class="ds-stat-card"><div class="lbl">Fuel Logged</div><div class="val" id="ds-fuel-val">0L <span style="font-size:16px">🛢️</span></div><div class="sub" id="ds-fuel-sub">0 entries</div></div>
+    <div class="ds-stat-card"><div class="lbl">Open Incidents</div><div class="val" id="ds-open-val" style="color:var(--red)">0 <span style="font-size:20px">⚠️</span></div><div class="sub" id="ds-open-sub">0 critical</div></div>
+    <div class="ds-stat-card"><div class="lbl">Incidents Total</div><div class="val" id="ds-total-val">0 <span style="font-size:20px">📋</span></div><div class="sub" id="ds-total-sub">0 resolved</div></div>
+    <div class="ds-stat-card"><div class="lbl">Reverse Loads</div><div class="val" id="ds-rl-val" style="color:var(--teal)">0 <span style="font-size:20px">🔄</span></div><div class="sub" id="ds-rl-sub">of 0 trips</div></div>
+  </div>
+  <!-- Sub-tabs -->
+  <div class="ds-tabs">
+    <div class="ds-tab active" id="dst-incidents" onclick="switchDsTab('incidents')">🚨 Incidents <span class="ds-cnt red" id="dst-cnt-incidents">0</span></div>
+    <div class="ds-tab" id="dst-fuel" onclick="switchDsTab('fuel')">⛽ Fuel <span class="ds-cnt" id="dst-cnt-fuel">0</span></div>
+    <div class="ds-tab" id="dst-reverse" onclick="switchDsTab('reverse')">🔄 Reverse <span class="ds-cnt" id="dst-cnt-reverse">0</span></div>
+    <div class="ds-tab" id="dst-all" onclick="switchDsTab('all')">📋 All <span class="ds-cnt" id="dst-cnt-all">0</span></div>
+  </div>
+  <!-- Filters -->
+  <div class="ds-filters">
+    <select class="ds-select" id="ds-filter-status" onchange="renderDriverSubmissions()">
+      <option value="">All Statuses</option>
+      <option value="Pending Review">Pending</option>
+      <option value="Reviewed">Reviewed</option>
+      <option value="Resolved">Resolved</option>
+      <option value="Escalated">Escalated</option>
+    </select>
+    <select class="ds-select" id="ds-filter-severity" onchange="renderDriverSubmissions()">
+      <option value="">All Severities</option>
+      <option value="Critical">Critical</option>
+      <option value="High">High</option>
+      <option value="Medium">Medium</option>
+      <option value="Low">Low</option>
+    </select>
+    <span id="ds-count-label" style="font-size:12px;color:var(--muted);margin-left:4px;"></span>
+    <button class="btn bg bsm" style="margin-left:auto;" onclick="dlCSV('submissions')">⬇ Export CSV</button>
+  </div>
+  <!-- Cards list -->
+  <div id="ds-list"></div>
 </div>
+
 
 <!-- DOCUMENTS -->
 <div class="section" id="sec-documents">
@@ -2478,49 +2605,154 @@ function renderFuelControl(){
 }
 
 function renderTruckAssignments(){
-  const el=document.getElementById('truckassign-tbody');if(!el)return;
-  el.innerHTML=db.drivers.length?db.drivers.map(d=>{
+  const pad=n=>String(n).padStart(2,'0');
+  const monthKey=`${currentYear}-${pad(currentMonth+1)}`;
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const lbl=document.getElementById('ta-period-label');
+  if(lbl) lbl.textContent=`${monthKey} · ${db.drivers.filter(d=>['On Trip','Available'].includes(d.status)).length} active trucks`;
+
+  const totalTrips=db.trips.filter(t=>t.date&&t.date.startsWith(monthKey)).length;
+  const totalRev=db.trips.filter(t=>t.date&&t.date.startsWith(monthKey)).reduce((s,t)=>s+Number(t.dist||0)*2.5,0);
+  const totalProfit=totalRev*0.6;
+  const totalFuel=db.fuel.filter(f=>f.date&&f.date.startsWith(monthKey)).reduce((s,f)=>s+Number(f.cost||0),0);
+  const avgRL=db.trips.length?((db.trips.filter(t=>t.reverseLoad==='yes').length/db.trips.length)*100).toFixed(0):0;
+  const activeCount=db.drivers.filter(d=>d.status==='On Trip').length;
+  const fs=document.getElementById('ta-fleet-stats');
+  if(fs) fs.innerHTML=`
+    <div class="ta-fstat"><div class="lbl">Total Trips</div><div class="val">${totalTrips}</div><div class="trend">↘ ${totalTrips===0?'-100':'+0'}%</div></div>
+    <div class="ta-fstat"><div class="lbl">Total Revenue</div><div class="val">GH₵${Math.round(totalRev).toLocaleString()}</div><div class="trend">↘ ${totalRev===0?'-100':'+0'}%</div></div>
+    <div class="ta-fstat"><div class="lbl">Total Profit</div><div class="val" style="color:var(--green)">GH₵${Math.round(totalProfit).toLocaleString()}</div><div class="trend">↘ -100%</div></div>
+    <div class="ta-fstat"><div class="lbl">Total Fuel Cost</div><div class="val">GH₵${totalFuel.toLocaleString()}</div><div class="trend">↘ -100%</div></div>
+    <div class="ta-fstat"><div class="lbl">Avg Reverse %</div><div class="val">${avgRL}%</div><div class="trend">↘ -100%</div></div>
+    <div class="ta-fstat"><div class="lbl">Fleet Utilization</div><div class="val">${activeCount} / ${db.drivers.length}</div><div class="sub" style="font-size:11px;color:var(--muted)">trucks active</div></div>`;
+
+  const today=new Date();
+  const todayD=today.getDate();
+  const daysInMonth=new Date(currentYear,currentMonth+1,0).getDate();
+  const cards=document.getElementById('ta-cards');
+  if(!cards) return;
+  if(!db.drivers.length){cards.innerHTML='<div class="empty"><div class="ei">🔧</div><p>No drivers registered yet.</p></div>';return;}
+  cards.innerHTML=db.drivers.map(d=>{
+    const trips=db.trips.filter(t=>t.driver===d.name&&t.date&&t.date.startsWith(monthKey));
+    const revenue=trips.reduce((s,t)=>s+Number(t.dist||0)*2.5,0);
+    const fuelCost=db.fuel.filter(f=>f.truck===d.truck&&f.date&&f.date.startsWith(monthKey)).reduce((s,f)=>s+Number(f.cost||0),0);
+    const profit=revenue-fuelCost;
+    const avgCycle=trips.length?(trips.reduce((s,t)=>s+Number(t.dist||0),0)/trips.length).toFixed(1):'-';
+    const rlPct=trips.length?((trips.filter(t=>t.reverseLoad==='yes').length/trips.length)*100).toFixed(0)+'%':'0%';
     const activeTrip=db.trips.find(t=>t.driver===d.name&&['In Transit','Departed','At Factory','Loading','Returning'].includes(t.status));
-    const lastTrip=[...db.trips].reverse().find(t=>t.driver===d.name&&!['In Transit','Departed','At Factory','Loading'].includes(t.status));
-    return`<tr>
-      <td><strong>${d.truck}</strong></td>
-      <td><span style="font-family:monospace;font-size:11px;font-weight:700;color:var(--accent);background:var(--s2);padding:2px 8px;border-radius:4px">${d.plate||'—'}</span></td>
-      <td><strong>${d.name}</strong></td>
-      <td>${d.phone}</td>
-      <td>${sb(d.status)}</td>
-      <td>${activeTrip?`<strong style="color:var(--accent)">${activeTrip.waybill}</strong><div style="font-size:10px;color:var(--muted)">${activeTrip.origin}→${activeTrip.dest}</div>`:'<span style="color:var(--muted)">—</span>'}</td>
-      <td>${lastTrip?`${lastTrip.waybill}<div style="font-size:10px;color:var(--muted)">${lastTrip.date}</div>`:'—'}</td>
-      <td><span class="badge bg-b">${db.trips.filter(t=>t.driver===d.name).length}</span></td>
-      <td><button class="btn be bsm" onclick="editDriver('${d.id}')">✏️ Edit</button></td>
-    </tr>`;
-  }).join(''):`<tr><td colspan="9"><div class="empty"><div class="ei">🔧</div><p>No drivers registered yet.</p></div></td></tr>`;
+    const tripDays=new Set(trips.map(t=>parseInt((t.date||'').split('-')[2])));
+    const calDays=Array.from({length:daysInMonth},(_,i)=>{
+      const day=i+1;
+      const isToday=currentYear===today.getFullYear()&&currentMonth===today.getMonth()&&day===todayD;
+      const isFuture=currentYear>=today.getFullYear()&&currentMonth>=today.getMonth()&&day>todayD;
+      const cls=isFuture?'future':tripDays.has(day)?'trip':'no-trip';
+      return`<div class="ta-day ${cls}${isToday?' today':''}">${day}</div>`;
+    }).join('');
+    return`<div class="ta-card">
+      <div class="ta-card-hdr">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="ta-truck-ico">🚛</div>
+          <div>
+            <div class="ta-truck-name">${d.truck}</div>
+            <div class="ta-truck-sub">${activeTrip?`<span style="color:var(--green);font-weight:600;">● Active — ${activeTrip.waybill}</span>`:`<span style="color:var(--muted);">No assignment yet</span>`}</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          ${sb(d.status)}
+          <button class="btn bg bsm" onclick="showTab('history')">🕐 History</button>
+          <button class="btn bp bsm" onclick="editDriver('${d.id}')">+ Assign</button>
+        </div>
+      </div>
+      <div class="ta-card-stats">
+        <div class="ta-stat"><div class="lbl">Trips</div><div class="val">${trips.length}</div></div>
+        <div class="ta-stat"><div class="lbl">Revenue</div><div class="val">GH₵${Math.round(revenue).toLocaleString()}</div></div>
+        <div class="ta-stat"><div class="lbl">Profit</div><div class="val ${profit>=0?'green':'red'}">GH₵${Math.round(profit).toLocaleString()}</div></div>
+        <div class="ta-stat"><div class="lbl">Fuel Cost</div><div class="val">GH₵${fuelCost.toLocaleString()}</div></div>
+        <div class="ta-stat"><div class="lbl">Avg Cycle</div><div class="val">${avgCycle}</div></div>
+        <div class="ta-stat"><div class="lbl">Reverse %</div><div class="val">${rlPct}</div></div>
+      </div>
+      <div class="ta-calendar">
+        <div class="ta-cal-label">📅 Daily Trip Activity</div>
+        <div class="ta-cal-days">${calDays}</div>
+        <div class="ta-legend">
+          <span><span class="ta-legend-dot" style="background:var(--gbg)"></span>Trip day</span>
+          <span><span class="ta-legend-dot" style="background:var(--rbg)"></span>No trip</span>
+          <span><span class="ta-legend-dot" style="background:var(--s2)"></span>Future</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function renderTruckPerformance(){
-  const el=document.getElementById('truckperf-tbody');if(!el)return;
-  el.innerHTML=db.drivers.length?db.drivers.map(d=>{
-    const trips=db.trips.filter(t=>t.driver===d.name);
-    const delivered=trips.filter(t=>t.status==='Delivered').length;
-    const delayed=trips.filter(t=>t.status==='Delayed').length;
-    const totalDist=trips.reduce((s,t)=>s+Number(t.dist||0),0);
-    const fuelEntries=db.fuel.filter(f=>f.truck===d.truck);
-    const fuelCost=fuelEntries.reduce((s,f)=>s+Number(f.cost||0),0);
-    const fuelLitres=fuelEntries.reduce((s,f)=>s+Number(f.amount||0),0);
-    const onTimeRate=trips.length>0?((trips.length-delayed)/trips.length*100).toFixed(0)+'%':'—';
-    return`<tr>
-      <td><strong>${d.truck}</strong></td>
-      <td><span style="font-family:monospace;font-size:11px;font-weight:700;color:var(--accent);background:var(--s2);padding:2px 8px;border-radius:4px">${d.plate||'—'}</span></td>
-      <td>${d.name}</td>
-      <td><span class="badge bg-b">${trips.length}</span></td>
-      <td style="color:var(--green);font-weight:700">${delivered}</td>
-      <td style="color:var(--red)">${delayed}</td>
-      <td>${totalDist.toLocaleString()}</td>
-      <td style="color:var(--gold);font-weight:700">GHS ${fuelCost.toLocaleString()}</td>
-      <td>${fuelLitres.toFixed(0)}L</td>
-      <td><span class="badge ${delayed===0?'bg-g':delayed<3?'bg-o':'bg-r'}">${onTimeRate}</span></td>
-      <td>${sb(d.status)}</td>
-    </tr>`;
-  }).join(''):`<tr><td colspan="11"><div class="empty"><div class="ei">📈</div><p>No data yet.</p></div></td></tr>`;
+  const pad=n=>String(n).padStart(2,'0');
+  const monthKey=`${currentYear}-${pad(currentMonth+1)}`;
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const lbl=document.getElementById('tp-month-label');
+  if(lbl) lbl.textContent=`${months[currentMonth]} ${currentYear}`;
+  const now=new Date();
+  const dow=now.getDay()||7;
+  const weekStart=new Date(now); weekStart.setDate(now.getDate()-dow+1);
+  const weekEnd=new Date(weekStart); weekEnd.setDate(weekStart.getDate()+6);
+  const wFmt=d=>`${months[d.getMonth()]} ${d.getDate()}`;
+  const weekLabel=`${wFmt(weekStart)} – ${wFmt(weekEnd)}`;
+  const inWeek=d=>d>=weekStart.toISOString().split('T')[0]&&d<=weekEnd.toISOString().split('T')[0];
+  const el=document.getElementById('tp-cards');if(!el)return;
+  if(!db.drivers.length){el.innerHTML='<div class="empty"><div class="ei">📈</div><p>No drivers yet.</p></div>';return;}
+  el.innerHTML=db.drivers.map(d=>{
+    const allTrips=db.trips.filter(t=>t.driver===d.name);
+    const wTrips=allTrips.filter(t=>t.date&&inWeek(t.date));
+    const mTrips=allTrips.filter(t=>t.date&&t.date.startsWith(monthKey));
+    const calcStats=(trips)=>{
+      const rev=trips.reduce((s,t)=>s+Number(t.dist||0)*2.5,0);
+      const fuel=db.fuel.filter(f=>f.truck===d.truck&&f.date).reduce((s,f)=>s+Number(f.cost||0),0);
+      const profit=rev-fuel;
+      const margin=rev>0?((profit/rev)*100).toFixed(1)+'%':'0.0%';
+      const avgCycle=trips.length?(trips.reduce((s,t)=>s+Number(t.dist||0),0)/trips.length).toFixed(1):'0.0';
+      const rlPct=trips.length?((trips.filter(t=>t.reverseLoad==='yes').length/trips.length)*100).toFixed(1)+'%':'0.0%';
+      const fuelVar=rev>0?((fuel/rev)*100).toFixed(1)+'%':'0.0%';
+      return{trips:trips.length,rev,profit,margin,fuelCost:fuel,avgCycle,rlPct,fuelVar};
+    };
+    const ws=calcStats(wTrips);
+    const ms=calcStats(mTrips);
+    return`<div class="tp-card">
+      <div class="tp-card-hdr">
+        <div class="tp-truck-info">
+          <div class="ta-truck-ico">🚛</div>
+          <div><div class="ta-truck-name">${d.truck}</div><div class="ta-truck-sub">${d.name} · <span style="font-family:monospace;font-size:11px;">${d.plate||'—'}</span></div></div>
+        </div>
+        <span class="tp-change">↘ ${ms.trips===0?'-100%':'0%'}</span>
+      </div>
+      <div class="tp-periods">
+        <div class="tp-period">
+          <div class="tp-period-tag">WEEK <span style="font-size:10px;color:var(--muted);font-weight:400;margin-left:6px;">${weekLabel}</span></div>
+          <div class="tp-metrics">
+            <div class="tp-metric"><div class="lbl">Trips</div><div class="val">${ws.trips}</div></div>
+            <div class="tp-metric"><div class="lbl">Revenue</div><div class="val">GH₵${Math.round(ws.rev).toLocaleString()}</div></div>
+            <div class="tp-metric"><div class="lbl">Profit</div><div class="val ${ws.profit>=0?'green':'red'}">GH₵${Math.round(ws.profit).toLocaleString()}</div></div>
+            <div class="tp-metric"><div class="lbl">Margin</div><div class="val">${ws.margin}</div></div>
+            <div class="tp-metric"><div class="lbl">Fuel Cost</div><div class="val">GH₵${ws.fuelCost.toLocaleString()}</div></div>
+            <div class="tp-metric"><div class="lbl">Avg Cycle</div><div class="val">${ws.avgCycle}</div></div>
+            <div class="tp-metric"><div class="lbl">Fuel Var.</div><div class="val">${ws.fuelVar}</div></div>
+            <div class="tp-metric"><div class="lbl">Reverse %</div><div class="val">${ws.rlPct}</div></div>
+          </div>
+        </div>
+        <div class="tp-period">
+          <div class="tp-period-tag month-tag">MONTH <span style="font-size:10px;color:var(--muted);font-weight:400;margin-left:6px;">${months[currentMonth]} ${currentYear}</span></div>
+          <div class="tp-metrics">
+            <div class="tp-metric"><div class="lbl">Trips</div><div class="val">${ms.trips}</div></div>
+            <div class="tp-metric"><div class="lbl">Revenue</div><div class="val">GH₵${Math.round(ms.rev).toLocaleString()}</div></div>
+            <div class="tp-metric"><div class="lbl">Profit</div><div class="val ${ms.profit>=0?'green':'red'}">GH₵${Math.round(ms.profit).toLocaleString()}</div></div>
+            <div class="tp-metric"><div class="lbl">Margin</div><div class="val">${ms.margin}</div></div>
+            <div class="tp-metric"><div class="lbl">Fuel Cost</div><div class="val">GH₵${ms.fuelCost.toLocaleString()}</div></div>
+            <div class="tp-metric"><div class="lbl">Avg Cycle</div><div class="val">${ms.avgCycle}</div></div>
+            <div class="tp-metric"><div class="lbl">Fuel Var.</div><div class="val">${ms.fuelVar}</div></div>
+            <div class="tp-metric"><div class="lbl">Reverse %</div><div class="val">${ms.rlPct}</div></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function renderCompanyPerformance(){
@@ -2535,8 +2767,8 @@ function renderCompanyPerformance(){
   const totalCosts=fuelCost+allowCost;
   const revEst=db.trips.reduce((s,t)=>s+Number(t.dist||0)*2.5,0);
   ss('cp-trips',total);ss('cp-rate',rate);
-  ss('cp-rev','GHS '+Math.round(revEst).toLocaleString());
-  ss('cp-costs','GHS '+totalCosts.toLocaleString());
+  ss('cp-rev','GH₵'+Math.round(revEst).toLocaleString());
+  ss('cp-costs','GH₵'+totalCosts.toLocaleString());
   const today=new Date().toISOString().split('T')[0];
   el.innerHTML=`
     <div class="rcard"><h3>📊 Trip Summary</h3>
@@ -2556,11 +2788,11 @@ function renderCompanyPerformance(){
       <div class="rrow"><span>Total Distance</span><span class="rv">${db.trips.reduce((s,t)=>s+Number(t.dist||0),0).toLocaleString()} km</span></div>
     </div>
     <div class="rcard"><h3>💰 Financials</h3>
-      <div class="rrow"><span>Est. Revenue</span><span class="rv" style="color:var(--green)">GHS ${Math.round(revEst).toLocaleString()}</span></div>
-      <div class="rrow"><span>Total Fuel Cost</span><span class="rv" style="color:var(--red)">GHS ${fuelCost.toLocaleString()}</span></div>
-      <div class="rrow"><span>Total Allowances</span><span class="rv" style="color:var(--orange)">GHS ${allowCost.toLocaleString()}</span></div>
-      <div class="rrow"><span>Total Costs</span><span class="rv" style="color:var(--red)">GHS ${totalCosts.toLocaleString()}</span></div>
-      <div class="rrow"><span>Est. Margin</span><span class="rv" style="color:${revEst-totalCosts>0?'var(--green)':'var(--red)'}">GHS ${Math.round(revEst-totalCosts).toLocaleString()}</span></div>
+      <div class="rrow"><span>Est. Revenue</span><span class="rv" style="color:var(--green)">GH₵${Math.round(revEst).toLocaleString()}</span></div>
+      <div class="rrow"><span>Total Fuel Cost</span><span class="rv" style="color:var(--red)">GH₵${fuelCost.toLocaleString()}</span></div>
+      <div class="rrow"><span>Total Allowances</span><span class="rv" style="color:var(--orange)">GH₵${allowCost.toLocaleString()}</span></div>
+      <div class="rrow"><span>Total Costs</span><span class="rv" style="color:var(--red)">GH₵${totalCosts.toLocaleString()}</span></div>
+      <div class="rrow"><span>Est. Margin</span><span class="rv" style="color:${revEst-totalCosts>0?'var(--green)':'var(--red)'}">GH₵${Math.round(revEst-totalCosts).toLocaleString()}</span></div>
     </div>
     <div class="rcard"><h3>⛽ Fuel & Safety</h3>
       <div class="rrow"><span>Fuel Entries</span><span class="rv">${db.fuel.length}</span></div>
@@ -2571,24 +2803,112 @@ function renderCompanyPerformance(){
     </div>`;
 }
 
-function renderDriverSubmissions(){
-  const el=document.getElementById('submissions-tbody');if(!el)return;
-  const subs=db.submissions||[];
-  el.innerHTML=subs.length?[...subs].reverse().map(s=>`<tr>
-    <td>${s.date||'—'}</td>
-    <td><strong>${s.driver}</strong></td>
-    <td>${s.truck||'—'}${s.plate?`<div style="font-family:monospace;font-size:10px;color:var(--muted)">${s.plate}</div>`:''}</td>
-    <td style="color:var(--accent);font-weight:600">${s.waybill||'—'}</td>
-    <td><span class="badge bg-b">${s.type}</span></td>
-    <td style="font-size:12px;max-width:200px">${s.desc||'—'}</td>
-    <td>${sb(s.status)}</td>
-    <td style="font-size:12px">${s.reviewer||'—'}</td>
-    <td style="display:flex;gap:4px">
-      ${can.edit()?`<button class="btn be bsm" onclick="editSubmission('${s.id}')">✏️</button>`:''}
-      ${can.delete()?`<button class="btn bd bsm" onclick="deleteSubmission('${s.id}')">✕</button>`:''}
-    </td>
-  </tr>`).join(''):`<tr><td colspan="9"><div class="empty"><div class="ei">📝</div><p>No submissions yet.</p></div></td></tr>`;
+let _dsTab='incidents';
+function switchDsTab(tab){
+  _dsTab=tab;
+  ['incidents','fuel','reverse','all'].forEach(t=>{
+    document.getElementById('dst-'+t)?.classList.toggle('active',t===tab);
+  });
+  renderDriverSubmissions();
 }
+
+function renderDriverSubmissions(){
+  const subs=db.submissions||[];
+  const allTrips=db.trips;
+  const statusF=(document.getElementById('ds-filter-status')?.value||'');
+  const severityF=(document.getElementById('ds-filter-severity')?.value||'');
+  const incSubs=subs.filter(s=>['Incident Report','Breakdown Report','Route Issue','Checkpoint Delay','General Report','Vehicle Damage'].includes(s.type)||(!s.type));
+  const rlCount=allTrips.filter(t=>t.reverseLoad==='yes').length;
+  const openInc=incSubs.filter(s=>s.status==='Pending Review'||s.status==='Escalated').length;
+  const critInc=incSubs.filter(s=>s.severity==='Critical').length;
+  const resolvedInc=incSubs.filter(s=>s.status==='Resolved').length;
+  const fuelLitres=db.fuel.reduce((s,f)=>s+Number(f.amount||0),0);
+  const ss=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  ss('ds-fuel-val',fuelLitres.toFixed(0)+'L 🛢️');ss('ds-fuel-sub',db.fuel.length+' entries');
+  ss('ds-open-val',openInc+' ⚠️');ss('ds-open-sub',critInc+' critical');
+  ss('ds-total-val',incSubs.length+' 📋');ss('ds-total-sub',resolvedInc+' resolved');
+  ss('ds-rl-val',rlCount+' 🔄');ss('ds-rl-sub','of '+allTrips.length+' trips');
+  ss('dst-cnt-incidents',incSubs.length);ss('dst-cnt-fuel',db.fuel.length);
+  ss('dst-cnt-reverse',rlCount);ss('dst-cnt-all',subs.length);
+  const el=document.getElementById('ds-list');if(!el)return;
+  const typeIco={'Incident Report':'🚗','Breakdown Report':'🔧','Fuel Request':'⛽','Route Issue':'🗺️','Checkpoint Delay':'🚔','General Report':'📋','Vehicle Damage':'🚗'};
+  if(_dsTab==='fuel'){
+    const entries=[...db.fuel].reverse();
+    ss('ds-count-label',entries.length+' entries');
+    el.innerHTML=entries.length?entries.map(f=>`
+      <div class="ds-inc-card">
+        <div style="font-size:22px;flex-shrink:0;">⛽</div>
+        <div class="ds-inc-body">
+          <div class="ds-inc-title">${f.type} — ${f.truck} <span class="sev-pill sev-low">Fuel</span></div>
+          <div class="ds-inc-meta">
+            <span>👤 ${f.driver||'—'}</span><span>📅 ${f.date||'—'}</span>
+            <span>${f.amount||0}L @ GH₵${f.pricePerLitre||0}/L</span>
+            <span style="font-weight:700;color:var(--gold)">GH₵${Number(f.cost||0).toLocaleString()}</span>
+          </div>
+          ${f.notes?`<div style="font-size:12px;color:var(--muted);margin-top:4px;">${f.notes}</div>`:''}
+        </div>
+        <div class="ds-inc-actions">
+          <span class="ds-resolved-badge">✓ Logged</span>
+          ${can.edit()?`<button class="btn be bsm" onclick="editFuel('${f.id}')">✏️</button>`:''}
+        </div>
+      </div>`).join(''):`<div class="empty"><div class="ei">⛽</div><p>No fuel entries yet.</p></div>`;
+    return;
+  }
+  if(_dsTab==='reverse'){
+    const rls=allTrips.filter(t=>t.reverseLoad==='yes');
+    ss('ds-count-label',rls.length+' reverse loads');
+    el.innerHTML=rls.length?[...rls].reverse().map(t=>`
+      <div class="ds-inc-card">
+        <div style="font-size:22px;flex-shrink:0;">🔄</div>
+        <div class="ds-inc-body">
+          <div class="ds-inc-title">${t.waybill} — Reverse Load <span class="sev-pill sev-low">Reverse</span></div>
+          <div class="ds-inc-meta">
+            <span>👤 ${t.driver}</span><span>🚛 ${t.truck}</span><span>📅 ${t.date}</span>
+            <span>${t.rvPickup||'—'} → ${t.rvDest||'—'}</span><span>📦 ${t.rvCargo||'—'}</span>
+          </div>
+        </div>
+        <div class="ds-inc-actions">${sb(t.rvStatus||'Pending')}</div>
+      </div>`).join(''):`<div class="empty"><div class="ei">🔄</div><p>No reverse loads yet.</p></div>`;
+    return;
+  }
+  let list=_dsTab==='all'?[...subs]:[...incSubs];
+  if(statusF) list=list.filter(s=>s.status===statusF);
+  if(severityF) list=list.filter(s=>s.severity===severityF);
+  list=[...list].reverse();
+  ss('ds-count-label',list.length+' incident'+(list.length===1?'':'s'));
+  el.innerHTML=list.length?list.map(s=>{
+    const sev=s.severity||'Low';
+    const isOpen=s.status==='Pending Review'||s.status==='Escalated';
+    return`<div class="ds-inc-card">
+      <div style="font-size:22px;flex-shrink:0;">${typeIco[s.type]||'📋'}</div>
+      <div class="ds-inc-body">
+        <div class="ds-inc-title">${s.type||'Report'} <span class="sev-pill sev-${sev.toLowerCase()}">${sev}</span> ${isOpen?`<span class="ds-open-badge">${s.status}</span>`:`<span class="ds-resolved-badge">${s.status}</span>`}</div>
+        ${s.desc?`<div style="font-size:13px;color:var(--text2);margin-bottom:4px;">${s.desc}</div>`:''}
+        <div class="ds-inc-meta">
+          <span>👤 ${s.driver||'—'}</span><span>🚛 ${s.truck||'—'}</span>
+          ${s.waybill?`<span>📄 ${s.waybill}</span>`:''}
+          <span>📅 ${s.date||'—'}</span>
+          ${s.reviewer?`<span>✅ ${s.reviewer}</span>`:''}
+        </div>
+      </div>
+      <div class="ds-inc-actions">
+        ${isOpen&&can.edit()?`<button class="ds-resolve-btn" onclick="resolveSubmission('${s.id}')">✅ Resolve</button>`:''}
+        ${can.edit()?`<button class="btn be bsm" onclick="editSubmission('${s.id}')">✏️</button>`:''}
+        ${can.delete()?`<button class="btn bd bsm" onclick="deleteSubmission('${s.id}')">✕</button>`:''}
+      </div>
+    </div>`;
+  }).join(''):`<div class="empty"><div class="ei">📝</div><p>No submissions yet.</p></div>`;
+}
+
+function resolveSubmission(id){
+  if(!can.edit())return;
+  const s=(db.submissions||[]).find(x=>x.id===id);if(!s)return;
+  s.status='Resolved';s.reviewer=me?.name||'Admin';
+  pushDB().then(()=>renderDriverSubmissions());
+  toast('✅ Marked as resolved','win');
+}
+
+
 
 function renderDocuments(){
   const el=document.getElementById('documents-tbody');if(!el)return;
